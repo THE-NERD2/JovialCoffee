@@ -4,7 +4,9 @@ import javassist.ClassPool
 import javassist.CtClass
 import javassist.NotFoundException
 import javassist.bytecode.Mnemonic
+import javassist.bytecode.Opcode
 import org.j2c.ast.NClass
+import org.j2c.exceptions.UnknownOpcodeException
 import org.j2c.llvm.LLVM
 import java.io.File
 import java.net.URLClassLoader
@@ -31,12 +33,31 @@ fun parse(path: String, name: String): NClass {
         } else if(it is KFunction) {
             try {
                 // Process method code
-                val instructions = ctclass.getDeclaredMethod(it.name).methodInfo.codeAttribute.iterator()
+                val methodInfo = ctclass.getDeclaredMethod(it.name).methodInfo
+                val instructions = methodInfo.codeAttribute.iterator()
+                val const = methodInfo.constPool
+
+                val localVariables = mutableMapOf<Int, String>()
+                // TODO
+
                 while (instructions.hasNext()) {
                     val pos = instructions.next()
                     val opcode = instructions.byteAt(pos)
-                    println(Mnemonic.OPCODE[opcode])
-                    // TODO: create AST from opcodes
+                    when(opcode) {
+                        Opcode.ALOAD_0 -> {
+                            // TODO
+                        }
+                        Opcode.GETFIELD -> {
+                            // TODO
+                        }
+                        Opcode.PUTFIELD -> {
+                            // TODO
+                        }
+                        Opcode.RETURN -> {
+                            // TODO
+                        }
+                        else -> throw UnknownOpcodeException(Mnemonic.OPCODE[opcode])
+                    }
                 }
                 nclass.NMethodDeclaration(it.name, it.returnType.toString(), it.parameters.map { it.type.toString() })
             } catch(_: NotFoundException) {}

@@ -18,7 +18,7 @@ class NClass(val name: String): Node() {
         init {
             this@NClass.fields.add(this)
         }
-        var bytecodeId: Int? = null
+        var bytecodeId = -1
     }
     inner class NMethodDeclaration(
         val name: String,
@@ -29,7 +29,7 @@ class NClass(val name: String): Node() {
             this@NClass.methods.add(this)
         }
         val body = arrayListOf<Node>()
-        var bytecodeId: Int? = null
+        var bytecodeId = -1
     }
 }
 class NReference(val identifier: String): Node()
