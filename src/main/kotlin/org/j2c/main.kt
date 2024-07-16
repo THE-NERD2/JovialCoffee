@@ -5,6 +5,7 @@ import javassist.CtClass
 import javassist.NotFoundException
 import javassist.bytecode.Mnemonic
 import org.j2c.ast.NClass
+import org.j2c.llvm.LLVM
 import java.io.File
 import java.net.URLClassLoader
 import kotlin.reflect.KClass
@@ -43,4 +44,8 @@ fun parse(path: String, name: String): NClass {
     }
     return nclass
 }
-fun main(args: Array<String>) = parse(args[0], args[1]).codeGen()
+fun main(args: Array<String>) {
+    val astRoot = parse(args[0], args[1])
+    LLVM.createAST(astRoot)
+    LLVM.codeGen()
+}
