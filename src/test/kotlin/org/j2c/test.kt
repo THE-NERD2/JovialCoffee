@@ -1,17 +1,28 @@
 package org.j2c
 
 import org.j2c.ast.NClass
+import org.j2c.development.printAll
 import kotlin.test.Test
 
-class AST {
+class Tests {
     @Test
-    fun main() {
+    fun DummyClass() {
         var clazz: NClass
         try {
             clazz = parse("/home/payton/Coding/apis/libs/J2C/src/test/resources", "org.j2c.DummyClass")!!
         } catch(_: NullPointerException) {
             clazz = parse("/home/payton/IdeaProjects/J2C/src/test/resources", "org.j2c.DummyClass")!!
         }
+        printClass(clazz)
+        printAll()
+    }
+    @Test
+    fun EncryptedStorage() { // from Notebook repository
+        val clazz = parse("/home/payton/IdeaProjects/Notebook/build/classes/kotlin/main", "org.notebook.EncryptedStorage")!!
+        printClass(clazz)
+        printAll()
+    }
+    fun printClass(clazz: NClass) {
         println(clazz.name + clazz.id)
         clazz.fields.forEach {
             println("\t${it.type} ${clazz.cname}_${it.name}")

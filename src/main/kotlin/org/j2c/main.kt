@@ -8,6 +8,7 @@ import javassist.bytecode.Opcode
 import org.j2c.ast.NClass
 import org.j2c.ast.findNClassByFullName
 import org.j2c.ast.popNClass
+import org.j2c.development.registerUnknownOpcode
 import org.j2c.exceptions.UnknownOpcodeException
 import org.j2c.llvm.LLVM
 import java.io.File
@@ -32,7 +33,7 @@ fun parse(path: String, name: String): NClass? {
 
         kclass.members.forEach {
             if(it is KProperty) {
-                nclass.NFieldDeclaration(it.name, (it.javaField?.type ?: it.returnType).toString())
+                nclass.NFieldDeclaration(it.name, (it.javaField?.type ?: it.returnType.javaType).typeName)
             } else if(it is KFunction) {
                 try {
                     // Process method code
@@ -72,10 +73,13 @@ fun parse(path: String, name: String): NClass? {
                                 stack.add("return")
                             }
 
-                            else -> UnknownOpcodeException(Mnemonic.OPCODE[opcode]).printStackTrace()
+                            else -> {
+                                UnknownOpcodeException(Mnemonic.OPCODE[opcode]).printStackTrace()
+                                registerUnknownOpcode(Mnemonic.OPCODE[opcode])
+                            }
                         }
                     }
-                    nclass.NMethodDeclaration(it.name, it.returnType.javaType.toString(), it.parameters.map { it.type.toString() }, stack.toList())
+                    nclass.NMethodDeclaration(it.name, it.returnType.javaType.typeName, it.parameters.map { it.type.javaType.typeName }, stack.toList())
                 } catch(_: NotFoundException) {}
             }
         }
@@ -86,7 +90,7 @@ fun parse(path: String, name: String): NClass? {
     }
 }
 fun main(args: Array<String>) {
-    val astRoot = parse(args[0], args[1])
+    val astRoot = parse(args[0], args[1])!!
     LLVM.createAST(astRoot)
     LLVM.codeGen()
 }
