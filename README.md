@@ -8,6 +8,7 @@ GraalVM native image doesn't seem to work for me, so I decided to make my own re
 
 - Printing high-level pseudo-code with some opcodes
   - If you get an error saying "Unknown opcode: ...", submit your source code as an issue
+- Preliminary recursive search for unknown classes
 
 ## License
 
