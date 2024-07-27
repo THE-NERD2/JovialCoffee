@@ -18,7 +18,13 @@ class Tests {
     }
     @Test
     fun EncryptedStorage() { // from Notebook repository
-        val clazz = parse("/home/payton/IdeaProjects/Notebook/build/classes/kotlin/main", "org.notebook.EncryptedStorage")!!
+        val clazz = parse("/home/payton/IdeaProjects/Notebook/build/libs/Notebook-1.0-SNAPSHOT-all.jar", "org.notebook.EncryptedStorage")!!
+        printClass(clazz)
+        printAll()
+    }
+    @Test
+    fun WorkingFile() {
+        val clazz = parse("/home/payton/IdeaProjects/Notebook/build/libs/Notebook-1.0-SNAPSHOT-all.jar", "org.notebook.WorkingFile")!!
         printClass(clazz)
         printAll()
     }

@@ -65,17 +65,46 @@ fun parse(path: String, name: String): NClass? {
                             Opcode.ACONST_NULL -> {
                                 stack.add("null")
                             }
+                            Opcode.ILOAD_1 -> {
+                                stack.add(localVariables[1])
+                            }
+                            Opcode.ISTORE_1 -> {
+                                val newV = stack.pop()
+                                localVariables[1] = "ivar1"
+                                stack.add("ivar1 = $newV")
+                            }
                             Opcode.ICONST_0 -> {
                                 stack.add("0")
                             }
                             Opcode.ICONST_1 -> {
                                 stack.add("1")
                             }
+                            Opcode.BIPUSH -> {
+                                val v = instructions.byteAt(pos + 1)
+                                stack.add("$v")
+                            }
                             Opcode.LDC -> {
                                 val i = instructions.byteAt(pos + 1)
                                 val v = const.getLdcValue(i)
                                 stack.push(v.toString())
                             }
+                            Opcode.NEW -> {
+                                val i = instructions.u16bitAt(pos + 1)
+                                val c = const.getClassInfo(i)
+                                stack.add("new ${findNClassByFullName(c)?.cname ?: "???"}")
+                            }
+
+                            Opcode.IMUL -> {
+                                val v2 = stack.pop()
+                                val v1 = stack.pop()
+                                stack.add("$v1 * $v2")
+                            }
+                            Opcode.IADD -> {
+                                val v2 = stack.pop()
+                                val v1 = stack.pop()
+                                stack.add("$v1 + $v2")
+                            }
+
                             Opcode.GETSTATIC -> {
                                 val i = instructions.u16bitAt(pos + 1)
                                 val fld = const.getFieldrefName(i)
@@ -109,7 +138,7 @@ fun parse(path: String, name: String): NClass? {
                                 }
 
                                 val callStr = StringBuilder("$method(")
-                                for (i in 0 until argc) {
+                                for (i in 0 ..< argc) {
                                     if (i > 0) {
                                         callStr.append(",")
                                     }
@@ -132,7 +161,7 @@ fun parse(path: String, name: String): NClass? {
                                 val obj = stack.pop()
 
                                 val callStr = StringBuilder("$obj.$method(")
-                                for (i in 0 until argc) {
+                                for (i in 0 ..< argc) {
                                     if (i > 0) {
                                         callStr.append(",")
                                     }
@@ -141,10 +170,78 @@ fun parse(path: String, name: String): NClass? {
                                 callStr.append(")")
                                 stack.add(callStr.toString())
                             }
+                            Opcode.INVOKESPECIAL -> {
+                                val i = instructions.u16bitAt(pos + 1)
+                                val method = (findNClassByFullName(const.getMethodrefClassName(i))?.cname ?: "???"
+                                        ) + "_" + const.getMethodrefName(i)
+                                val desc = const.getInterfaceMethodrefType(i)
+
+                                val argc = getargc(desc)
+                                val args = arrayOfNulls<String>(argc)
+                                for (i in argc - 1 downTo 0) {
+                                    args[i] = stack.pop()
+                                }
+                                val obj = stack.pop()
+
+                                val callStr = StringBuilder("$obj.$method(")
+                                for (i in 0 ..< argc) {
+                                    if (i > 0) {
+                                        callStr.append(",")
+                                    }
+                                    callStr.append(args[i])
+                                }
+                                callStr.append(")")
+                                stack.add(callStr.toString())
+                            }
+                            Opcode.INVOKEVIRTUAL -> {
+                                val i = instructions.u16bitAt(pos + 1)
+                                val method = (findNClassByFullName(const.getMethodrefClassName(i))?.cname ?: "???"
+                                        ) + "_" + const.getMethodrefName(i)
+                                val desc = const.getInterfaceMethodrefType(i)
+
+                                val argc = getargc(desc)
+                                val args = arrayOfNulls<String>(argc)
+                                for (i in argc - 1 downTo 0) {
+                                    args[i] = stack.pop()
+                                }
+                                val obj = stack.pop()
+
+                                val callStr = StringBuilder("$obj.$method(")
+                                for (i in 0 ..< argc) {
+                                    if (i > 0) {
+                                        callStr.append(",")
+                                    }
+                                    callStr.append(args[i])
+                                }
+                                callStr.append(")")
+                                stack.add(callStr.toString())
+                            }
+                            //Opcode.INVOKEDYNAMIC -> {... TODO
+
+                            Opcode.DUP -> {
+                                stack.add(stack.peek())
+                            }
                             Opcode.IFEQ -> {
                                 val v = stack.pop()
                                 val i = instructions.s16bitAt(pos + 1)
                                 stack.add("if($v == 0) goto ${pos + i}")
+                            }
+                            Opcode.IFNE -> {
+                                val v = stack.pop()
+                                val i = instructions.s16bitAt(pos + 1)
+                                stack.add("if($v != 0) goto ${pos + i}")
+                            }
+                            Opcode.IF_ACMPEQ -> {
+                                val i = instructions.s16bitAt(pos + 1)
+                                val v2 = stack.pop()
+                                val v1 = stack.pop()
+                                stack.add("if($v1 == $v2) goto ${pos + i}")
+                            }
+                            Opcode.IF_ACMPNE -> {
+                                val i = instructions.s16bitAt(pos + 1)
+                                val v2 = stack.pop()
+                                val v1 = stack.pop()
+                                stack.add("if($v1 != $v2) goto ${pos + i}")
                             }
                             Opcode.RETURN -> {
                                 stack.add("return")
@@ -153,10 +250,18 @@ fun parse(path: String, name: String): NClass? {
                                 val v = stack.pop()
                                 stack.add("return $v")
                             }
+                            Opcode.IRETURN -> {
+                                val v = stack.pop()
+                                stack.add("return $v")
+                            }
 
                             Opcode.CHECKCAST -> {
                                 // I think that this won't be necessary to implement.
-                            }
+                            } // TODO
+                            Opcode.INSTANCEOF -> {
+                                // I'm not sure how to do this. Reflection maybe?
+                            } // TODO
+
                             else -> {
                                 UnknownOpcodeException(Mnemonic.OPCODE[opcode]).printStackTrace()
                                 registerUnknownOpcode(Mnemonic.OPCODE[opcode])
