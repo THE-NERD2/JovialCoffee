@@ -9,22 +9,26 @@ class Tests {
     fun DummyClass() {
         var clazz: NClass
         try {
-            clazz = parse("/home/payton/Coding/apis/libs/J2C/src/test/resources", "org.j2c.DummyClass")!!
+            setPath("/home/payton/Coding/apis/libs/J2C/src/test/resources")
+            clazz = parse("org.j2c.DummyClass")!!
         } catch(_: NullPointerException) {
-            clazz = parse("/home/payton/IdeaProjects/J2C/src/test/resources", "org.j2c.DummyClass")!!
+            setPath("/home/payton/IdeaProjects/J2C/src/test/resources")
+            clazz = parse("org.j2c.DummyClass")!!
         }
         printClass(clazz)
         printAll()
     }
     @Test
     fun EncryptedStorage() { // from Notebook repository
-        val clazz = parse("/home/payton/IdeaProjects/Notebook/build/libs/Notebook-1.0-SNAPSHOT-all.jar", "org.notebook.EncryptedStorage")!!
+        setPath("/home/payton/IdeaProjects/Notebook/build/libs/Notebook-1.0-SNAPSHOT-all.jar")
+        val clazz = parse("org.notebook.EncryptedStorage")!!
         printClass(clazz)
         printAll()
     }
     @Test
     fun WorkingFile() {
-        val clazz = parse("/home/payton/IdeaProjects/Notebook/build/libs/Notebook-1.0-SNAPSHOT-all.jar", "org.notebook.WorkingFile")!!
+        setPath("/home/payton/IdeaProjects/Notebook/build/libs/Notebook-1.0-SNAPSHOT-all.jar")
+        val clazz = parse("org.notebook.WorkingFile")!!
         printClass(clazz)
         printAll()
     }

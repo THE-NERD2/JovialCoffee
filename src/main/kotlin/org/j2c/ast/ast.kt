@@ -1,5 +1,7 @@
 package org.j2c.ast
 
+import org.j2c.parse
+
 abstract class Node {
     companion object {
         internal var lastId = -1
@@ -40,10 +42,7 @@ class NAssignment(val dest: NReference, val v: Node): Node()
 private val classes = arrayListOf<NClass>()
 fun findNClassByFullName(name: String): NClass? {
     val v = classes.find { name == it.qualName }
-    if(v == null) {
-        // TODO: parse class
-    }
-    return v
+    if(v == null) return parse(name) else return v
 }
 fun popNClass() {
     classes.removeLast()

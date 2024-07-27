@@ -17,18 +17,18 @@ import java.util.*
 import kotlin.reflect.*
 import kotlin.reflect.jvm.javaField
 
+lateinit var classLoader: URLClassLoader
+val pool = ClassPool()
+
 @OptIn(ExperimentalStdlibApi::class)
-fun parse(path: String, name: String): NClass? {
+fun parse(name: String): NClass? {
     try {
         val kclass: KClass<*>
         val nclass: NClass
         val ctclass: CtClass
 
-        val classLoader = URLClassLoader(arrayOf(File(path).toURI().toURL()), ClassLoader.getSystemClassLoader())
         kclass = classLoader.loadClass(name).kotlin
         nclass = NClass(kclass.qualifiedName!!, kclass.simpleName!!)
-        val pool = ClassPool()
-        pool.appendClassPath(path)
         ctclass = pool.get(name)
 
         kclass.members.forEach {
@@ -278,8 +278,13 @@ fun parse(path: String, name: String): NClass? {
         return null
     }
 }
+fun setPath(path: String) {
+    classLoader = URLClassLoader(arrayOf(File(path).toURI().toURL()), ClassLoader.getSystemClassLoader())
+    pool.appendClassPath(path)
+}
 fun main(args: Array<String>) {
-    val astRoot = parse(args[0], args[1])!!
+    setPath(args[0])
+    val astRoot = parse(args[1])!!
     LLVM.createAST(astRoot)
     LLVM.codeGen()
 }
