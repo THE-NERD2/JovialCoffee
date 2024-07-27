@@ -51,7 +51,36 @@ fun parse(path: String, name: String): NClass? {
                             Opcode.ALOAD_0 -> {
                                 stack.add(localVariables[0])
                             }
-
+                            Opcode.ALOAD_1 -> {
+                                stack.add(localVariables[1])
+                            }
+                            Opcode.ALOAD_2 -> {
+                                stack.add(localVariables[2])
+                            }
+                            Opcode.ASTORE_2 -> {
+                                val newV = stack.pop()
+                                localVariables[2] = "avar2"
+                                stack.add("avar2 = $newV")
+                            }
+                            Opcode.ACONST_NULL -> {
+                                stack.add("null")
+                            }
+                            Opcode.ICONST_0 -> {
+                                stack.add("0")
+                            }
+                            Opcode.ICONST_1 -> {
+                                stack.add("1")
+                            }
+                            Opcode.LDC -> {
+                                val i = instructions.byteAt(pos + 1)
+                                val v = const.getLdcValue(i)
+                                stack.push(v.toString())
+                            }
+                            Opcode.GETSTATIC -> {
+                                val i = instructions.u16bitAt(pos + 1)
+                                val fld = const.getFieldrefName(i)
+                                stack.add(fld)
+                            }
                             Opcode.GETFIELD -> {
                                 val i = instructions.u16bitAt(pos + 1)
                                 val obj = stack.pop()
@@ -59,7 +88,6 @@ fun parse(path: String, name: String): NClass? {
                                 val fld = findNClassByFullName(const.getFieldrefClassName(i))!!.cname + "_" + const.getFieldrefName(i)
                                 stack.add("$obj.$fld")
                             }
-
                             Opcode.PUTFIELD -> {
                                 val i = instructions.u16bitAt(pos + 1)
                                 val newV = stack.pop()
@@ -68,11 +96,67 @@ fun parse(path: String, name: String): NClass? {
                                 val fld = findNClassByFullName(const.getFieldrefClassName(i))!!.cname + "_" + const.getFieldrefName(i)
                                 stack.add("$obj.$fld = $newV")
                             }
+                            Opcode.INVOKESTATIC -> {
+                                val i = instructions.u16bitAt(pos + 1)
+                                val method = (findNClassByFullName(const.getMethodrefClassName(i))?.cname ?: "???"
+                                    ) + "_" + const.getMethodrefName(i)
+                                val desc = const.getMethodrefType(i)
 
+                                val argc = getargc(desc)
+                                val args = arrayOfNulls<String>(argc)
+                                for (i in argc - 1 downTo 0) {
+                                    args[i] = stack.pop()
+                                }
+
+                                val callStr = StringBuilder("$method(")
+                                for (i in 0 until argc) {
+                                    if (i > 0) {
+                                        callStr.append(",")
+                                    }
+                                    callStr.append(args[i])
+                                }
+                                callStr.append(")")
+                                stack.add(callStr.toString())
+                            }
+                            Opcode.INVOKEINTERFACE -> {
+                                val i = instructions.u16bitAt(pos + 1)
+                                val method = (findNClassByFullName(const.getInterfaceMethodrefClassName(i))?.cname ?: "???"
+                                    ) + "_" + const.getInterfaceMethodrefName(i)
+                                val desc = const.getInterfaceMethodrefType(i)
+
+                                val argc = getargc(desc)
+                                val args = arrayOfNulls<String>(argc)
+                                for (i in argc - 1 downTo 0) {
+                                    args[i] = stack.pop()
+                                }
+                                val obj = stack.pop()
+
+                                val callStr = StringBuilder("$obj.$method(")
+                                for (i in 0 until argc) {
+                                    if (i > 0) {
+                                        callStr.append(",")
+                                    }
+                                    callStr.append(args[i])
+                                }
+                                callStr.append(")")
+                                stack.add(callStr.toString())
+                            }
+                            Opcode.IFEQ -> {
+                                val v = stack.pop()
+                                val i = instructions.s16bitAt(pos + 1)
+                                stack.add("if($v == 0) goto ${pos + i}")
+                            }
                             Opcode.RETURN -> {
                                 stack.add("return")
                             }
+                            Opcode.ARETURN -> {
+                                val v = stack.pop()
+                                stack.add("return $v")
+                            }
 
+                            Opcode.CHECKCAST -> {
+                                // I think that this won't be necessary to implement.
+                            }
                             else -> {
                                 UnknownOpcodeException(Mnemonic.OPCODE[opcode]).printStackTrace()
                                 registerUnknownOpcode(Mnemonic.OPCODE[opcode])

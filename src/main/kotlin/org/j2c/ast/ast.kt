@@ -37,8 +37,14 @@ class NClass(val qualName: String, val name: String): Node() {
 class NReference(val identifier: String): Node()
 class NAssignment(val dest: NReference, val v: Node): Node()
 
-val classes = arrayListOf<NClass>()
-fun findNClassByFullName(name: String) = classes.find { name == it.qualName }
+private val classes = arrayListOf<NClass>()
+fun findNClassByFullName(name: String): NClass? {
+    val v = classes.find { name == it.qualName }
+    if(v == null) {
+        // TODO: parse class
+    }
+    return v
+}
 fun popNClass() {
     classes.removeLast()
     Node.lastId--
