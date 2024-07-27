@@ -48,3 +48,4 @@ fun popNClass() {
     classes.removeLast()
     Node.lastId--
 }
+fun getClasses() = classes.clone() as ArrayList<NClass>

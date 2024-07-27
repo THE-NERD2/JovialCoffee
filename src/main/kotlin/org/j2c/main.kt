@@ -7,6 +7,7 @@ import javassist.bytecode.Mnemonic
 import javassist.bytecode.Opcode
 import org.j2c.ast.NClass
 import org.j2c.ast.findNClassByFullName
+import org.j2c.ast.getClasses
 import org.j2c.ast.popNClass
 import org.j2c.development.registerUnknownOpcode
 import org.j2c.exceptions.UnknownOpcodeException
@@ -284,7 +285,11 @@ fun setPath(path: String) {
 }
 fun main(args: Array<String>) {
     setPath(args[0])
-    val astRoot = parse(args[1])!!
-    LLVM.createAST(astRoot)
-    LLVM.codeGen()
+    parse(args[1])
+    LLVM.beginCodeGen()
+    getClasses().forEach {
+        LLVM.createAST(it)
+        LLVM.generateCurrentAST()
+    }
+    LLVM.finishCodeGen()
 }

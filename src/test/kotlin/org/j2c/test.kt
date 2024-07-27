@@ -1,35 +1,35 @@
 package org.j2c
 
 import org.j2c.ast.NClass
+import org.j2c.ast.getClasses
 import org.j2c.development.printAll
 import kotlin.test.Test
 
 class Tests {
     @Test
     fun DummyClass() {
-        var clazz: NClass
         try {
             setPath("/home/payton/Coding/apis/libs/J2C/src/test/resources")
-            clazz = parse("org.j2c.DummyClass")!!
+            parse("org.j2c.DummyClass")!!
         } catch(_: NullPointerException) {
             setPath("/home/payton/IdeaProjects/J2C/src/test/resources")
-            clazz = parse("org.j2c.DummyClass")!!
+            parse("org.j2c.DummyClass")!!
         }
-        printClass(clazz)
+        getClasses().forEach(::printClass)
         printAll()
     }
     @Test
     fun EncryptedStorage() { // from Notebook repository
         setPath("/home/payton/IdeaProjects/Notebook/build/libs/Notebook-1.0-SNAPSHOT-all.jar")
-        val clazz = parse("org.notebook.EncryptedStorage")!!
-        printClass(clazz)
+        parse("org.notebook.EncryptedStorage")!!
+        getClasses().forEach(::printClass)
         printAll()
     }
     @Test
     fun WorkingFile() {
         setPath("/home/payton/IdeaProjects/Notebook/build/libs/Notebook-1.0-SNAPSHOT-all.jar")
-        val clazz = parse("org.notebook.WorkingFile")!!
-        printClass(clazz)
+        parse("org.notebook.WorkingFile")!!
+        getClasses().forEach(::printClass)
         printAll()
     }
     fun printClass(clazz: NClass) {
