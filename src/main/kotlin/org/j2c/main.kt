@@ -58,6 +58,14 @@ fun parse(name: String): NClass? {
                             Opcode.ALOAD_2 -> {
                                 stack.add(localVariables[2])
                             }
+                            Opcode.ALOAD_3 -> {
+                                stack.add(localVariables[3])
+                            }
+                            Opcode.ASTORE_1 -> {
+                                val newV = stack.pop()
+                                localVariables[1] = "avar1"
+                                stack.add("avar1 = $newV")
+                            }
                             Opcode.ASTORE_2 -> {
                                 val newV = stack.pop()
                                 localVariables[2] = "avar2"
@@ -80,6 +88,15 @@ fun parse(name: String): NClass? {
                             Opcode.ICONST_1 -> {
                                 stack.add("1")
                             }
+                            Opcode.ICONST_M1 -> {
+                                stack.add("-1")
+                            }
+                            Opcode.LLOAD_0 -> {
+                                stack.add(localVariables[0])
+                            }
+                            Opcode.LLOAD_2 -> {
+                                stack.add(localVariables[2])
+                            }
                             Opcode.BIPUSH -> {
                                 val v = instructions.byteAt(pos + 1)
                                 stack.add("$v")
@@ -94,6 +111,9 @@ fun parse(name: String): NClass? {
                                 val c = const.getClassInfo(i)
                                 stack.add("new ${findNClassByFullName(c)?.cname ?: "???"}")
                             }
+                            Opcode.DUP -> {
+                                stack.add(stack.peek())
+                            }
 
                             Opcode.IMUL -> {
                                 val v2 = stack.pop()
@@ -104,6 +124,11 @@ fun parse(name: String): NClass? {
                                 val v2 = stack.pop()
                                 val v1 = stack.pop()
                                 stack.add("$v1 + $v2")
+                            }
+                            Opcode.LCMP -> {
+                                val v2 = stack.pop()
+                                val v1 = stack.pop()
+                                stack.add("$v1 vs $v2")
                             }
 
                             Opcode.GETSTATIC -> {
@@ -219,9 +244,6 @@ fun parse(name: String): NClass? {
                             }
                             //Opcode.INVOKEDYNAMIC -> {... TODO
 
-                            Opcode.DUP -> {
-                                stack.add(stack.peek())
-                            }
                             Opcode.IFEQ -> {
                                 val v = stack.pop()
                                 val i = instructions.s16bitAt(pos + 1)
@@ -231,6 +253,16 @@ fun parse(name: String): NClass? {
                                 val v = stack.pop()
                                 val i = instructions.s16bitAt(pos + 1)
                                 stack.add("if($v != 0) goto ${pos + i}")
+                            }
+                            Opcode.IFGE -> {
+                                val i = instructions.s16bitAt(pos + 1)
+                                val v = stack.pop()
+                                stack.add("if($v >= 0) goto ${pos + i}")
+                            }
+                            Opcode.IFNONNULL -> {
+                                val v = stack.pop()
+                                val i = instructions.s16bitAt(pos + 1)
+                                stack.add("if($v != null) goto ${pos + i}")
                             }
                             Opcode.IF_ACMPEQ -> {
                                 val i = instructions.s16bitAt(pos + 1)
@@ -244,6 +276,10 @@ fun parse(name: String): NClass? {
                                 val v1 = stack.pop()
                                 stack.add("if($v1 != $v2) goto ${pos + i}")
                             }
+                            Opcode.GOTO -> {
+                                val i = instructions.s16bitAt(pos + 1)
+                                stack.add("goto $i")
+                            }
                             Opcode.RETURN -> {
                                 stack.add("return")
                             }
@@ -254,6 +290,10 @@ fun parse(name: String): NClass? {
                             Opcode.IRETURN -> {
                                 val v = stack.pop()
                                 stack.add("return $v")
+                            }
+                            Opcode.ATHROW -> {
+                                val exception = stack.pop()
+                                stack.add("throw $exception")
                             }
 
                             Opcode.CHECKCAST -> {
