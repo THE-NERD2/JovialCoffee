@@ -4,20 +4,26 @@ import javassist.ClassPool
 import javassist.CtClass
 import javassist.NotFoundException
 import javassist.bytecode.Mnemonic
-import javassist.bytecode.Opcode
-import org.j2c.ast.NClass
-import org.j2c.ast.findNClassByFullName
-import org.j2c.ast.getClasses
-import org.j2c.ast.popNClass
+import org.j2c.assembly.NClass
+import org.j2c.assembly.getClasses
+import org.j2c.assembly.popNClass
+import org.j2c.assembly.rules.Rule
+import org.j2c.assembly.rules.RuleContainer
 import org.j2c.development.registerUnknownOpcode
 import org.j2c.exceptions.UnknownOpcodeException
 import org.j2c.llvm.LLVM
+import org.reflections.Reflections
+import org.reflections.scanners.SubTypesScanner
+import org.reflections.util.ConfigurationBuilder
+import org.reflections.util.FilterBuilder
 import java.io.File
 import java.net.URLClassLoader
 import java.util.*
 import kotlin.reflect.*
+import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.jvm.javaField
 
+val rules = arrayListOf<Rule>()
 lateinit var classLoader: URLClassLoader
 val pool = ClassPool()
 
@@ -41,272 +47,17 @@ fun parse(name: String): NClass? {
                     val methodInfo = ctclass.getDeclaredMethod(it.name).methodInfo
                     val instructions = methodInfo.codeAttribute.iterator()
                     val const = methodInfo.constPool
-                    val localVariables = mutableMapOf<Int, String>()
-                    it.parameters.forEachIndexed { i: Int, v: KParameter -> localVariables.put(i, "param$i") }
+                    val vars = mutableMapOf<Int, String>()
+                    it.parameters.forEachIndexed { i: Int, v: KParameter -> vars[i] = "param$i" }
 
                     val stack = Stack<String>()
                     while (instructions.hasNext()) {
                         val pos = instructions.next()
                         val opcode = instructions.byteAt(pos)
-                        when(opcode) {
-                            Opcode.ALOAD_0 -> {
-                                stack.add(localVariables[0])
-                            }
-                            Opcode.ALOAD_1 -> {
-                                stack.add(localVariables[1])
-                            }
-                            Opcode.ALOAD_2 -> {
-                                stack.add(localVariables[2])
-                            }
-                            Opcode.ALOAD_3 -> {
-                                stack.add(localVariables[3])
-                            }
-                            Opcode.ASTORE_1 -> {
-                                val newV = stack.pop()
-                                localVariables[1] = "avar1"
-                                stack.add("avar1 = $newV")
-                            }
-                            Opcode.ASTORE_2 -> {
-                                val newV = stack.pop()
-                                localVariables[2] = "avar2"
-                                stack.add("avar2 = $newV")
-                            }
-                            Opcode.ACONST_NULL -> {
-                                stack.add("null")
-                            }
-                            Opcode.ILOAD_1 -> {
-                                stack.add(localVariables[1])
-                            }
-                            Opcode.ISTORE_1 -> {
-                                val newV = stack.pop()
-                                localVariables[1] = "ivar1"
-                                stack.add("ivar1 = $newV")
-                            }
-                            Opcode.ICONST_0 -> {
-                                stack.add("0")
-                            }
-                            Opcode.ICONST_1 -> {
-                                stack.add("1")
-                            }
-                            Opcode.ICONST_M1 -> {
-                                stack.add("-1")
-                            }
-                            Opcode.LLOAD_0 -> {
-                                stack.add(localVariables[0])
-                            }
-                            Opcode.LLOAD_2 -> {
-                                stack.add(localVariables[2])
-                            }
-                            Opcode.BIPUSH -> {
-                                val v = instructions.byteAt(pos + 1)
-                                stack.add("$v")
-                            }
-                            Opcode.LDC -> {
-                                val i = instructions.byteAt(pos + 1)
-                                val v = const.getLdcValue(i)
-                                stack.push(v.toString())
-                            }
-                            Opcode.NEW -> {
-                                val i = instructions.u16bitAt(pos + 1)
-                                val c = const.getClassInfo(i)
-                                stack.add("new ${findNClassByFullName(c)?.cname ?: "???"}")
-                            }
-                            Opcode.DUP -> {
-                                stack.add(stack.peek())
-                            }
 
-                            Opcode.IMUL -> {
-                                val v2 = stack.pop()
-                                val v1 = stack.pop()
-                                stack.add("$v1 * $v2")
-                            }
-                            Opcode.IADD -> {
-                                val v2 = stack.pop()
-                                val v1 = stack.pop()
-                                stack.add("$v1 + $v2")
-                            }
-                            Opcode.LCMP -> {
-                                val v2 = stack.pop()
-                                val v1 = stack.pop()
-                                stack.add("$v1 vs $v2")
-                            }
-
-                            Opcode.GETSTATIC -> {
-                                val i = instructions.u16bitAt(pos + 1)
-                                val fld = const.getFieldrefName(i)
-                                stack.add(fld)
-                            }
-                            Opcode.GETFIELD -> {
-                                val i = instructions.u16bitAt(pos + 1)
-                                val obj = stack.pop()
-                                // Non-null assertion is temporary. TODO: null results in search for class in class pool
-                                val fld = findNClassByFullName(const.getFieldrefClassName(i))!!.cname + "_" + const.getFieldrefName(i)
-                                stack.add("$obj.$fld")
-                            }
-                            Opcode.PUTFIELD -> {
-                                val i = instructions.u16bitAt(pos + 1)
-                                val newV = stack.pop()
-                                val obj = stack.pop()
-                                // Non-null assertion is temporary. TODO: null results in search for class in class pool
-                                val fld = findNClassByFullName(const.getFieldrefClassName(i))!!.cname + "_" + const.getFieldrefName(i)
-                                stack.add("$obj.$fld = $newV")
-                            }
-                            Opcode.INVOKESTATIC -> {
-                                val i = instructions.u16bitAt(pos + 1)
-                                val method = (findNClassByFullName(const.getMethodrefClassName(i))?.cname ?: "???"
-                                    ) + "_" + const.getMethodrefName(i)
-                                val desc = const.getMethodrefType(i)
-
-                                val argc = getargc(desc)
-                                val args = arrayOfNulls<String>(argc)
-                                for (i in argc - 1 downTo 0) {
-                                    args[i] = stack.pop()
-                                }
-
-                                val callStr = StringBuilder("$method(")
-                                for (i in 0 ..< argc) {
-                                    if (i > 0) {
-                                        callStr.append(",")
-                                    }
-                                    callStr.append(args[i])
-                                }
-                                callStr.append(")")
-                                stack.add(callStr.toString())
-                            }
-                            Opcode.INVOKEINTERFACE -> {
-                                val i = instructions.u16bitAt(pos + 1)
-                                val method = (findNClassByFullName(const.getInterfaceMethodrefClassName(i))?.cname ?: "???"
-                                    ) + "_" + const.getInterfaceMethodrefName(i)
-                                val desc = const.getInterfaceMethodrefType(i)
-
-                                val argc = getargc(desc)
-                                val args = arrayOfNulls<String>(argc)
-                                for (i in argc - 1 downTo 0) {
-                                    args[i] = stack.pop()
-                                }
-                                val obj = stack.pop()
-
-                                val callStr = StringBuilder("$obj.$method(")
-                                for (i in 0 ..< argc) {
-                                    if (i > 0) {
-                                        callStr.append(",")
-                                    }
-                                    callStr.append(args[i])
-                                }
-                                callStr.append(")")
-                                stack.add(callStr.toString())
-                            }
-                            Opcode.INVOKESPECIAL -> {
-                                val i = instructions.u16bitAt(pos + 1)
-                                val method = (findNClassByFullName(const.getMethodrefClassName(i))?.cname ?: "???"
-                                        ) + "_" + const.getMethodrefName(i)
-                                val desc = const.getInterfaceMethodrefType(i)
-
-                                val argc = getargc(desc)
-                                val args = arrayOfNulls<String>(argc)
-                                for (i in argc - 1 downTo 0) {
-                                    args[i] = stack.pop()
-                                }
-                                val obj = stack.pop()
-
-                                val callStr = StringBuilder("$obj.$method(")
-                                for (i in 0 ..< argc) {
-                                    if (i > 0) {
-                                        callStr.append(",")
-                                    }
-                                    callStr.append(args[i])
-                                }
-                                callStr.append(")")
-                                stack.add(callStr.toString())
-                            }
-                            Opcode.INVOKEVIRTUAL -> {
-                                val i = instructions.u16bitAt(pos + 1)
-                                val method = (findNClassByFullName(const.getMethodrefClassName(i))?.cname ?: "???"
-                                        ) + "_" + const.getMethodrefName(i)
-                                val desc = const.getInterfaceMethodrefType(i)
-
-                                val argc = getargc(desc)
-                                val args = arrayOfNulls<String>(argc)
-                                for (i in argc - 1 downTo 0) {
-                                    args[i] = stack.pop()
-                                }
-                                val obj = stack.pop()
-
-                                val callStr = StringBuilder("$obj.$method(")
-                                for (i in 0 ..< argc) {
-                                    if (i > 0) {
-                                        callStr.append(",")
-                                    }
-                                    callStr.append(args[i])
-                                }
-                                callStr.append(")")
-                                stack.add(callStr.toString())
-                            }
-                            //Opcode.INVOKEDYNAMIC -> {... TODO
-
-                            Opcode.IFEQ -> {
-                                val v = stack.pop()
-                                val i = instructions.s16bitAt(pos + 1)
-                                stack.add("if($v == 0) goto ${pos + i}")
-                            }
-                            Opcode.IFNE -> {
-                                val v = stack.pop()
-                                val i = instructions.s16bitAt(pos + 1)
-                                stack.add("if($v != 0) goto ${pos + i}")
-                            }
-                            Opcode.IFGE -> {
-                                val i = instructions.s16bitAt(pos + 1)
-                                val v = stack.pop()
-                                stack.add("if($v >= 0) goto ${pos + i}")
-                            }
-                            Opcode.IFNONNULL -> {
-                                val v = stack.pop()
-                                val i = instructions.s16bitAt(pos + 1)
-                                stack.add("if($v != null) goto ${pos + i}")
-                            }
-                            Opcode.IF_ACMPEQ -> {
-                                val i = instructions.s16bitAt(pos + 1)
-                                val v2 = stack.pop()
-                                val v1 = stack.pop()
-                                stack.add("if($v1 == $v2) goto ${pos + i}")
-                            }
-                            Opcode.IF_ACMPNE -> {
-                                val i = instructions.s16bitAt(pos + 1)
-                                val v2 = stack.pop()
-                                val v1 = stack.pop()
-                                stack.add("if($v1 != $v2) goto ${pos + i}")
-                            }
-                            Opcode.GOTO -> {
-                                val i = instructions.s16bitAt(pos + 1)
-                                stack.add("goto $i")
-                            }
-                            Opcode.RETURN -> {
-                                stack.add("return")
-                            }
-                            Opcode.ARETURN -> {
-                                val v = stack.pop()
-                                stack.add("return $v")
-                            }
-                            Opcode.IRETURN -> {
-                                val v = stack.pop()
-                                stack.add("return $v")
-                            }
-                            Opcode.ATHROW -> {
-                                val exception = stack.pop()
-                                stack.add("throw $exception")
-                            }
-
-                            Opcode.CHECKCAST -> {
-                                // I think that this won't be necessary to implement.
-                            } // TODO
-                            Opcode.INSTANCEOF -> {
-                                // I'm not sure how to do this. Reflection maybe?
-                            } // TODO
-
-                            else -> {
-                                UnknownOpcodeException(Mnemonic.OPCODE[opcode]).printStackTrace()
-                                registerUnknownOpcode(Mnemonic.OPCODE[opcode])
-                            }
+                        rules.find { it.opcode == opcode }?.predicate?.invoke(instructions, pos, const, vars, stack) ?: run {
+                            UnknownOpcodeException(Mnemonic.OPCODE[opcode]).printStackTrace()
+                            registerUnknownOpcode(Mnemonic.OPCODE[opcode])
                         }
                     }
                     nclass.NMethodDeclaration(it.name, it.returnType.javaType.typeName, it.parameters.map { it.type.javaType.typeName }, stack.toList())
@@ -319,12 +70,26 @@ fun parse(name: String): NClass? {
         return null
     }
 }
-fun setPath(path: String) {
+fun init(path: String) {
+    val reflections = Reflections(
+        ConfigurationBuilder()
+            .forPackages("org.j2c.assembly.rules")
+            .filterInputsBy(FilterBuilder().includePackage("org.j2c.assembly.rules"))
+            .setScanners(SubTypesScanner(false))
+    )
+    val classes = reflections.getSubTypesOf(Any::class.java)
+    classes.filter { it.isAnnotationPresent(RuleContainer::class.java) }.forEach { clazz ->
+        val properties = clazz.kotlin.declaredMemberProperties
+        properties.forEach { prop ->
+            rules.add((prop as KProperty1<Any?, Rule>).get(clazz.kotlin.objectInstance))
+        }
+    }
+
     classLoader = URLClassLoader(arrayOf(File(path).toURI().toURL()), ClassLoader.getSystemClassLoader())
     pool.appendClassPath(path)
 }
 fun main(args: Array<String>) {
-    setPath(args[0])
+    init(args[0])
     parse(args[1])
     LLVM.beginCodeGen()
     getClasses().forEach {

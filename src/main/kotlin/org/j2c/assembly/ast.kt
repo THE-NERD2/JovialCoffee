@@ -1,4 +1,4 @@
-package org.j2c.ast
+package org.j2c.assembly
 
 import org.j2c.parse
 
@@ -42,7 +42,7 @@ class NAssignment(val dest: NReference, val v: Node): Node()
 private val classes = arrayListOf<NClass>()
 fun findNClassByFullName(name: String): NClass? {
     val v = classes.find { name == it.qualName }
-    if(v == null) return parse(name) else return v
+    return if(v == null) parse(name) else v
 }
 fun popNClass() {
     classes.removeLast()
