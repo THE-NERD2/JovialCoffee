@@ -1,6 +1,6 @@
 package org.j2c.llvm;
 
-import org.j2c.ast.NClass;
+import org.j2c.assembly.NClass;
 
 public class LLVM {
     static {

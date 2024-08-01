@@ -1,4 +1,4 @@
-package org.j2c.ast
+package org.j2c.assembly
 
 import org.j2c.parse
 

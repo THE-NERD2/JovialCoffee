@@ -1,4 +1,4 @@
-package org.j2c.ast;
+package org.j2c.assembly;
 
 public class NChar extends Node {
     private final char value;

@@ -1,4 +1,4 @@
-package org.j2c.ast;
+package org.j2c.assembly;
 
 public class NByte extends Node {
     private final byte value;
