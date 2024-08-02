@@ -7,6 +7,7 @@ import javassist.bytecode.Mnemonic
 import org.j2c.assembly.NClass
 import org.j2c.assembly.getClasses
 import org.j2c.assembly.popNClass
+import org.j2c.assembly.rules.NoRule
 import org.j2c.assembly.rules.Rule
 import org.j2c.assembly.rules.RuleContainer
 import org.j2c.development.registerUnknownOpcode
@@ -21,6 +22,7 @@ import java.net.URLClassLoader
 import java.util.*
 import kotlin.reflect.*
 import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.hasAnnotation
 import kotlin.reflect.jvm.javaField
 
 val rules = arrayListOf<Rule>()
@@ -78,10 +80,10 @@ fun init(path: String) {
             .setScanners(SubTypesScanner(false))
     )
     val classes = reflections.getSubTypesOf(Any::class.java)
-    classes.filter { it.isAnnotationPresent(RuleContainer::class.java) }.forEach { clazz ->
-        val properties = clazz.kotlin.declaredMemberProperties
-        properties.forEach { prop ->
-            rules.add((prop as KProperty1<Any?, Rule>).get(clazz.kotlin.objectInstance))
+    classes.map { it.kotlin }.filter { it.hasAnnotation<RuleContainer>() }.forEach { clazz ->
+        val properties = clazz.declaredMemberProperties
+        properties.filter { !it.hasAnnotation<NoRule>() }.forEach { prop ->
+            rules.add((prop as KProperty1<Any?, Rule>).get(clazz.objectInstance))
         }
     }
 
