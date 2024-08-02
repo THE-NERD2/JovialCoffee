@@ -15,10 +15,18 @@ object GOTO { // GOTO is a little weird, needs its own group
         instructions.move(pos + offset)
     }
     fun endFollow(instructions: CodeIterator, stack: Stack<String>) {
-        // Don't re-follow the GOTO! (3 because GOTO takes up more than 1)
         try {
-            instructions.move(posStack.pop() + 3)
-            if (followingIfStack.pop()) stack.add("else")
+            // Do not go back to GOTO, but go back to else branch
+            //instructions.move(posStack.pop() + 3)
+            var isIf = false
+            while(!isIf && followingIfStack.size > 0) {
+                isIf = followingIfStack.pop()
+                if (isIf) {
+                    // Don't re-follow the jump! (3 because jump takes up more than 1)
+                    instructions.move(posStack.pop() + 3)
+                    stack.add("else")
+                } else posStack.pop()
+            }
         } catch(_: EmptyStackException) {}
     }
 
