@@ -8,14 +8,17 @@ import java.util.Stack
 @RuleContainer
 object GOTO { // GOTO is a little weird, needs its own group
     @NoRule val posStack = Stack<Int>()
-    fun follow(instructions: CodeIterator, pos: Int, offset: Int) {
+    @NoRule val followingIfStack = Stack<Boolean>()
+    fun follow(instructions: CodeIterator, pos: Int, offset: Int, isIf: Boolean = false) {
         posStack.add(pos)
+        followingIfStack.add(isIf)
         instructions.move(pos + offset)
     }
-    fun endFollow(instructions: CodeIterator) {
+    fun endFollow(instructions: CodeIterator, stack: Stack<String>) {
+        // Don't re-follow the GOTO! (3 because GOTO takes up more than 1)
         try {
-            // Don't re-follow the GOTO! (3 because GOTO takes up more than 1)
             instructions.move(posStack.pop() + 3)
+            if (followingIfStack.pop()) stack.add("else")
         } catch(_: EmptyStackException) {}
     }
 
@@ -29,21 +32,21 @@ object GOTO { // GOTO is a little weird, needs its own group
 object JUMPS {
     val RETURN = Rule(Opcode.RETURN) { instructions, _, _, _, stack ->
         stack.add("return")
-        GOTO.endFollow(instructions)
+        GOTO.endFollow(instructions, stack)
     }
     val ARETURN = Rule(Opcode.ARETURN) { instructions, _, _, _, stack ->
         val v = stack.pop()
         stack.add("return $v")
-        GOTO.endFollow(instructions)
+        GOTO.endFollow(instructions, stack)
     }
     val IRETURN = Rule(Opcode.IRETURN) { instructions, _, _, _, stack ->
         val v = stack.pop()
         stack.add("return $v")
-        GOTO.endFollow(instructions)
+        GOTO.endFollow(instructions, stack)
     }
     val ATHROW = Rule(Opcode.ATHROW) { instructions, _, _, _, stack ->
         val exception = stack.pop()
         stack.add("throw $exception")
-        GOTO.endFollow(instructions)
+        GOTO.endFollow(instructions, stack)
     }
 }
