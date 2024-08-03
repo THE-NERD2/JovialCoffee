@@ -5,6 +5,7 @@ import javassist.CtClass
 import javassist.NotFoundException
 import javassist.bytecode.Mnemonic
 import org.j2c.assembly.NClass
+import org.j2c.assembly.Node
 import org.j2c.assembly.getClasses
 import org.j2c.assembly.popNClass
 import org.j2c.assembly.rules.NoRule
@@ -52,7 +53,7 @@ fun parse(name: String): NClass? {
                     val vars = mutableMapOf<Int, String>()
                     it.parameters.forEachIndexed { i: Int, v: KParameter -> vars[i] = "param$i" }
 
-                    val stack = Stack<String>()
+                    val stack = Stack<Node>()
                     while (instructions.hasNext()) {
                         val pos = instructions.next()
                         val opcode = instructions.byteAt(pos)

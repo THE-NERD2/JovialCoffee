@@ -2,6 +2,7 @@ package org.j2c.assembly.rules
 
 import javassist.bytecode.CodeIterator
 import javassist.bytecode.Opcode
+import org.j2c.assembly.*
 import java.util.EmptyStackException
 import java.util.Stack
 
@@ -14,7 +15,7 @@ object GOTO { // GOTO is a little weird, needs its own group
         followingIfStack.add(isIf)
         instructions.move(pos + offset)
     }
-    fun endFollow(instructions: CodeIterator, stack: Stack<String>) {
+    fun endFollow(instructions: CodeIterator, stack: Stack<Node>) {
         try {
             // Do not go back to GOTO, but go back to else branch
             var isIf = false
@@ -23,7 +24,7 @@ object GOTO { // GOTO is a little weird, needs its own group
                 if (isIf) {
                     // Don't re-follow the jump! (3 because jump takes up more than 1)
                     instructions.move(posStack.pop() + 3)
-                    stack.add("else")
+                    stack.add(NOther("else"))
                 } else posStack.pop()
             }
         } catch(_: EmptyStackException) {}
@@ -38,22 +39,22 @@ object GOTO { // GOTO is a little weird, needs its own group
 @RuleContainer
 object JUMPS {
     val RETURN = Rule(Opcode.RETURN) { instructions, _, _, _, stack ->
-        stack.add("return")
+        stack.add(NReturn())
         GOTO.endFollow(instructions, stack)
     }
     val ARETURN = Rule(Opcode.ARETURN) { instructions, _, _, _, stack ->
         val v = stack.pop()
-        stack.add("return $v")
+        stack.add(NAReturn(v))
         GOTO.endFollow(instructions, stack)
     }
     val IRETURN = Rule(Opcode.IRETURN) { instructions, _, _, _, stack ->
         val v = stack.pop()
-        stack.add("return $v")
+        stack.add(NIReturn(v))
         GOTO.endFollow(instructions, stack)
     }
     val ATHROW = Rule(Opcode.ATHROW) { instructions, _, _, _, stack ->
         val exception = stack.pop()
-        stack.add("throw $exception")
+        stack.add(NAThrow(exception))
         GOTO.endFollow(instructions, stack)
     }
 }

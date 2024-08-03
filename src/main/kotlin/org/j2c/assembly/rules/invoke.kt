@@ -1,6 +1,9 @@
 package org.j2c.assembly.rules
 
 import javassist.bytecode.Opcode
+import org.j2c.assembly.NCall
+import org.j2c.assembly.NStaticCall
+import org.j2c.assembly.Node
 import org.j2c.assembly.findNClassByFullName
 import org.j2c.getargc
 
@@ -13,20 +16,12 @@ object INVOKE_normal {
         val desc = const.getMethodrefType(i)
 
         val argc = getargc(desc)
-        val args = arrayOfNulls<String>(argc)
+        val args = arrayOfNulls<Node>(argc)
         for (i in argc - 1 downTo 0) {
             args[i] = stack.pop()
         }
 
-        val callStr = StringBuilder("$method(")
-        for (i in 0 ..< argc) {
-            if (i > 0) {
-                callStr.append(",")
-            }
-            callStr.append(args[i])
-        }
-        callStr.append(")")
-        stack.add(callStr.toString())
+        stack.add(NStaticCall(method, args.toList() as Collection<Node>))
     }
     val INVOKEINTERFACE = Rule(Opcode.INVOKEINTERFACE) { instructions, pos, const, _, stack ->
         val i = instructions.u16bitAt(pos + 1)
@@ -35,21 +30,13 @@ object INVOKE_normal {
         val desc = const.getInterfaceMethodrefType(i)
 
         val argc = getargc(desc)
-        val args = arrayOfNulls<String>(argc)
+        val args = arrayOfNulls<Node>(argc)
         for (i in argc - 1 downTo 0) {
             args[i] = stack.pop()
         }
         val obj = stack.pop()
 
-        val callStr = StringBuilder("$obj.$method(")
-        for (i in 0 ..< argc) {
-            if (i > 0) {
-                callStr.append(",")
-            }
-            callStr.append(args[i])
-        }
-        callStr.append(")")
-        stack.add(callStr.toString())
+        stack.add(NCall(obj, method, args.toList() as Collection<Node>))
     }
     val INVOKEVIRTUAL = Rule(Opcode.INVOKEVIRTUAL) { instructions, pos, const, _, stack ->
         val i = instructions.u16bitAt(pos + 1)
@@ -58,21 +45,13 @@ object INVOKE_normal {
         val desc = const.getInterfaceMethodrefType(i)
 
         val argc = getargc(desc)
-        val args = arrayOfNulls<String>(argc)
+        val args = arrayOfNulls<Node>(argc)
         for (i in argc - 1 downTo 0) {
             args[i] = stack.pop()
         }
         val obj = stack.pop()
 
-        val callStr = StringBuilder("$obj.$method(")
-        for (i in 0 ..< argc) {
-            if (i > 0) {
-                callStr.append(",")
-            }
-            callStr.append(args[i])
-        }
-        callStr.append(")")
-        stack.add(callStr.toString())
+        stack.add(NCall(obj, method, args.toList() as Collection<Node>))
     }
 }
 
@@ -85,21 +64,13 @@ object INVOKE_strange {
         val desc = const.getInterfaceMethodrefType(i)
 
         val argc = getargc(desc)
-        val args = arrayOfNulls<String>(argc)
+        val args = arrayOfNulls<Node>(argc)
         for (i in argc - 1 downTo 0) {
             args[i] = stack.pop()
         }
         val obj = stack.pop()
 
-        val callStr = StringBuilder("$obj.$method(")
-        for (i in 0 ..< argc) {
-            if (i > 0) {
-                callStr.append(",")
-            }
-            callStr.append(args[i])
-        }
-        callStr.append(")")
-        stack.add(callStr.toString())
+        stack.add(NCall(obj, method, args.toList() as Collection<Node>))
     }
     //val INVOKEDYNAMIC = Rule(Opcode.INVOKEDYNAMIC) {... TODO
 }

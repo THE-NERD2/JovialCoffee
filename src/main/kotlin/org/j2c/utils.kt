@@ -18,3 +18,10 @@ fun getargc(desc: String): Int {
     }
     return argc
 }
+fun indentBlock(block: String): String {
+    val lines = block.split("\n").toMutableList()
+    lines.forEachIndexed { i, str ->
+        lines[i] = "\t$str"
+    }
+    return lines.joinToString("\n")
+}
