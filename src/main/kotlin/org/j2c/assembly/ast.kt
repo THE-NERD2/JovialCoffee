@@ -46,7 +46,7 @@ class NClass(val qualName: String, val name: String): Node() {
                 str += "$it\n"
             }
             str = indentBlock(str)
-            str = "$ret ${cname}_$name\n$str"
+            str = "$ret ${cname}_$name(${args.joinToString()})\n$str"
             return str
         }
     }
