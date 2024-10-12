@@ -2,7 +2,7 @@ package org.j2c.assembly;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NByte extends Node {
+public class NByte implements Node {
     private final byte value;
     public NByte(byte value) {
         this.value = value;

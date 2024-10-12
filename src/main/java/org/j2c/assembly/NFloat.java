@@ -2,7 +2,7 @@ package org.j2c.assembly;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NFloat extends Node {
+public class NFloat implements Node {
     private final float value;
     public NFloat(float value) {
         this.value = value;

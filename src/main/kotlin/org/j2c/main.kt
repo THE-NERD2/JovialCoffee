@@ -94,7 +94,6 @@ fun init(path: String) {
 fun main(args: Array<String>) {
     init(args[0])
     parse(args[1])
-    LLVM.beginCodeGen()
     getClasses().forEach {
         LLVM.createAST(it)
         LLVM.generateCurrentAST()

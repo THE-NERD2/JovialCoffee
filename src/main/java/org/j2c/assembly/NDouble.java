@@ -2,7 +2,7 @@ package org.j2c.assembly;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NDouble extends Node {
+public class NDouble implements Node {
     private final double value;
     public NDouble(double value) {
         this.value = value;
