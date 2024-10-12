@@ -21,6 +21,7 @@ dependencies {
 }
 
 test {
+    systemProperty("java.library.path", file("src/main/native/target/debug").absolutePath)
     useJUnitPlatform()
 }
 kotlin {
@@ -34,5 +35,10 @@ tasks.register("moveNativeLibrary", Exec) {
     workingDir "src/main/native/target/debug"
     commandLine "mv", "libnative.so", "libj2c.so"
 }
+tasks.register("removeOldLibrary", Exec) {
+    workingDir "src/main/native/target/debug"
+    commandLine "rm", "libj2c.so"
+}
 compileKotlin.dependsOn(moveNativeLibrary)
 moveNativeLibrary.dependsOn(compileNative)
+moveNativeLibrary.dependsOn(removeOldLibrary)
