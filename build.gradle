@@ -33,5 +33,5 @@ tasks.register('compileCpp', Exec) {
     doFirst {
         outputDir.mkdirs()
     }
-    commandLine 'g++', '-shared', '-fPIC', '-o', "${outputDir}/libj2c.so", "${srcDir}/j2c.cpp"
+    commandLine "cargo", "build", "src/native"
 }
