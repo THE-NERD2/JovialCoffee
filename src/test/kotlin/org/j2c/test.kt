@@ -43,4 +43,8 @@ class Tests {
         getClasses().forEach { println(it.toString()) }
         printAll()
     }
+    @Test
+    fun WorkingFile_main() {
+        main(arrayOf("/home/payton/IdeaProjects/Notebook/build/libs/Notebook-1.0-SNAPSHOT-all.jar", "org.notebook.WorkingFile"))
+    }
 }
