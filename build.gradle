@@ -17,6 +17,7 @@ dependencies {
     implementation "org.reflections:reflections:0.10.2"
     implementation "org.jetbrains.kotlin:kotlin-reflect:2.0.0"
     implementation('ch.qos.logback:logback-classic:1.4.12')
+    implementation(files("src/main/native/target/debug/libj2c.so"))
 }
 
 test {
@@ -25,13 +26,13 @@ test {
 kotlin {
     jvmToolchain(17)
 }
-tasks.register('compileCpp', Exec) {
-    def outputDir = file("${buildDir}/libs/native")
-    def srcDir = file("src/main/cpp")
-    inputs.dir srcDir
-    outputs.dir outputDir
-    doFirst {
-        outputDir.mkdirs()
-    }
-    commandLine "cargo", "build", "src/native"
+tasks.register('compileNative', Exec) {
+    workingDir "src/main/native"
+    commandLine "cargo", "build"
 }
+tasks.register("moveNativeLibrary", Exec) {
+    workingDir "src/main/native/target/debug"
+    commandLine "mv", "libnative.so", "libj2c.so"
+}
+compileKotlin.dependsOn(moveNativeLibrary)
+moveNativeLibrary.dependsOn(compileNative)
