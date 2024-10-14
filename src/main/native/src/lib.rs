@@ -1,3 +1,4 @@
+use std::borrow::Borrow;
 use std::ops::Deref;
 
 use jni::JNIEnv;
@@ -10,7 +11,7 @@ mod ast;
 struct JavaASTObject<'a> {
     pub object: Box<JObject<'a>>,
     pub scan_stage: i8,
-    pub data: Node<'a>
+    pub data: Node
 }
 impl<'a> JavaASTObject<'a> {
     pub fn new(object: JObject<'a>) -> Self {
@@ -22,7 +23,7 @@ impl<'a> JavaASTObject<'a> {
     }
 }
 
-static mut classes: Vec<Node<'static>> = Vec::new();
+static mut classes: Vec<Node> = Vec::new();
 
 #[no_mangle]
 pub unsafe extern "system" fn Java_org_j2c_llvm_LLVM_createAST<'a: 'static>(mut env: JNIEnv<'a>, _: JClass<'a>, root: JObject<'a>) {
@@ -40,9 +41,12 @@ pub extern "system" fn Java_org_j2c_llvm_LLVM_finishCodeGen() {
     println!("Finishing code generation");
 }
 
-fn parse_nclass<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node<'a>> {
+fn parse_nclass<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
     if object.scan_stage == 0 {
+        let name_field = env.get_field(object.object.deref(), "name", "Ljava/lang/String;").unwrap().l().unwrap();
+        let name: String = env.get_string(&JString::from(name_field)).unwrap().into();
         object.data = Node::NClass {
+            name,
             fields: Vec::new(),
             methods: Vec::new()
         };
@@ -104,9 +108,9 @@ fn parse_nclass<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Opt
     }
     None
 }
-fn parse_nfielddeclaration<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node<'a>> {
-    Some(Node::NOther { str: "SOMEFIELD" })
+fn parse_nfielddeclaration<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    Some(Node::NOther { str: String::from("SOMEFIELD") })
 }
-fn parse_nmethoddeclaration<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node<'a>> {
-    Some(Node::NOther { str: "SOMEMETHOD" })
+fn parse_nmethoddeclaration<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    Some(Node::NOther { str: String::from("SOMEMETHOD") })
 }

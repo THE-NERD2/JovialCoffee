@@ -1,5 +1,5 @@
 #[derive(Debug, PartialEq, Clone)]
-pub enum Node<'a> {
+pub enum Node {
     NBoolean { value: bool },
     NByte { value: i8 },
     NShort { value: i16 },
@@ -9,36 +9,37 @@ pub enum Node<'a> {
     NDouble { value: f64 },
     NNull,
     NClass {
-        methods: Vec<Node<'a>>,
-        fields: Vec<Node<'a>>
+        name: String,
+        methods: Vec<Node>,
+        fields: Vec<Node>
     },
     NMethodDeclaration {
-        name: &'a str,
-        ret: &'a str,
-        args: Vec<&'a str>,
-        body: Vec<Node<'a>>
+        name: String,
+        ret: String,
+        args: Vec<String>,
+        body: Vec<Node>
     },
     NFieldDeclaration {
-        name: &'a str,
-        value_type: &'a str
+        name: String,
+        value_type: String
     },
-    NReference { identifier: &'a str },
-    NAssignment { dest: &'a str, v: Box<Node<'a>> },
-    NStaticReference { field: &'a str },
-    NBoundReference { obj: Box<Node<'a>>, field: &'a str },
-    NBoundAssignment { obj: Box<Node<'a>>, dest: &'a str, v: Box<Node<'a>> },
-    NStaticCall { method: &'a str, args: Vec<Node<'a>> },
-    NCall { obj: Box<Node<'a>>, method: &'a str, args: Vec<Node<'a>> },
-    NNew { class: &'a str },
-    NIAdd { left: Box<Node<'a>>, right: Box<Node<'a>> },
-    NIMul { left: Box<Node<'a>>, right: Box<Node<'a>> },
-    NLCmp { left: Box<Node<'a>>, right: Box<Node<'a>> },
+    NReference { identifier: String },
+    NAssignment { dest: String, v: Box<Node> },
+    NStaticReference { field: String },
+    NBoundReference { obj: Box<Node>, field: String },
+    NBoundAssignment { obj: Box<Node>, dest: String, v: Box<Node> },
+    NStaticCall { method: String, args: Vec<Node> },
+    NCall { obj: Box<Node>, method: String, args: Vec<Node> },
+    NNew { class: String },
+    NIAdd { left: Box<Node>, right: Box<Node> },
+    NIMul { left: Box<Node>, right: Box<Node> },
+    NLCmp { left: Box<Node>, right: Box<Node> },
     NReturn,
-    NAReturn { obj: Box<Node<'a>> },
-    NIReturn { obj: Box<Node<'a>> },
-    NAThrow { v: Box<Node<'a>> },
+    NAReturn { obj: Box<Node> },
+    NIReturn { obj: Box<Node> },
+    NAThrow { v: Box<Node> },
     
-    NOther { str: &'a str },
+    NOther { str: String },
 
     Placeholder
 }
