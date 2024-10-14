@@ -2,9 +2,10 @@ package org.j2c.assembly;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NBoolean implements Node {
+public class NBoolean extends Node {
     private final boolean value;
     public NBoolean(boolean value) {
+        super("NBoolean");
         this.value = value;
     }
     @Override

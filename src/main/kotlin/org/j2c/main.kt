@@ -5,6 +5,8 @@ import javassist.CtClass
 import javassist.NotFoundException
 import javassist.bytecode.Mnemonic
 import org.j2c.assembly.NClass
+import org.j2c.assembly.NFieldDeclaration
+import org.j2c.assembly.NMethodDeclaration
 import org.j2c.assembly.Node
 import org.j2c.assembly.getClasses
 import org.j2c.assembly.popNClass
@@ -43,7 +45,7 @@ fun parse(name: String): NClass? {
 
         kclass.members.forEach {
             if(it is KProperty) {
-                nclass.NFieldDeclaration(it.name, (it.javaField?.type ?: it.returnType.javaType).typeName)
+                NFieldDeclaration(nclass, it.name, (it.javaField?.type ?: it.returnType.javaType).typeName)
             } else if(it is KFunction) {
                 try {
                     // Process method code
@@ -63,7 +65,7 @@ fun parse(name: String): NClass? {
                             registerUnknownOpcode(Mnemonic.OPCODE[opcode])
                         }
                     }
-                    nclass.NMethodDeclaration(it.name, it.returnType.javaType.typeName, it.parameters.map { it.type.javaType.typeName }, stack.toList())
+                    NMethodDeclaration(nclass, it.name, it.returnType.javaType.typeName, it.parameters.map { it.type.javaType.typeName }, stack.toList())
                 } catch(_: NotFoundException) {}
             }
         }
@@ -96,7 +98,6 @@ fun main(args: Array<String>) {
     parse(args[1])
     getClasses().forEach {
         LLVM.createAST(it)
-        LLVM.generateCurrentAST()
     }
     LLVM.finishCodeGen()
 }
