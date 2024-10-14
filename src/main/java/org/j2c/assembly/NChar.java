@@ -2,9 +2,10 @@ package org.j2c.assembly;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NChar implements Node {
+public class NChar extends Node {
     private final char value;
     public NChar(char value) {
+        super("NChar");
         this.value = value;
     }
     @Override

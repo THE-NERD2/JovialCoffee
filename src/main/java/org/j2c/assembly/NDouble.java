@@ -2,9 +2,10 @@ package org.j2c.assembly;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NDouble implements Node {
+public class NDouble extends Node {
     private final double value;
     public NDouble(double value) {
+        super("NDouble");
         this.value = value;
     }
     @Override

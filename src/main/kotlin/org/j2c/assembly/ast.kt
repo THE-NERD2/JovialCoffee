@@ -1,54 +1,30 @@
 package org.j2c.assembly
 
+import org.j2c.assembly.NClass
 import org.j2c.indentBlock
 import org.j2c.parse
 
-interface Node {
-    override fun toString(): String
+abstract class Node(val astName: String) {
+    abstract override fun toString(): String
 }
 
 // Primitive types put in Java to distinguish primitives from objects
-class NNull: Node {
+class NNull: Node("NNull") {
     override fun toString() = "null"
 }
 
-class NClass(val qualName: String, val name: String): Node {
+class NClass(val qualName: String, val name: String): Node("NClass") {
     companion object {
         internal var lastId = -1
     }
     val id = ++lastId
     val fields = arrayListOf<NFieldDeclaration>()
     val methods = arrayListOf<NMethodDeclaration>()
-    inner class NFieldDeclaration(
-        val name: String,
-        val type: String
-    ): Node {
-        init {
-            fields.add(this)
-        }
-        val clazz get() = this@NClass
-        override fun toString() = "$type ${cname}_$name"
-    }
-    inner class NMethodDeclaration(
-        val name: String,
-        val ret: String,
-        val args: Collection<String>,
-        val body: Collection<Node>
-    ): Node {
-        init {
-            methods.add(this)
-        }
-        val clazz get() = this@NClass
-        override fun toString(): String {
-            var str = ""
-            body.forEach {
-                str += "$it\n"
-            }
-            str = indentBlock(str)
-            str = "$ret ${cname}_$name(${args.joinToString()})\n$str"
-            return str
-        }
-    }
+    // These four are to be called from JNI
+    fun numFields() = fields.size
+    fun getField(index: Int) = fields[index]
+    fun numMethods() = methods.size
+    fun getMethod(index: Int) = methods[index]
     init {
         classes.add(this)
     }
@@ -63,60 +39,90 @@ class NClass(val qualName: String, val name: String): Node {
         return str
     }
 }
-class NReference(val identifier: String): Node {
+class NFieldDeclaration(
+    val clazz: NClass,
+    val name: String,
+    val type: String
+): Node("NFieldDeclaration") {
+    init {
+        clazz.fields.add(this)
+    }
+    override fun toString() = "$type ${clazz.cname}_$name"
+}
+class NMethodDeclaration(
+    val clazz: NClass,
+    val name: String,
+    val ret: String,
+    val args: Collection<String>,
+    val body: Collection<Node>
+): Node("NMethodDeclaration") {
+    init {
+        clazz.methods.add(this)
+    }
+    override fun toString(): String {
+        var str = ""
+        body.forEach {
+            str += "$it\n"
+        }
+        str = indentBlock(str)
+        str = "$ret ${clazz.cname}_$name(${args.joinToString()})\n$str"
+        return str
+    }
+}
+class NReference(val identifier: String): Node("NReference") {
     override fun toString() = identifier
 }
-class NAssignment(val dest: String, val v: Node): Node {
+class NAssignment(val dest: String, val v: Node): Node("NAssignment") {
     override fun toString() = "$dest = $v"
 }
-class NStaticReference(val field: String): Node {
+class NStaticReference(val field: String): Node("NStaticReference") {
     override fun toString() = field
 }
-class NBoundReference(val obj: Node, val field: String): Node {
+class NBoundReference(val obj: Node, val field: String): Node("NBoundReference") {
     override fun toString() = "$obj.$field"
 }
-class NBoundAssignment(val obj: Node, val field: String, val v: Node): Node {
+class NBoundAssignment(val obj: Node, val field: String, val v: Node): Node("NBoundAssignment") {
     override fun toString() = "$obj.$field = $v"
 }
-class NStaticCall(val method: String, val args: Collection<Node>): Node {
+class NStaticCall(val method: String, val args: Collection<Node>): Node("NStaticCall") {
     override fun toString() = "$method(" + args.map { it.toString() }.joinToString() + ")"
 }
-class NCall(val obj: Node, val method: String, val args: Collection<Node>): Node {
+class NCall(val obj: Node, val method: String, val args: Collection<Node>): Node("NCall") {
     override fun toString() = "$obj.$method(" + args.map { it.toString() }.joinToString() + ")"
 }
 
-class NNew(val clazz: String): Node {
+class NNew(val clazz: String): Node("NNew") {
     override fun toString() = "new $clazz"
 }
 
-sealed class NAdd(val left: Node, val right: Node): Node {
+sealed class NAdd(name: String, val left: Node, val right: Node): Node(name) {
     override fun toString() = "$left + $right"
 }
-sealed class NMul(val left: Node, val right: Node): Node {
+sealed class NMul(name: String, val left: Node, val right: Node): Node(name) {
     override fun toString() = "$left * $right"
 }
-sealed class NCmp(val left: Node, val right: Node): Node {
+sealed class NCmp(name: String, val left: Node, val right: Node): Node(name) {
     override fun toString() = "$left vs $right"
 }
-class NIAdd(left: Node, right: Node): NAdd(left, right)
-class NIMul(left: Node, right: Node): NMul(left, right)
-class NLCmp(left: Node, right: Node): NCmp(left, right)
+class NIAdd(left: Node, right: Node): NAdd("NIAdd", left, right)
+class NIMul(left: Node, right: Node): NMul("NIMul", left, right)
+class NLCmp(left: Node, right: Node): NCmp("NLCmp", left, right)
 
-class NReturn: Node {
+class NReturn: Node("NReturn") {
     override fun toString() = "return"
 }
-sealed class NValueReturn(val v: Node): Node {
+sealed class NValueReturn(name: String, val v: Node): Node(name) {
     override fun toString() = "return $v"
 }
-class NAReturn(v: Node): NValueReturn(v)
-class NIReturn(v: Node): NValueReturn(v)
+class NAReturn(v: Node): NValueReturn("NAReturn", v)
+class NIReturn(v: Node): NValueReturn("NIReturn", v)
 
-class NAThrow(val v: Node): Node {
+class NAThrow(val v: Node): Node("NAThrow") {
     override fun toString() = "throw $v"
 }
 
 @Deprecated("Used only for work-in-progress nodes.")
-class NOther(val str: String): Node {
+class NOther(val str: String): Node("NOther") {
     override fun toString() = str
 }
 

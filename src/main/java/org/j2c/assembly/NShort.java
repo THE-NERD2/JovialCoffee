@@ -2,9 +2,10 @@ package org.j2c.assembly;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NShort implements Node {
+public class NShort extends Node {
     private final short value;
     public NShort(short value) {
+        super("NShort");
         this.value = value;
     }
     @Override
