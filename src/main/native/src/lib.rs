@@ -1,4 +1,3 @@
-use std::borrow::Borrow;
 use std::ops::Deref;
 
 use jni::JNIEnv;
@@ -23,7 +22,7 @@ impl<'a> JavaASTObject<'a> {
     }
 }
 
-static mut classes: Vec<Node> = Vec::new();
+static mut CLASSES: Vec<Node> = Vec::new();
 
 #[no_mangle]
 pub unsafe extern "system" fn Java_org_j2c_llvm_LLVM_createAST<'a: 'static>(mut env: JNIEnv<'a>, _: JClass<'a>, root: JObject<'a>) {
@@ -34,7 +33,7 @@ pub unsafe extern "system" fn Java_org_j2c_llvm_LLVM_createAST<'a: 'static>(mut 
         last_result = parse_nclass(&mut env, &mut root);
     }
     println!("{:?}", root.data);
-    classes.push(root.data);
+    CLASSES.push(root.data);
 }
 #[no_mangle]
 pub extern "system" fn Java_org_j2c_llvm_LLVM_finishCodeGen() {

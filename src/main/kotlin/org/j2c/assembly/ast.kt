@@ -1,6 +1,5 @@
 package org.j2c.assembly
 
-import org.j2c.assembly.NClass
 import org.j2c.indentBlock
 import org.j2c.parse
 
