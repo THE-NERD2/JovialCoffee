@@ -88,10 +88,16 @@ class NBoundReference(val obj: Node, val field: String): Node("NBoundReference")
 class NBoundAssignment(val obj: Node, val field: String, val v: Node): Node("NBoundAssignment") {
     override fun toString() = "$obj.$field = $v"
 }
-class NStaticCall(val method: String, val args: Collection<Node>): Node("NStaticCall") {
+class NStaticCall(val method: String, val args: ArrayList<Node>): Node("NStaticCall") {
+    // These two for JNI use
+    fun numArgs() = args.size
+    fun getArg(index: Int) = args[index]
     override fun toString() = "$method(" + args.map { it.toString() }.joinToString() + ")"
 }
-class NCall(val obj: Node, val method: String, val args: Collection<Node>): Node("NCall") {
+class NCall(val obj: Node, val method: String, val args: ArrayList<Node>): Node("NCall") {
+    // These two for JNI use
+    fun numArgs() = args.size
+    fun getArg(index: Int) = args[index]
     override fun toString() = "$obj.$method(" + args.map { it.toString() }.joinToString() + ")"
 }
 
