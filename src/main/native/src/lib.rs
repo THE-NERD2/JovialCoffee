@@ -32,7 +32,7 @@ pub unsafe extern "system" fn Java_org_j2c_llvm_LLVM_createAST<'a: 'static>(mut 
     while last_result == None {
         last_result = parse_nclass(&mut env, &mut root);
     }
-    println!("{:?}", root.data);
+    println!("{:#?}", root.data);
     CLASSES.push(root.data);
 }
 #[no_mangle]
