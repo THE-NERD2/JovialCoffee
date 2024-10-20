@@ -65,7 +65,7 @@ fun parse(name: String): NClass? {
                             registerUnknownOpcode(Mnemonic.OPCODE[opcode])
                         }
                     }
-                    NMethodDeclaration(nclass, it.name, it.returnType.javaType.typeName, it.parameters.map { it.type.javaType.typeName }, stack.toList())
+                    NMethodDeclaration(nclass, it.name, it.returnType.javaType.typeName, ArrayList(it.parameters.map { it.type.javaType.typeName }), stack.toList() as ArrayList<Node>)
                 } catch(_: NotFoundException) {}
             }
         }

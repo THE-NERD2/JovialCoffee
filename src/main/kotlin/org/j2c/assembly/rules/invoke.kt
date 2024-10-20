@@ -21,7 +21,7 @@ object INVOKE_normal {
             args[i] = stack.pop()
         }
 
-        stack.add(NStaticCall(method, args.toList() as Collection<Node>))
+        stack.add(NStaticCall(method, args.toList() as ArrayList<Node>))
     }
     val INVOKEINTERFACE = Rule(Opcode.INVOKEINTERFACE) { instructions, pos, const, _, stack ->
         val i = instructions.u16bitAt(pos + 1)
@@ -36,7 +36,7 @@ object INVOKE_normal {
         }
         val obj = stack.pop()
 
-        stack.add(NCall(obj, method, args.toList() as Collection<Node>))
+        stack.add(NCall(obj, method, args.toList() as ArrayList<Node>))
     }
     val INVOKEVIRTUAL = Rule(Opcode.INVOKEVIRTUAL) { instructions, pos, const, _, stack ->
         val i = instructions.u16bitAt(pos + 1)
@@ -51,7 +51,7 @@ object INVOKE_normal {
         }
         val obj = stack.pop()
 
-        stack.add(NCall(obj, method, args.toList() as Collection<Node>))
+        stack.add(NCall(obj, method, args.toList() as ArrayList<Node>))
     }
 }
 
@@ -70,7 +70,7 @@ object INVOKE_strange {
         }
         val obj = stack.pop()
 
-        stack.add(NCall(obj, method, args.toList() as Collection<Node>))
+        stack.add(NCall(obj, method, args.toList() as ArrayList<Node>))
     }
     //val INVOKEDYNAMIC = Rule(Opcode.INVOKEDYNAMIC) {... TODO
 }

@@ -1,6 +1,5 @@
 package org.j2c.assembly
 
-import org.j2c.assembly.NClass
 import org.j2c.indentBlock
 import org.j2c.parse
 
@@ -53,12 +52,17 @@ class NMethodDeclaration(
     val clazz: NClass,
     val name: String,
     val ret: String,
-    val args: Collection<String>,
-    val body: Collection<Node>
+    val args: ArrayList<String>,
+    val body: ArrayList<Node>
 ): Node("NMethodDeclaration") {
     init {
         clazz.methods.add(this)
     }
+    // Next four for use in JNI
+    fun numArgs() = args.size
+    fun getArg(index: Int) = args[index]
+    fun bodySize() = body.size
+    fun getBodyElement(index: Int) = body[index]
     override fun toString(): String {
         var str = ""
         body.forEach {
@@ -84,10 +88,16 @@ class NBoundReference(val obj: Node, val field: String): Node("NBoundReference")
 class NBoundAssignment(val obj: Node, val field: String, val v: Node): Node("NBoundAssignment") {
     override fun toString() = "$obj.$field = $v"
 }
-class NStaticCall(val method: String, val args: Collection<Node>): Node("NStaticCall") {
+class NStaticCall(val method: String, val args: ArrayList<Node>): Node("NStaticCall") {
+    // These two for JNI use
+    fun numArgs() = args.size
+    fun getArg(index: Int) = args[index]
     override fun toString() = "$method(" + args.map { it.toString() }.joinToString() + ")"
 }
-class NCall(val obj: Node, val method: String, val args: Collection<Node>): Node("NCall") {
+class NCall(val obj: Node, val method: String, val args: ArrayList<Node>): Node("NCall") {
+    // These two for JNI use
+    fun numArgs() = args.size
+    fun getArg(index: Int) = args[index]
     override fun toString() = "$obj.$method(" + args.map { it.toString() }.joinToString() + ")"
 }
 
