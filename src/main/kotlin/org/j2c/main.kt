@@ -30,7 +30,7 @@ import kotlin.reflect.jvm.javaField
 
 val rules = arrayListOf<Rule>()
 lateinit var classLoader: URLClassLoader
-val pool = ClassPool()
+val pool = ClassPool(ClassPool.getDefault())
 
 @OptIn(ExperimentalStdlibApi::class)
 fun parse(name: String): NClass? {
