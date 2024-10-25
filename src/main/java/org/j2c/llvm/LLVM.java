@@ -8,5 +8,5 @@ public class LLVM {
     }
 
     public static native void createAST(NClass root);
-    public static native void finishCodeGen();
+    public static native void compileCurrentAST();
 }

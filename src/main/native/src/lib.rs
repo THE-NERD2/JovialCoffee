@@ -36,7 +36,7 @@ pub unsafe extern "system" fn Java_org_j2c_llvm_LLVM_createAST<'a: 'static>(mut 
     CLASSES.push(root.data);
 }
 #[no_mangle]
-pub extern "system" fn Java_org_j2c_llvm_LLVM_finishCodeGen() {
+pub extern "system" fn Java_org_j2c_llvm_LLVM_compileCurrentAST() {
     println!("Finishing code generation");
 }
 

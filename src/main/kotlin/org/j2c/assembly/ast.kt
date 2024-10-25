@@ -1,7 +1,9 @@
 package org.j2c.assembly
 
 import org.j2c.indentBlock
+import org.j2c.isInProgress
 import org.j2c.parse
+import org.j2c.schedule
 
 abstract class Node(val astName: String) {
     abstract override fun toString(): String
@@ -12,7 +14,7 @@ class NNull: Node("NNull") {
     override fun toString() = "null"
 }
 
-class NClass(val qualName: String, val name: String): Node("NClass") {
+class NClass(val qualName: String, val name: String, addToClasses: Boolean = true): Node("NClass") {
     companion object {
         internal var lastId = -1
     }
@@ -25,7 +27,7 @@ class NClass(val qualName: String, val name: String): Node("NClass") {
     fun numMethods() = methods.size
     fun getMethod(index: Int) = methods[index]
     init {
-        classes.add(this)
+        if(addToClasses) classes.add(this)
     }
     val cname get() = "$name$id"
     override fun toString(): String {
@@ -137,9 +139,12 @@ class NOther(val str: String): Node("NOther") {
 }
 
 private val classes = arrayListOf<NClass>()
-fun findNClassByFullName(name: String): NClass? {
+fun findNClassByFullName(name: String): NClass {
     val v = classes.find { name == it.qualName }
-    return if(v == null) parse(name) else v
+    if(v == null) {
+        schedule(name)
+        return NClass(name, name.substring(name.lastIndexOf('.') + 1), false)
+    } else return v
 }
 fun popNClass() = classes.removeLast()
 fun getClasses() = classes.clone() as ArrayList<NClass>

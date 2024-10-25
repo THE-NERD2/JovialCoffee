@@ -20,14 +20,14 @@ object FIELD {
     val GETFIELD = Rule(Opcode.GETFIELD) { instructions, pos, const, _, stack ->
         val i = instructions.u16bitAt(pos + 1)
         val obj = stack.pop()
-        val fld = (findNClassByFullName(const.getFieldrefClassName(i))?.cname ?: "???") + "_" + const.getFieldrefName(i)
+        val fld = findNClassByFullName(const.getFieldrefClassName(i)).cname + "_" + const.getFieldrefName(i)
         stack.add(NBoundReference(obj, fld))
     }
     val PUTFIELD = Rule(Opcode.PUTFIELD) { instructions, pos, const, _, stack ->
         val i = instructions.u16bitAt(pos + 1)
         val newV = stack.pop()
         val obj = stack.pop()
-        val fld = (findNClassByFullName(const.getFieldrefClassName(i))?.cname ?: "???") + "_" + const.getFieldrefName(i)
+        val fld = findNClassByFullName(const.getFieldrefClassName(i)).cname + "_" + const.getFieldrefName(i)
         stack.add(NBoundAssignment(obj, fld, newV))
     }
 }

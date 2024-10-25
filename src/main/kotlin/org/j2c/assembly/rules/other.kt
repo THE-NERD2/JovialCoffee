@@ -28,7 +28,7 @@ object NEW {
     val NEW = Rule(Opcode.NEW) { instructions, pos, const, _, stack ->
         val i = instructions.u16bitAt(pos + 1)
         val c = const.getClassInfo(i)
-        stack.add(NNew(findNClassByFullName(c)?.cname ?: "???"))
+        stack.add(NNew(findNClassByFullName(c).cname))
     }
 }
 

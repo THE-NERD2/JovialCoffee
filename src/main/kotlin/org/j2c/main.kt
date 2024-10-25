@@ -14,7 +14,6 @@ import org.j2c.assembly.rules.NoRule
 import org.j2c.assembly.rules.Rule
 import org.j2c.assembly.rules.RuleContainer
 import org.j2c.development.registerUnknownOpcode
-import org.j2c.exceptions.UnknownOpcodeException
 import org.j2c.llvm.LLVM
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
@@ -32,11 +31,25 @@ val rules = arrayListOf<Rule>()
 lateinit var classLoader: URLClassLoader
 val pool = ClassPool(ClassPool.getDefault())
 
+private val scheduled = mutableSetOf<String>()
+fun schedule(name: String) = scheduled.add(name)
+
+private val inProgress = mutableSetOf<String>()
+fun isInProgress(name: String) = inProgress.contains(name)
+fun beginProgress(name: String) {
+    inProgress.add(name)
+    scheduled.remove(name)
+}
+fun finishedProgress(name: String) = inProgress.remove(name)
+
 @OptIn(ExperimentalStdlibApi::class)
 fun parse(name: String): NClass? {
+    if(isInProgress(name)) return null
+    beginProgress(name)
+
+    var nclass: NClass? = null
     try {
         val kclass: KClass<*>
-        val nclass: NClass
         val ctclass: CtClass
 
         kclass = classLoader.loadClass(name).kotlin
@@ -44,9 +57,9 @@ fun parse(name: String): NClass? {
         ctclass = pool.get(name)
 
         kclass.members.forEach {
-            if(it is KProperty) {
+            if (it is KProperty) {
                 NFieldDeclaration(nclass, it.name, (it.javaField?.type ?: it.returnType.javaType).typeName)
-            } else if(it is KFunction) {
+            } else if (it is KFunction) {
                 try {
                     // Process method code
                     val methodInfo = ctclass.getDeclaredMethod(it.name).methodInfo
@@ -60,20 +73,30 @@ fun parse(name: String): NClass? {
                         val pos = instructions.next()
                         val opcode = instructions.byteAt(pos)
 
-                        rules.find { it.opcode == opcode }?.predicate?.invoke(instructions, pos, const, vars, stack) ?: run {
-                            UnknownOpcodeException(Mnemonic.OPCODE[opcode]).printStackTrace()
-                            registerUnknownOpcode(Mnemonic.OPCODE[opcode])
-                        }
+                        rules.find { it.opcode == opcode }?.predicate?.invoke(instructions, pos, const, vars, stack)
+                            ?: run {
+                                //UnknownOpcodeException(Mnemonic.OPCODE[opcode]).printStackTrace()
+                                registerUnknownOpcode(Mnemonic.OPCODE[opcode])
+                            }
                     }
-                    NMethodDeclaration(nclass, it.name, it.returnType.javaType.typeName, ArrayList(it.parameters.map { it.type.javaType.typeName }), stack.toList() as ArrayList<Node>)
-                } catch(_: NotFoundException) {}
+                    NMethodDeclaration(
+                        nclass,
+                        it.name,
+                        it.returnType.javaType.typeName,
+                        ArrayList(it.parameters.map { it.type.javaType.typeName }),
+                        stack.toList() as ArrayList<Node>
+                    )
+                } catch (_: NotFoundException) {
+                }
             }
         }
-        return nclass
     } catch(_: Exception) {
         popNClass()
-        return null
+    } finally {
+        println("Registering")
+        finishedProgress(name)
     }
+    return nclass
 }
 fun init(path: String) {
     val reflections = Reflections(
@@ -93,11 +116,18 @@ fun init(path: String) {
     classLoader = URLClassLoader(arrayOf(File(path).toURI().toURL()), ClassLoader.getSystemClassLoader())
     pool.appendClassPath(path)
 }
+fun parseAndRunForEachClass(firstClassName: String, predicate: (NClass) -> Unit) {
+    schedule(firstClassName)
+    while(scheduled.size > 0) {
+        scheduled.toMutableSet().forEach {
+            predicate.invoke(parse(it)!!)
+        }
+    }
+}
 fun main(args: Array<String>) {
     init(args[0])
-    parse(args[1])
-    getClasses().forEach {
+    parseAndRunForEachClass(args[1]) {
         LLVM.createAST(it)
+        LLVM.compileCurrentAST()
     }
-    LLVM.finishCodeGen()
 }
