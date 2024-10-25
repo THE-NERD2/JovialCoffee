@@ -1,8 +1,7 @@
 package org.j2c.assembly
 
 import org.j2c.indentBlock
-import org.j2c.isInProgress
-import org.j2c.parse
+import org.j2c.isAlreadyParsed
 import org.j2c.schedule
 
 abstract class Node(val astName: String) {
@@ -142,9 +141,10 @@ private val classes = arrayListOf<NClass>()
 fun findNClassByFullName(name: String): NClass {
     val v = classes.find { name == it.qualName }
     if(v == null) {
-        schedule(name)
+        if(!isAlreadyParsed(name)) schedule(name)
         return NClass(name, name.substring(name.lastIndexOf('.') + 1), false)
     } else return v
 }
+fun numNClasses() = classes.size
 fun popNClass() = classes.removeLast()
-fun getClasses() = classes.clone() as ArrayList<NClass>
+fun clearNClasses() = classes.clear()

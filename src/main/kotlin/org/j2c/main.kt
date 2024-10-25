@@ -8,7 +8,7 @@ import org.j2c.assembly.NClass
 import org.j2c.assembly.NFieldDeclaration
 import org.j2c.assembly.NMethodDeclaration
 import org.j2c.assembly.Node
-import org.j2c.assembly.getClasses
+import org.j2c.assembly.clearNClasses
 import org.j2c.assembly.popNClass
 import org.j2c.assembly.rules.NoRule
 import org.j2c.assembly.rules.Rule
@@ -34,17 +34,13 @@ val pool = ClassPool(ClassPool.getDefault())
 private val scheduled = mutableSetOf<String>()
 fun schedule(name: String) = scheduled.add(name)
 
-private val inProgress = mutableSetOf<String>()
-fun isInProgress(name: String) = inProgress.contains(name)
-fun beginProgress(name: String) {
-    inProgress.add(name)
-    scheduled.remove(name)
-}
-fun finishedProgress(name: String) = inProgress.remove(name)
+private val alreadyParsed = mutableSetOf<String>()
+fun isAlreadyParsed(name: String) = alreadyParsed.contains(name)
+fun beginProgress(name: String) = scheduled.remove(name)
+fun finishedProgress(name: String) = alreadyParsed.add(name)
 
 @OptIn(ExperimentalStdlibApi::class)
 fun parse(name: String): NClass? {
-    if(isInProgress(name)) return null
     beginProgress(name)
 
     var nclass: NClass? = null
@@ -93,7 +89,6 @@ fun parse(name: String): NClass? {
     } catch(_: Exception) {
         popNClass()
     } finally {
-        println("Registering")
         finishedProgress(name)
     }
     return nclass
@@ -119,9 +114,12 @@ fun init(path: String) {
 fun parseAndRunForEachClass(firstClassName: String, predicate: (NClass) -> Unit) {
     schedule(firstClassName)
     while(scheduled.size > 0) {
-        scheduled.toMutableSet().forEach {
+        val currentScheduled = scheduled.toMutableSet()
+        scheduled.clear()
+        currentScheduled.forEach {
             predicate.invoke(parse(it)!!)
         }
+        clearNClasses()
     }
 }
 fun main(args: Array<String>) {

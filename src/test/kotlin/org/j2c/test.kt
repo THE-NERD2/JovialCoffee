@@ -1,8 +1,6 @@
 package org.j2c
 
-import org.j2c.assembly.getClasses
 import org.j2c.development.printAll
-import org.j2c.llvm.LLVM
 import kotlin.test.Test
 
 class Tests {
@@ -19,8 +17,9 @@ class Tests {
     }
     @Test
     fun DummyClass_main() {
-        main(arrayOf("/home/payton/Coding/apis/libs/J2C/src/test/resources", "org.j2c.DummyClass"))
-        if(getClasses().size == 0) {
+        try {
+            main(arrayOf("/home/payton/Coding/apis/libs/J2C/src/test/resources", "org.j2c.DummyClass"))
+        } catch(_: NullPointerException) {
             main(arrayOf("/home/payton/IdeaProjects/J2C/src/test/resources", "org.j2c.DummyClass"))
         }
     }
