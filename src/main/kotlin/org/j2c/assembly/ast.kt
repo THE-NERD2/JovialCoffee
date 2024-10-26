@@ -119,6 +119,10 @@ class NIAdd(left: Node, right: Node): NAdd("NIAdd", left, right)
 class NIMul(left: Node, right: Node): NMul("NIMul", left, right)
 class NLCmp(left: Node, right: Node): NCmp("NLCmp", left, right)
 
+class NArrayLength(val array: Node): Node("NArrayLength") {
+    override fun toString() = "#$array"
+}
+
 class NReturn: Node("NReturn") {
     override fun toString() = "return"
 }

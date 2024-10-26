@@ -27,6 +27,12 @@ object IF {
 
 @RuleContainer
 object IF_A {
+    val IFNULL = Rule(Opcode.IFNULL) { instructions, pos, _, _, stack ->
+        val v = stack.pop()
+        val i = instructions.s16bitAt(pos + 1)
+        stack.add(NOther("if($v == null)"))
+        GOTO.follow(instructions, pos, i, true)
+    }
     val IFNONNULL = Rule(Opcode.IFNONNULL) { instructions, pos, _, _, stack ->
         val v = stack.pop()
         val i = instructions.s16bitAt(pos + 1)
@@ -45,6 +51,31 @@ object IF_A {
         val v2 = stack.pop()
         val v1 = stack.pop()
         stack.add(NOther("if($v1 != $v2)"))
+        GOTO.follow(instructions, pos, i, true)
+    }
+}
+
+@RuleContainer
+object IF_I {
+    val IF_ICMPEQ = Rule(Opcode.IF_ICMPEQ) { instructions, pos, _, _, stack ->
+        val i = instructions.s16bitAt(pos + 1)
+        val v2 = stack.pop()
+        val v1 = stack.pop()
+        stack.add(NOther("if($v1 == $v2"))
+        GOTO.follow(instructions, pos, i, true)
+    }
+    val IF_ICMPNE = Rule(Opcode.IF_ICMPNE) { instructions, pos, _, _, stack ->
+        val i = instructions.s16bitAt(pos + 1)
+        val v2 = stack.pop()
+        val v1 = stack.pop()
+        stack.add(NOther("if($v1 != $v2)"))
+        GOTO.follow(instructions, pos, i, true)
+    }
+    val IF_ICMPGE = Rule(Opcode.IF_ICMPGE) { instructions, pos, _, _, stack ->
+        val i = instructions.s16bitAt(pos + 1)
+        val v2 = stack.pop()
+        val v1 = stack.pop()
+        stack.add(NOther("if($v1 > $v2)"))
         GOTO.follow(instructions, pos, i, true)
     }
 }

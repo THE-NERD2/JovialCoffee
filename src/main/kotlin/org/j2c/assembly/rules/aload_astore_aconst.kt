@@ -33,6 +33,11 @@ object ASTORE {
         vars[2] = "avar2"
         stack.add(NAssignment("avar2", newV))
     }
+    val ASTORE_3 = Rule(Opcode.ASTORE_3) { _, _, _, vars, stack ->
+        val newV = stack.pop()
+        vars[3] = "avar3"
+        stack.add(NAssignment("avar3", newV))
+    }
 }
 
 @RuleContainer

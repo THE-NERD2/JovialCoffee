@@ -250,6 +250,9 @@ fn parse_node<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Optio
             "NLCmp" => {
                 last_result = parse_nlcmp(env, object);
             },
+            "NArrayLength" => {
+                last_result = parse_narraylength(env, object);
+            },
             "NReturn" => {
                 last_result = parse_nreturn(env, object);
             },
@@ -616,6 +619,31 @@ fn parse_nlcmp<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Opti
             },
             _ => panic!("NLCmp data isn't an NLCmp!")
         }
+        object.data = temp_data;
+        object.scan_stage += 1;
+    } else {
+        return Some(object.data.clone());
+    }
+    None
+}
+fn parse_narraylength<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    if object.scan_stage == 0 {
+        object.data = Node::NArrayLength {
+            array: Box::new(Node::Placeholder)
+        };
+        object.scan_stage += 1;
+    } else if object.scan_stage == 1 {
+        let node_jvalue = env.get_field(object.object.deref(), "array", "Lorg/j2c/assembly/NArrayLength;").unwrap().l().unwrap();
+        let mut node = JavaASTObject::new(node_jvalue);
+
+        let last_result = parse_node(env, &mut node);
+        let mut temp_data = object.data.clone();
+        match temp_data {
+            Node::NArrayLength { ref mut array } => {
+                *array = Box::new(last_result.unwrap().clone());
+            },
+            _ => panic!("NArrayLength data isn't an NArrayLength!")
+        };
         object.data = temp_data;
         object.scan_stage += 1;
     } else {

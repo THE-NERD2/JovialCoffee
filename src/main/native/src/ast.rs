@@ -34,6 +34,7 @@ pub enum Node {
     NIAdd { left: Box<Node>, right: Box<Node> },
     NIMul { left: Box<Node>, right: Box<Node> },
     NLCmp { left: Box<Node>, right: Box<Node> },
+    NArrayLength { array: Box<Node> },
     NReturn,
     NAReturn { obj: Box<Node> },
     NIReturn { obj: Box<Node> },
