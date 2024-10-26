@@ -145,5 +145,7 @@ fun findNClassByFullName(name: String): NClass {
         return NClass(name, name.substring(name.lastIndexOf('.') + 1), false)
     } else return v
 }
-fun popNClass() = classes.removeLast()
+fun popNClass() = try {
+    classes.removeLast()
+} catch(_: NoSuchElementException) {}
 fun clearNClasses() = classes.clear()
