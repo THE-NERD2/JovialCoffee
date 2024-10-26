@@ -96,6 +96,13 @@ object IF_I {
         stack.add(NOther("if($v1 >= $v2)"))
         GOTO.follow(instructions, pos, i, true)
     }
+    val IF_ICMPGT = Rule(Opcode.IF_ICMPGT) { instructions, pos, _, _, stack ->
+        val i = instructions.s16bitAt(pos + 1)
+        val v2 = stack.pop()
+        val v1 = stack.pop()
+        stack.add(NOther("if($v1 > $v2)"))
+        GOTO.follow(instructions, pos, i, true)
+    }
     val IF_ICMPLE = Rule(Opcode.IF_ICMPLE) { instructions, pos, _, _, stack ->
         val i = instructions.s16bitAt(pos + 1)
         val v2 = stack.pop()

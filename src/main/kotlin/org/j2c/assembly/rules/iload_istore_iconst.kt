@@ -33,6 +33,11 @@ object ISTORE {
         vars[i] = "ivar$i"
         stack.add(NAssignment("ivar$i", newV))
     }
+    val ISTORE_0 = Rule(Opcode.ISTORE_0) { _, _, _, vars, stack ->
+        val newV = stack.pop()
+        vars[0] = "ivar0"
+        stack.add(NAssignment("ivar0", newV))
+    }
     val ISTORE_1 = Rule(Opcode.ISTORE_1) { _, _, _, vars, stack ->
         val newV = stack.pop()
         vars[1] = "ivar1"
@@ -60,6 +65,15 @@ object ICONST {
     }
     val ICONST_2 = Rule(Opcode.ICONST_2) { _, _, _, _, stack ->
         stack.add(NInt(2))
+    }
+    val ICONST_3 = Rule(Opcode.ICONST_3) { _, _, _, _, stack ->
+        stack.add(NInt(3))
+    }
+    val ICONST_4 = Rule(Opcode.ICONST_4) { _, _, _, _, stack ->
+        stack.add(NInt(4))
+    }
+    val ICONST_5 = Rule(Opcode.ICONST_5) { _, _, _, _, stack ->
+        stack.add(NInt(5))
     }
     val ICONST_M1 = Rule(Opcode.ICONST_M1) { _, _, _, _, stack ->
         stack.add(NInt(-1))

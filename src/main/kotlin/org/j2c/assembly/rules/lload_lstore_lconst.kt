@@ -1,16 +1,42 @@
 package org.j2c.assembly.rules
 
 import javassist.bytecode.Opcode
+import org.j2c.assembly.NAssignment
 import org.j2c.assembly.NLong
 import org.j2c.assembly.NReference
 
 @RuleContainer
 object LLOAD {
+    val LLOAD = Rule(Opcode.LLOAD) { instructions, pos, _, vars, stack ->
+        val i = instructions.byteAt(pos + 1)
+        stack.add(NReference(vars[i] ?: "???"))
+    }
     val LLOAD_0 = Rule(Opcode.LLOAD_0) { _, _, _, vars, stack ->
         stack.add(NReference(vars[0] ?: "???"))
     }
+    val LLOAD_1 = Rule(Opcode.LLOAD_1) { _, _, _, vars, stack ->
+        stack.add(NReference(vars[1] ?: "???"))
+    }
     val LLOAD_2 = Rule(Opcode.LLOAD_2) { _, _, _, vars, stack ->
         stack.add(NReference(vars[2] ?: "???"))
+    }
+    val LLOAD_3 = Rule(Opcode.LLOAD_3) { _, _, _, vars, stack ->
+        stack.add(NReference(vars[3] ?: "???"))
+    }
+}
+
+@RuleContainer
+object LSTORE {
+    val LSTORE = Rule(Opcode.LSTORE) { instructions, pos, _, vars, stack ->
+        val i = instructions.byteAt(pos + 1)
+        val newV = stack.pop()
+        vars[i] =  "lvar$i"
+        stack.add(NAssignment("lvar$i", newV))
+    }
+    val LSTORE_1 = Rule(Opcode.LSTORE_1) { _, _, _, vars, stack ->
+        val newV = stack.pop()
+        vars[1] = "lvar1"
+        stack.add(NAssignment("lvar1", newV))
     }
 }
 

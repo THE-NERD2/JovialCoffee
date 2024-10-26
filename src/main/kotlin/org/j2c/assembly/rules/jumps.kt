@@ -52,6 +52,11 @@ object JUMPS {
         stack.add(NIReturn(v))
         GOTO.endFollow(instructions, stack)
     }
+    val LRETURN = Rule(Opcode.LRETURN) { instructions, _, _, _, stack ->
+        val v = stack.pop()
+        stack.add(NLReturn(v))
+        GOTO.endFollow(instructions, stack)
+    }
     val ATHROW = Rule(Opcode.ATHROW) { instructions, _, _, _, stack ->
         val exception = stack.pop()
         stack.add(NAThrow(exception))

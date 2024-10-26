@@ -120,6 +120,8 @@ sealed class NCmp(name: String, val left: Node, val right: Node): Node(name) {
 }
 class NIAdd(left: Node, right: Node): NAdd("NIAdd", left, right)
 class NIMul(left: Node, right: Node): NMul("NIMul", left, right)
+class NLAdd(left: Node, right: Node): NAdd("NLAdd", left, right)
+class NLMul(left: Node, right: Node): NMul("NLMul", left, right)
 class NLCmp(left: Node, right: Node): NCmp("NLCmp", left, right)
 
 class NArrayLength(val array: Node): Node("NArrayLength") {
@@ -134,6 +136,7 @@ sealed class NValueReturn(name: String, val v: Node): Node(name) {
 }
 class NAReturn(v: Node): NValueReturn("NAReturn", v)
 class NIReturn(v: Node): NValueReturn("NIReturn", v)
+class NLReturn(v: Node): NValueReturn("NLReturn", v)
 
 class NAThrow(val v: Node): Node("NAThrow") {
     override fun toString() = "throw $v"
