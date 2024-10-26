@@ -145,6 +145,5 @@ fun findNClassByFullName(name: String): NClass {
         return NClass(name, name.substring(name.lastIndexOf('.') + 1), false)
     } else return v
 }
-fun numNClasses() = classes.size
 fun popNClass() = classes.removeLast()
 fun clearNClasses() = classes.clear()

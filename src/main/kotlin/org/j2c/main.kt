@@ -14,6 +14,7 @@ import org.j2c.assembly.rules.NoRule
 import org.j2c.assembly.rules.Rule
 import org.j2c.assembly.rules.RuleContainer
 import org.j2c.development.registerUnknownOpcode
+import org.j2c.exceptions.UnknownOpcodeException
 import org.j2c.llvm.LLVM
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
@@ -71,7 +72,7 @@ fun parse(name: String): NClass? {
 
                         rules.find { it.opcode == opcode }?.predicate?.invoke(instructions, pos, const, vars, stack)
                             ?: run {
-                                //UnknownOpcodeException(Mnemonic.OPCODE[opcode]).printStackTrace()
+                                UnknownOpcodeException(Mnemonic.OPCODE[opcode]).printStackTrace()
                                 registerUnknownOpcode(Mnemonic.OPCODE[opcode])
                             }
                     }
