@@ -14,6 +14,7 @@ import org.j2c.assembly.rules.NoRule
 import org.j2c.assembly.rules.Rule
 import org.j2c.assembly.rules.RuleContainer
 import org.j2c.development.registerUnknownOpcode
+import org.j2c.exceptions.InfiniteLoopException
 import org.j2c.exceptions.UnknownOpcodeException
 import org.j2c.llvm.LLVM
 import org.reflections.Reflections
@@ -65,10 +66,19 @@ fun parse(name: String): NClass? {
                     val vars = mutableMapOf<Int, String>()
                     it.parameters.forEachIndexed { i: Int, v: KParameter -> vars[i] = "param$i" }
 
+                    // Catch infinite loops (indicates a big problem)
+                    val alreadyVisitedPositions = mutableSetOf<Int>()
+
                     val stack = Stack<Node>()
                     while (instructions.hasNext()) {
                         val pos = instructions.next()
                         val opcode = instructions.byteAt(pos)
+
+                        if(alreadyVisitedPositions.contains(pos)) {
+                            InfiniteLoopException().printStackTrace()
+                            break
+                        }
+                        alreadyVisitedPositions.add(pos)
 
                         rules.find { it.opcode == opcode }?.predicate?.invoke(instructions, pos, const, vars, stack)
                             ?: run {
@@ -118,7 +128,8 @@ fun parseAndRunForEachClass(firstClassName: String, predicate: (NClass) -> Unit)
         val currentScheduled = scheduled.toMutableSet()
         scheduled.clear()
         currentScheduled.forEach {
-            predicate.invoke(parse(it)!!)
+            val v = parse(it)
+            if(v != null) predicate.invoke(v)
         }
         clearNClasses()
     }
