@@ -23,6 +23,24 @@ object IF {
         stack.add(NOther("if($v >= 0)"))
         GOTO.follow(instructions, pos, i, true)
     }
+    val IFGT = Rule(Opcode.IFGT) { instructions, pos, _, _, stack ->
+        val i = instructions.s16bitAt(pos + 1)
+        val v = stack.pop()
+        stack.add(NOther("if($v > 0)"))
+        GOTO.follow(instructions, pos, i, true)
+    }
+    val IFLE = Rule(Opcode.IFLE) { instructions, pos, _, _, stack ->
+        val i = instructions.s16bitAt(pos + 1)
+        val v = stack.pop()
+        stack.add(NOther("if($v <= 0)"))
+        GOTO.follow(instructions, pos, i, true)
+    }
+    val IFLT = Rule(Opcode.IFLT) { instructions, pos, _, _, stack ->
+        val i = instructions.s16bitAt(pos + 1)
+        val v = stack.pop()
+        stack.add(NOther("if($v < 0)"))
+        GOTO.follow(instructions, pos, i, true)
+    }
 }
 
 @RuleContainer
@@ -75,7 +93,21 @@ object IF_I {
         val i = instructions.s16bitAt(pos + 1)
         val v2 = stack.pop()
         val v1 = stack.pop()
-        stack.add(NOther("if($v1 > $v2)"))
+        stack.add(NOther("if($v1 >= $v2)"))
+        GOTO.follow(instructions, pos, i, true)
+    }
+    val IF_ICMPLE = Rule(Opcode.IF_ICMPLE) { instructions, pos, _, _, stack ->
+        val i = instructions.s16bitAt(pos + 1)
+        val v2 = stack.pop()
+        val v1 = stack.pop()
+        stack.add(NOther("if($v1 <= $v2)"))
+        GOTO.follow(instructions, pos, i, true)
+    }
+    val IF_ICMPLT = Rule(Opcode.IF_ICMPLT) { instructions, pos, _, _, stack ->
+        val i = instructions.s16bitAt(pos + 1)
+        val v2 = stack.pop()
+        val v1 = stack.pop()
+        stack.add(NOther("if($v1 < $v2)"))
         GOTO.follow(instructions, pos, i, true)
     }
 }

@@ -11,6 +11,9 @@ object ILOAD {
         val i = instructions.byteAt(pos + 1)
         stack.add(NReference(vars[i] ?: "???"))
     }
+    val ILOAD_0 = Rule(Opcode.ILOAD_0) { _, _, _, vars, stack ->
+        stack.add(NReference(vars[0] ?: "???"))
+    }
     val ILOAD_1 = Rule(Opcode.ILOAD_1) { _, _, _, vars, stack ->
         stack.add(NReference(vars[1] ?: "???"))
     }

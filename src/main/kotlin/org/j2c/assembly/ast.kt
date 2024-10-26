@@ -83,6 +83,9 @@ class NAssignment(val dest: String, val v: Node): Node("NAssignment") {
 class NStaticReference(val field: String): Node("NStaticReference") {
     override fun toString() = field
 }
+class NStaticAssignment(val field: String, val v: Node): Node("NStaticAssignment") {
+    override fun toString() = "$field = $v"
+}
 class NBoundReference(val obj: Node, val field: String): Node("NBoundReference") {
     override fun toString() = "$obj.$field"
 }

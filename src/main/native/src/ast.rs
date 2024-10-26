@@ -26,6 +26,7 @@ pub enum Node {
     NReference { identifier: String },
     NAssignment { dest: String, v: Box<Node> },
     NStaticReference { field: String },
+    NStaticAssignment { field: String, v: Box<Node> },
     NBoundReference { obj: Box<Node>, field: String },
     NBoundAssignment { obj: Box<Node>, dest: String, v: Box<Node> },
     NStaticCall { method: String, args: Vec<Node> },
