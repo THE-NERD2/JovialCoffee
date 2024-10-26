@@ -11,8 +11,7 @@ import org.j2c.getargc
 object INVOKE_normal {
     val INVOKESTATIC = Rule(Opcode.INVOKESTATIC) { instructions, pos, const, _, stack ->
         val i = instructions.u16bitAt(pos + 1)
-        val method = (findNClassByFullName(const.getMethodrefClassName(i))?.cname ?: "???"
-                ) + "_" + const.getMethodrefName(i)
+        val method = findNClassByFullName(const.getMethodrefClassName(i)).cname + "_" + const.getMethodrefName(i)
         val desc = const.getMethodrefType(i)
 
         val argc = getargc(desc)
@@ -25,8 +24,7 @@ object INVOKE_normal {
     }
     val INVOKEINTERFACE = Rule(Opcode.INVOKEINTERFACE) { instructions, pos, const, _, stack ->
         val i = instructions.u16bitAt(pos + 1)
-        val method = (findNClassByFullName(const.getInterfaceMethodrefClassName(i))?.cname ?: "???"
-                ) + "_" + const.getInterfaceMethodrefName(i)
+        val method = findNClassByFullName(const.getInterfaceMethodrefClassName(i)).cname + "_" + const.getInterfaceMethodrefName(i)
         val desc = const.getInterfaceMethodrefType(i)
 
         val argc = getargc(desc)
@@ -40,8 +38,7 @@ object INVOKE_normal {
     }
     val INVOKEVIRTUAL = Rule(Opcode.INVOKEVIRTUAL) { instructions, pos, const, _, stack ->
         val i = instructions.u16bitAt(pos + 1)
-        val method = (findNClassByFullName(const.getMethodrefClassName(i))?.cname ?: "???"
-                ) + "_" + const.getMethodrefName(i)
+        val method = findNClassByFullName(const.getMethodrefClassName(i)).cname + "_" + const.getMethodrefName(i)
         val desc = const.getInterfaceMethodrefType(i)
 
         val argc = getargc(desc)
@@ -59,8 +56,7 @@ object INVOKE_normal {
 object INVOKE_strange {
     val INVOKESPECIAL = Rule(Opcode.INVOKESPECIAL) { instructions, pos, const, _, stack ->
         val i = instructions.u16bitAt(pos + 1)
-        val method = (findNClassByFullName(const.getMethodrefClassName(i))?.cname ?: "???"
-                ) + "_" + const.getMethodrefName(i)
+        val method = findNClassByFullName(const.getMethodrefClassName(i)).cname + "_" + const.getMethodrefName(i)
         val desc = const.getInterfaceMethodrefType(i)
 
         val argc = getargc(desc)

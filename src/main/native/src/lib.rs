@@ -36,8 +36,9 @@ pub unsafe extern "system" fn Java_org_j2c_llvm_LLVM_createAST<'a: 'static>(mut 
     CLASSES.push(root.data);
 }
 #[no_mangle]
-pub extern "system" fn Java_org_j2c_llvm_LLVM_finishCodeGen() {
+pub unsafe extern "system" fn Java_org_j2c_llvm_LLVM_compileCurrentAST() {
     println!("Finishing code generation");
+    CLASSES.clear();
 }
 
 fn parse_nclass<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
