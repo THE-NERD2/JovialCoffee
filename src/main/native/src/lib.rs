@@ -247,17 +247,35 @@ fn parse_node<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Optio
             "NIAdd" => {
                 last_result = parse_niadd(env, object);
             },
+            "NIDiv" => {
+                last_result = parse_nidiv(env, object);
+            },
             "NIMul" => {
                 last_result = parse_nimul(env, object);
             },
             "NLAdd" => {
                 last_result = parse_nladd(env, object);
             },
+            "NLSub" => {
+                last_result = parse_nlsub(env, object);
+            },
             "NLMul" => {
                 last_result = parse_nlmul(env, object);
             },
             "NLCmp" => {
                 last_result = parse_nlcmp(env, object);
+            },
+            "NFMul" => {
+                last_result = parse_nfmul(env, object);
+            },
+            "NFDiv" => {
+                last_result = parse_nfdiv(env, object);
+            },
+            "NDAdd" => {
+                last_result = parse_ndadd(env, object);
+            },
+            "NDDiv" => {
+                last_result = parse_nddiv(env, object);
             },
             "NArrayLength" => {
                 last_result = parse_narraylength(env, object);
@@ -273,6 +291,12 @@ fn parse_node<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Optio
             },
             "NLReturn" => {
                 last_result = parse_nlreturn(env, object);
+            },
+            "NFReturn" => {
+                last_result = parse_nfreturn(env, object);
+            },
+            "NDReturn" => {
+                last_result = parse_ndreturn(env, object);
             },
             "NAThrow" => {
                 last_result = parse_nathrow(env, object);
@@ -604,6 +628,37 @@ fn parse_niadd<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Opti
     }
     None
 }
+fn parse_nidiv<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    if object.scan_stage == 0 {
+        object.data = Node::NIDiv {
+            left: Box::new(Node::Placeholder),
+            right: Box::new(Node::Placeholder)
+        };
+        object.scan_stage += 1;
+    } else if object.scan_stage == 1 {
+        let left_field = env.get_field(object.object.deref(), "left", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let mut left = JavaASTObject::new(left_field);
+        let left_value = parse_node(env, &mut left);
+
+        let right_field = env.get_field(object.object.deref(), "right", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let mut right = JavaASTObject::new(right_field);
+        let right_value = parse_node(env, &mut right);
+
+        let mut temp_data = object.data.clone();
+        match temp_data {
+            Node::NIDiv { ref mut left, ref mut right } => {
+                *left = Box::new(left_value.unwrap().clone());
+                *right = Box::new(right_value.unwrap().clone());
+            },
+            _ => panic!("NIDiv data isn't an NIDiv!")
+        }
+        object.data = temp_data;
+        object.scan_stage += 1;
+    } else {
+        return Some(object.data.clone());
+    }
+    None
+}
 fn parse_nimul<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
     if object.scan_stage == 0 {
         object.data = Node::NIMul {
@@ -666,6 +721,37 @@ fn parse_nladd<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Opti
     }
     None
 }
+fn parse_nlsub<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    if object.scan_stage == 0 {
+        object.data = Node::NLSub {
+            left: Box::new(Node::Placeholder),
+            right: Box::new(Node::Placeholder)
+        };
+        object.scan_stage += 1;
+    } else if object.scan_stage == 1 {
+        let left_field = env.get_field(object.object.deref(), "left", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let mut left = JavaASTObject::new(left_field);
+        let left_value = parse_node(env, &mut left);
+
+        let right_field = env.get_field(object.object.deref(), "right", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let mut right = JavaASTObject::new(right_field);
+        let right_value = parse_node(env, &mut right);
+
+        let mut temp_data = object.data.clone();
+        match temp_data {
+            Node::NLSub { ref mut left, ref mut right } => {
+                *left = Box::new(left_value.unwrap().clone());
+                *right = Box::new(right_value.unwrap().clone());
+            },
+            _ => panic!("NLSub data isn't an NLSub!")
+        }
+        object.data = temp_data;
+        object.scan_stage += 1;
+    } else {
+        return Some(object.data.clone());
+    }
+    None
+}
 fn parse_nlmul<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
     if object.scan_stage == 0 {
         object.data = Node::NLMul {
@@ -720,6 +806,130 @@ fn parse_nlcmp<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Opti
                 *right = Box::new(right_value.unwrap().clone());
             },
             _ => panic!("NLCmp data isn't an NLCmp!")
+        }
+        object.data = temp_data;
+        object.scan_stage += 1;
+    } else {
+        return Some(object.data.clone());
+    }
+    None
+}
+fn parse_nfmul<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    if object.scan_stage == 0 {
+        object.data = Node::NFMul {
+            left: Box::new(Node::Placeholder),
+            right: Box::new(Node::Placeholder)
+        };
+        object.scan_stage += 1;
+    } else if object.scan_stage == 1 {
+        let left_field = env.get_field(object.object.deref(), "left", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let mut left = JavaASTObject::new(left_field);
+        let left_value = parse_node(env, &mut left);
+
+        let right_field = env.get_field(object.object.deref(), "right", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let mut right = JavaASTObject::new(right_field);
+        let right_value = parse_node(env, &mut right);
+
+        let mut temp_data = object.data.clone();
+        match temp_data {
+            Node::NFMul { ref mut left, ref mut right } => {
+                *left = Box::new(left_value.unwrap().clone());
+                *right = Box::new(right_value.unwrap().clone());
+            },
+            _ => panic!("NFMul data isn't an NFMul!")
+        }
+        object.data = temp_data;
+        object.scan_stage += 1;
+    } else {
+        return Some(object.data.clone());
+    }
+    None
+}
+fn parse_nfdiv<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    if object.scan_stage == 0 {
+        object.data = Node::NFDiv {
+            left: Box::new(Node::Placeholder),
+            right: Box::new(Node::Placeholder)
+        };
+        object.scan_stage += 1;
+    } else if object.scan_stage == 1 {
+        let left_field = env.get_field(object.object.deref(), "left", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let mut left = JavaASTObject::new(left_field);
+        let left_value = parse_node(env, &mut left);
+
+        let right_field = env.get_field(object.object.deref(), "right", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let mut right = JavaASTObject::new(right_field);
+        let right_value = parse_node(env, &mut right);
+
+        let mut temp_data = object.data.clone();
+        match temp_data {
+            Node::NFDiv { ref mut left, ref mut right } => {
+                *left = Box::new(left_value.unwrap().clone());
+                *right = Box::new(right_value.unwrap().clone());
+            },
+            _ => panic!("NFDiv data isn't an NFDiv!")
+        }
+        object.data = temp_data;
+        object.scan_stage += 1;
+    } else {
+        return Some(object.data.clone());
+    }
+    None
+}
+fn parse_ndadd<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    if object.scan_stage == 0 {
+        object.data = Node::NDAdd {
+            left: Box::new(Node::Placeholder),
+            right: Box::new(Node::Placeholder)
+        };
+        object.scan_stage += 1;
+    } else if object.scan_stage == 1 {
+        let left_field = env.get_field(object.object.deref(), "left", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let mut left = JavaASTObject::new(left_field);
+        let left_value = parse_node(env, &mut left);
+
+        let right_field = env.get_field(object.object.deref(), "right", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let mut right = JavaASTObject::new(right_field);
+        let right_value = parse_node(env, &mut right);
+
+        let mut temp_data = object.data.clone();
+        match temp_data {
+            Node::NDAdd { ref mut left, ref mut right } => {
+                *left = Box::new(left_value.unwrap().clone());
+                *right = Box::new(right_value.unwrap().clone());
+            },
+            _ => panic!("NDAdd data isn't an NDAdd!")
+        }
+        object.data = temp_data;
+        object.scan_stage += 1;
+    } else {
+        return Some(object.data.clone());
+    }
+    None
+}
+fn parse_nddiv<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    if object.scan_stage == 0 {
+        object.data = Node::NDDiv {
+            left: Box::new(Node::Placeholder),
+            right: Box::new(Node::Placeholder)
+        };
+        object.scan_stage += 1;
+    } else if object.scan_stage == 1 {
+        let left_field = env.get_field(object.object.deref(), "left", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let mut left = JavaASTObject::new(left_field);
+        let left_value = parse_node(env, &mut left);
+
+        let right_field = env.get_field(object.object.deref(), "right", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let mut right = JavaASTObject::new(right_field);
+        let right_value = parse_node(env, &mut right);
+
+        let mut temp_data = object.data.clone();
+        match temp_data {
+            Node::NDDiv { ref mut left, ref mut right } => {
+                *left = Box::new(left_value.unwrap().clone());
+                *right = Box::new(right_value.unwrap().clone());
+            },
+            _ => panic!("NDDiv data isn't an NDDiv!")
         }
         object.data = temp_data;
         object.scan_stage += 1;
@@ -823,6 +1033,56 @@ fn parse_nlreturn<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> O
                 *obj = Box::new(last_value.unwrap().clone());
             },
             _ => panic!("NLReturn data isn't an NLReturn!")
+        };
+        object.data = temp_data;
+        object.scan_stage += 1;
+    } else {
+        return Some(object.data.clone());
+    }
+    None
+}
+fn parse_nfreturn<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    if object.scan_stage == 0 {
+        object.data = Node::NFReturn {
+            obj: Box::new(Node::Placeholder)
+        };
+        object.scan_stage += 1;
+    } else if object.scan_stage == 1 {
+        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let mut node = JavaASTObject::new(node_jvalue);
+
+        let last_value = parse_node(env, &mut node);
+        let mut temp_data = object.data.clone();
+        match temp_data {
+            Node::NFReturn { ref mut obj } => {
+                *obj = Box::new(last_value.unwrap().clone());
+            },
+            _ => panic!("NFReturn data isn't an NFReturn!")
+        };
+        object.data = temp_data;
+        object.scan_stage += 1;
+    } else {
+        return Some(object.data.clone());
+    }
+    None
+}
+fn parse_ndreturn<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    if object.scan_stage == 0 {
+        object.data = Node::NDReturn {
+            obj: Box::new(Node::Placeholder)
+        };
+        object.scan_stage += 1;
+    } else if object.scan_stage == 1 {
+        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let mut node = JavaASTObject::new(node_jvalue);
+
+        let last_value = parse_node(env, &mut node);
+        let mut temp_data = object.data.clone();
+        match temp_data {
+            Node::NDReturn { ref mut obj } => {
+                *obj = Box::new(last_value.unwrap().clone());
+            },
+            _ => panic!("NDReturn data isn't an NDReturn!")
         };
         object.data = temp_data;
         object.scan_stage += 1;

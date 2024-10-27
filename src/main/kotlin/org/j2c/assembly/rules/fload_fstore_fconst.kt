@@ -18,6 +18,12 @@ object FLOAD {
 
 @RuleContainer
 object FSTORE {
+    val FSTORE = Rule(Opcode.FSTORE) { instructions, pos, _, vars, stack ->
+        val i = instructions.byteAt(pos + 1)
+        val newV = stack.pop()
+        vars[i] = "fvar$i"
+        stack.add(NAssignment("fvar$i", newV))
+    }
     val FSTORE_3 = Rule(Opcode.FSTORE_3) { _, _, _, vars, stack ->
         val newV = stack.pop()
         vars[3] = "fvar3"

@@ -33,15 +33,33 @@ object LSTORE {
         vars[i] =  "lvar$i"
         stack.add(NAssignment("lvar$i", newV))
     }
+    val LSTORE_0 = Rule(Opcode.LSTORE_0) { _, _, _, vars, stack ->
+        val newV = stack.pop()
+        vars[0] = "lvar0"
+        stack.add(NAssignment("lvar0", newV))
+    }
     val LSTORE_1 = Rule(Opcode.LSTORE_1) { _, _, _, vars, stack ->
         val newV = stack.pop()
         vars[1] = "lvar1"
         stack.add(NAssignment("lvar1", newV))
     }
+    val LSTORE_2 = Rule(Opcode.LSTORE_2) { _, _, _, vars, stack ->
+        val newV = stack.pop()
+        vars[1] = "lvar2"
+        stack.add(NAssignment("lvar2", newV))
+    }
+    val LSTORE_3 = Rule(Opcode.LSTORE_3) { _, _, _, vars, stack ->
+        val newV = stack.pop()
+        vars[1] = "lvar3"
+        stack.add(NAssignment("lvar3", newV))
+    }
 }
 
 @RuleContainer
 object LCONST {
+    val LCONST_0 = Rule(Opcode.LCONST_0) { _, _, _, _, stack ->
+        stack.add(NLong(0L))
+    }
     val LCONST_1 = Rule(Opcode.LCONST_1) { _, _, _, _, stack ->
         stack.add(NLong(1L))
     }

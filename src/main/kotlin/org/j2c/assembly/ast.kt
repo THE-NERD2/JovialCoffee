@@ -112,17 +112,29 @@ class NNew(val clazz: String): Node("NNew") {
 sealed class NAdd(name: String, val left: Node, val right: Node): Node(name) {
     override fun toString() = "$left + $right"
 }
+sealed class NSub(name: String, val left: Node, val right: Node): Node(name) {
+    override fun toString() = "$left - $right"
+}
 sealed class NMul(name: String, val left: Node, val right: Node): Node(name) {
     override fun toString() = "$left * $right"
+}
+sealed class NDiv(name: String, val left: Node, val right: Node): Node(name) {
+    override fun toString() = "$left / $right"
 }
 sealed class NCmp(name: String, val left: Node, val right: Node): Node(name) {
     override fun toString() = "$left vs $right"
 }
 class NIAdd(left: Node, right: Node): NAdd("NIAdd", left, right)
 class NIMul(left: Node, right: Node): NMul("NIMul", left, right)
+class NIDiv(left: Node, right: Node): NDiv("NIDiv", left, right)
 class NLAdd(left: Node, right: Node): NAdd("NLAdd", left, right)
+class NLSub(left: Node, right: Node): NSub("NLSub", left, right)
 class NLMul(left: Node, right: Node): NMul("NLMul", left, right)
 class NLCmp(left: Node, right: Node): NCmp("NLCmp", left, right)
+class NFMul(left: Node, right: Node): NMul("NFMul", left, right)
+class NFDiv(left: Node, right: Node): NDiv("NFDiv", left, right)
+class NDAdd(left: Node, right: Node): NAdd("NDAdd", left, right)
+class NDDiv(left: Node, right: Node): NDiv("NDDiv", left, right)
 
 class NArrayLength(val array: Node): Node("NArrayLength") {
     override fun toString() = "#$array"
@@ -137,6 +149,8 @@ sealed class NValueReturn(name: String, val v: Node): Node(name) {
 class NAReturn(v: Node): NValueReturn("NAReturn", v)
 class NIReturn(v: Node): NValueReturn("NIReturn", v)
 class NLReturn(v: Node): NValueReturn("NLReturn", v)
+class NFReturn(v: Node): NValueReturn("NFReturn", v)
+class NDReturn(v: Node): NValueReturn("NDReturn", v)
 
 class NAThrow(val v: Node): Node("NAThrow") {
     override fun toString() = "throw $v"

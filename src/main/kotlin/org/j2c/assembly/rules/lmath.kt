@@ -4,6 +4,7 @@ import javassist.bytecode.Opcode
 import org.j2c.assembly.NLAdd
 import org.j2c.assembly.NLCmp
 import org.j2c.assembly.NLMul
+import org.j2c.assembly.NLSub
 
 @RuleContainer
 object LMATH {
@@ -11,6 +12,11 @@ object LMATH {
         val v2 = stack.pop()
         val v1 = stack.pop()
         stack.add(NLAdd(v1, v2))
+    }
+    val LSUB = Rule(Opcode.LSUB) { _, _, _, _, stack ->
+        val v2 = stack.pop()
+        val v1 = stack.pop()
+        stack.add(NLSub(v1, v2))
     }
     val LMUL = Rule(Opcode.LMUL) { _, _, _, _, stack ->
         val v2 = stack.pop()
