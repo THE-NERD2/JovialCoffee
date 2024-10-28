@@ -11,6 +11,15 @@ object FLOAD {
         val i = instructions.byteAt(pos + 1)
         stack.add(NReference(vars[i] ?: "???"))
     }
+    val FLOAD_0 = Rule(Opcode.FLOAD_0) { _, _, _, vars, stack ->
+        stack.add(NReference(vars[0] ?: "???"))
+    }
+    val FLOAD_1 = Rule(Opcode.FLOAD_1) { _, _, _, vars, stack ->
+        stack.add(NReference(vars[1] ?: "???"))
+    }
+    val FLOAD_2 = Rule(Opcode.FLOAD_2) { _, _, _, vars, stack ->
+        stack.add(NReference(vars[2] ?: "???"))
+    }
     val FLOAD_3 = Rule(Opcode.FLOAD_3) { _, _, _, vars, stack ->
         stack.add(NReference(vars[3] ?: "???"))
     }
@@ -23,6 +32,21 @@ object FSTORE {
         val newV = stack.pop()
         vars[i] = "fvar$i"
         stack.add(NAssignment("fvar$i", newV))
+    }
+    val FSTORE_0 = Rule(Opcode.FSTORE_0) { _, _, _, vars, stack ->
+        val newV = stack.pop()
+        vars[0] = "fvar0"
+        stack.add(NAssignment("fvar0", newV))
+    }
+    val FSTORE_1 = Rule(Opcode.FSTORE_1) { _, _, _, vars, stack ->
+        val newV = stack.pop()
+        vars[1] = "fvar1"
+        stack.add(NAssignment("fvar1", newV))
+    }
+    val FSTORE_2 = Rule(Opcode.FSTORE_2) { _, _, _, vars, stack ->
+        val newV = stack.pop()
+        vars[2] = "fvar2"
+        stack.add(NAssignment("fvar2", newV))
     }
     val FSTORE_3 = Rule(Opcode.FSTORE_3) { _, _, _, vars, stack ->
         val newV = stack.pop()

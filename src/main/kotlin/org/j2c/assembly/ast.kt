@@ -125,15 +125,21 @@ sealed class NCmp(name: String, val left: Node, val right: Node): Node(name) {
     override fun toString() = "$left vs $right"
 }
 class NIAdd(left: Node, right: Node): NAdd("NIAdd", left, right)
+class NISub(left: Node, right: Node): NSub("NISub", left, right)
 class NIMul(left: Node, right: Node): NMul("NIMul", left, right)
 class NIDiv(left: Node, right: Node): NDiv("NIDiv", left, right)
 class NLAdd(left: Node, right: Node): NAdd("NLAdd", left, right)
 class NLSub(left: Node, right: Node): NSub("NLSub", left, right)
 class NLMul(left: Node, right: Node): NMul("NLMul", left, right)
+class NLDiv(left: Node, right: Node): NDiv("NLDiv", left, right)
 class NLCmp(left: Node, right: Node): NCmp("NLCmp", left, right)
+class NFAdd(left: Node, right: Node): NAdd("NFAdd", left, right)
+class NFSub(left: Node, right: Node): NSub("NFSub", left, right)
 class NFMul(left: Node, right: Node): NMul("NFMul", left, right)
 class NFDiv(left: Node, right: Node): NDiv("NFDiv", left, right)
 class NDAdd(left: Node, right: Node): NAdd("NDAdd", left, right)
+class NDSub(left: Node, right: Node): NSub("NDSub", left, right)
+class NDMul(left: Node, right: Node): NMul("NDMul", left, right)
 class NDDiv(left: Node, right: Node): NDiv("NDDiv", left, right)
 
 class NArrayLength(val array: Node): Node("NArrayLength") {
