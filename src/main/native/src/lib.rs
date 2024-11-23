@@ -253,20 +253,8 @@ fn parse_node<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Optio
             "NReturn" => {
                 last_result = parse_nreturn(env, object);
             },
-            "NAReturn" => {
-                last_result = parse_nareturn(env, object);
-            },
-            "NIReturn" => {
-                last_result = parse_nireturn(env, object);
-            },
-            "NLReturn" => {
-                last_result = parse_nlreturn(env, object);
-            },
-            "NFReturn" => {
-                last_result = parse_nfreturn(env, object);
-            },
-            "NDReturn" => {
-                last_result = parse_ndreturn(env, object);
+            "NValueReturn" => {
+                last_result = parse_nvaluereturn(env, object);
             },
             "NAThrow" => {
                 last_result = parse_nathrow(env, object);
@@ -636,10 +624,13 @@ fn parse_narraylength<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) 
 fn parse_nreturn<'a>(_: &mut JNIEnv<'a>, _: &mut JavaASTObject<'a>) -> Option<Node> {
     Some(Node::NReturn)
 }
-fn parse_nareturn<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+fn parse_nvaluereturn<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
     if object.scan_stage == 0 {
-        object.data = Node::NAReturn {
-            obj: Box::new(Node::Placeholder)
+        let type_field = env.get_field(object.object.deref(), "type", "Ljava/lang/String;").unwrap().l().unwrap();
+        let return_type: String = env.get_string(&JString::from(type_field)).unwrap().into();
+        object.data = Node::NValueReturn {
+            return_type,
+            v: Box::new(Node::Placeholder)
         };
         object.scan_stage += 1;
     } else if object.scan_stage == 1 {
@@ -649,110 +640,10 @@ fn parse_nareturn<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> O
         let last_value = parse_node(env, &mut node);
         let mut temp_data = object.data.clone();
         match temp_data {
-            Node::NAReturn { ref mut obj } => {
-                *obj = Box::new(last_value.unwrap().clone());
+            Node::NValueReturn { ref mut v, .. } => {
+                *v = Box::new(last_value.unwrap().clone());
             },
-            _ => panic!("NAReturn data isn't an NAReturn!")
-        };
-        object.data = temp_data;
-        object.scan_stage += 1;
-    } else {
-        return Some(object.data.clone());
-    }
-    None
-}
-fn parse_nireturn<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
-    if object.scan_stage == 0 {
-        object.data = Node::NIReturn {
-            obj: Box::new(Node::Placeholder)
-        };
-        object.scan_stage += 1;
-    } else if object.scan_stage == 1 {
-        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
-        let mut node = JavaASTObject::new(node_jvalue);
-
-        let last_value = parse_node(env, &mut node);
-        let mut temp_data = object.data.clone();
-        match temp_data {
-            Node::NIReturn { ref mut obj } => {
-                *obj = Box::new(last_value.unwrap().clone());
-            },
-            _ => panic!("NIReturn data isn't an NIReturn!")
-        };
-        object.data = temp_data;
-        object.scan_stage += 1;
-    } else {
-        return Some(object.data.clone());
-    }
-    None
-}
-fn parse_nlreturn<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
-    if object.scan_stage == 0 {
-        object.data = Node::NLReturn {
-            obj: Box::new(Node::Placeholder)
-        };
-        object.scan_stage += 1;
-    } else if object.scan_stage == 1 {
-        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
-        let mut node = JavaASTObject::new(node_jvalue);
-
-        let last_value = parse_node(env, &mut node);
-        let mut temp_data = object.data.clone();
-        match temp_data {
-            Node::NLReturn { ref mut obj } => {
-                *obj = Box::new(last_value.unwrap().clone());
-            },
-            _ => panic!("NLReturn data isn't an NLReturn!")
-        };
-        object.data = temp_data;
-        object.scan_stage += 1;
-    } else {
-        return Some(object.data.clone());
-    }
-    None
-}
-fn parse_nfreturn<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
-    if object.scan_stage == 0 {
-        object.data = Node::NFReturn {
-            obj: Box::new(Node::Placeholder)
-        };
-        object.scan_stage += 1;
-    } else if object.scan_stage == 1 {
-        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
-        let mut node = JavaASTObject::new(node_jvalue);
-
-        let last_value = parse_node(env, &mut node);
-        let mut temp_data = object.data.clone();
-        match temp_data {
-            Node::NFReturn { ref mut obj } => {
-                *obj = Box::new(last_value.unwrap().clone());
-            },
-            _ => panic!("NFReturn data isn't an NFReturn!")
-        };
-        object.data = temp_data;
-        object.scan_stage += 1;
-    } else {
-        return Some(object.data.clone());
-    }
-    None
-}
-fn parse_ndreturn<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
-    if object.scan_stage == 0 {
-        object.data = Node::NDReturn {
-            obj: Box::new(Node::Placeholder)
-        };
-        object.scan_stage += 1;
-    } else if object.scan_stage == 1 {
-        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
-        let mut node = JavaASTObject::new(node_jvalue);
-
-        let last_value = parse_node(env, &mut node);
-        let mut temp_data = object.data.clone();
-        match temp_data {
-            Node::NDReturn { ref mut obj } => {
-                *obj = Box::new(last_value.unwrap().clone());
-            },
-            _ => panic!("NDReturn data isn't an NDReturn!")
+            _ => panic!("NValueReturn data isn't an NValueReturn!")
         };
         object.data = temp_data;
         object.scan_stage += 1;

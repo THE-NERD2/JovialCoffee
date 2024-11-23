@@ -120,14 +120,9 @@ class NArrayLength(val array: Node): Node("NArrayLength") {
 class NReturn: Node("NReturn") {
     override fun toString() = "return"
 }
-sealed class NValueReturn(name: String, val v: Node): Node(name) {
+class NValueReturn(val type: String, val v: Node): Node("NValueReturn") {
     override fun toString() = "return $v"
 }
-class NAReturn(v: Node): NValueReturn("NAReturn", v)
-class NIReturn(v: Node): NValueReturn("NIReturn", v)
-class NLReturn(v: Node): NValueReturn("NLReturn", v)
-class NFReturn(v: Node): NValueReturn("NFReturn", v)
-class NDReturn(v: Node): NValueReturn("NDReturn", v)
 
 class NAThrow(val v: Node): Node("NAThrow") {
     override fun toString() = "throw $v"

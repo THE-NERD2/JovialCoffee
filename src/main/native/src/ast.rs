@@ -35,11 +35,7 @@ pub enum Node {
     NBinOp { operand_type: String, op: String, left: Box<Node>, right: Box<Node> },
     NArrayLength { array: Box<Node> },
     NReturn,
-    NAReturn { obj: Box<Node> },
-    NIReturn { obj: Box<Node> },
-    NLReturn { obj: Box<Node> },
-    NFReturn { obj: Box<Node> },
-    NDReturn { obj: Box<Node> },
+    NValueReturn { return_type: String, v: Box<Node> },
     NAThrow { v: Box<Node> },
     
     NOther { str: String },
