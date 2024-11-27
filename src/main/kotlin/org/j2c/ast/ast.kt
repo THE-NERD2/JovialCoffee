@@ -1,8 +1,8 @@
 package org.j2c.ast
 
 import org.j2c.indentBlock
-import org.j2c.isAlreadyParsed
-import org.j2c.schedule
+import org.j2c.parsing.isAlreadyParsed
+import org.j2c.parsing.schedule
 
 abstract class Node(val astName: String) {
     abstract override fun toString(): String

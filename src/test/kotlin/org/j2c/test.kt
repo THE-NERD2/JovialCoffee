@@ -1,6 +1,7 @@
 package org.j2c
 
 import org.j2c.development.printAll
+import org.j2c.parsing.parseAndRunForEachClass
 import kotlin.test.Test
 
 class Tests {
