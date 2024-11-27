@@ -11,64 +11,64 @@ import org.j2c.getargc
 
 @RuleContainer
 object INVOKE_normal {
-    val INVOKESTATIC = Rule(Opcode.INVOKESTATIC) { instructions, pos, const, _, stack ->
-        val i = instructions.u16bitAt(pos + 1)
-        val method = findNClassByFullName(const.getMethodrefClassName(i)).cname + "_" + const.getMethodrefName(i)
-        val desc = const.getMethodrefType(i)
+    val INVOKESTATIC = Rule(Opcode.INVOKESTATIC) { state ->
+        val i = state.instructions.u16bitAt(state.pos + 1)
+        val method = findNClassByFullName(state.const.getMethodrefClassName(i)).cname + "_" + state.const.getMethodrefName(i)
+        val desc = state.const.getMethodrefType(i)
 
         val argc = getargc(desc)
         val args = arrayOfNulls<Node>(argc)
         for (j in argc - 1 downTo 0) {
-            args[j] = stack.pop()
+            args[j] = state.stack.pop()
         }
 
-        stack.add(NStaticCall(method, ArrayList(args.map { it!! })))
+        state.stack.add(NStaticCall(method, ArrayList(args.map { it!! })))
     }
-    val INVOKEINTERFACE = Rule(Opcode.INVOKEINTERFACE) { instructions, pos, const, _, stack ->
-        val i = instructions.u16bitAt(pos + 1)
-        val method = findNClassByFullName(const.getInterfaceMethodrefClassName(i)).cname + "_" + const.getInterfaceMethodrefName(i)
-        val desc = const.getInterfaceMethodrefType(i)
+    val INVOKEINTERFACE = Rule(Opcode.INVOKEINTERFACE) { state ->
+        val i = state.instructions.u16bitAt(state.pos + 1)
+        val method = findNClassByFullName(state.const.getInterfaceMethodrefClassName(i)).cname + "_" + state.const.getInterfaceMethodrefName(i)
+        val desc = state.const.getInterfaceMethodrefType(i)
 
         val argc = getargc(desc)
         val args = arrayOfNulls<Node>(argc)
         for (j in argc - 1 downTo 0) {
-            args[j] = stack.pop()
+            args[j] = state.stack.pop()
         }
-        val obj = stack.pop()
+        val obj = state.stack.pop()
 
-        stack.add(NCall(obj, method, ArrayList(args.map { it!! })))
+        state.stack.add(NCall(obj, method, ArrayList(args.map { it!! })))
     }
-    val INVOKEVIRTUAL = Rule(Opcode.INVOKEVIRTUAL) { instructions, pos, const, _, stack ->
-        val i = instructions.u16bitAt(pos + 1)
-        val method = findNClassByFullName(const.getMethodrefClassName(i)).cname + "_" + const.getMethodrefName(i)
-        val desc = const.getInterfaceMethodrefType(i)
+    val INVOKEVIRTUAL = Rule(Opcode.INVOKEVIRTUAL) { state ->
+        val i = state.instructions.u16bitAt(state.pos + 1)
+        val method = findNClassByFullName(state.const.getMethodrefClassName(i)).cname + "_" + state.const.getMethodrefName(i)
+        val desc = state.const.getInterfaceMethodrefType(i)
 
         val argc = getargc(desc)
         val args = arrayOfNulls<Node>(argc)
         for (j in argc - 1 downTo 0) {
-            args[j] = stack.pop()
+            args[j] = state.stack.pop()
         }
-        val obj = stack.pop()
+        val obj = state.stack.pop()
 
-        stack.add(NCall(obj, method, ArrayList(args.map { it!! })))
+        state.stack.add(NCall(obj, method, ArrayList(args.map { it!! })))
     }
 }
 
 @RuleContainer
 object INVOKE_strange {
-    val INVOKESPECIAL = Rule(Opcode.INVOKESPECIAL) { instructions, pos, const, _, stack ->
-        val i = instructions.u16bitAt(pos + 1)
-        val method = findNClassByFullName(const.getMethodrefClassName(i)).cname + "_" + const.getMethodrefName(i)
-        val desc = const.getInterfaceMethodrefType(i)
+    val INVOKESPECIAL = Rule(Opcode.INVOKESPECIAL) { state ->
+        val i = state.instructions.u16bitAt(state.pos + 1)
+        val method = findNClassByFullName(state.const.getMethodrefClassName(i)).cname + "_" + state.const.getMethodrefName(i)
+        val desc = state.const.getInterfaceMethodrefType(i)
 
         val argc = getargc(desc)
         val args = arrayOfNulls<Node>(argc)
         for (j in argc - 1 downTo 0) {
-            args[j] = stack.pop()
+            args[j] = state.stack.pop()
         }
-        val obj = stack.pop()
+        val obj = state.stack.pop()
 
-        stack.add(NCall(obj, method, ArrayList(args.map { it!! })))
+        state.stack.add(NCall(obj, method, ArrayList(args.map { it!! })))
     }
     //val INVOKEDYNAMIC = Rule(Opcode.INVOKEDYNAMIC) {... TODO
 }

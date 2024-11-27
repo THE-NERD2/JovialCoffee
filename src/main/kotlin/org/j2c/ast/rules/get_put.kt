@@ -11,32 +11,32 @@ import org.j2c.ast.rules.api.RuleContainer
 
 @RuleContainer
 object STATIC {
-    val GETSTATIC = Rule(Opcode.GETSTATIC) { instructions, pos, const, _, stack ->
-        val i = instructions.u16bitAt(pos + 1)
-        val fld = const.getFieldrefName(i)
-        stack.add(NStaticReference(fld))
+    val GETSTATIC = Rule(Opcode.GETSTATIC) { state ->
+        val i = state.instructions.u16bitAt(state.pos + 1)
+        val fld = state.const.getFieldrefName(i)
+        state.stack.add(NStaticReference(fld))
     }
-    val PUTSTATIC = Rule(Opcode.PUTSTATIC) { instructions, pos, const, _, stack ->
-        val i = instructions.u16bitAt(pos + 1)
-        val fld = const.getFieldrefName(i)
-        val newV = stack.pop()
-        stack.add(NStaticAssignment(fld, newV))
+    val PUTSTATIC = Rule(Opcode.PUTSTATIC) { state ->
+        val i = state.instructions.u16bitAt(state.pos + 1)
+        val fld = state.const.getFieldrefName(i)
+        val newV = state.stack.pop()
+        state.stack.add(NStaticAssignment(fld, newV))
     }
 }
 
 @RuleContainer
 object FIELD {
-    val GETFIELD = Rule(Opcode.GETFIELD) { instructions, pos, const, _, stack ->
-        val i = instructions.u16bitAt(pos + 1)
-        val obj = stack.pop()
-        val fld = findNClassByFullName(const.getFieldrefClassName(i)).cname + "_" + const.getFieldrefName(i)
-        stack.add(NBoundReference(obj, fld))
+    val GETFIELD = Rule(Opcode.GETFIELD) { state ->
+        val i = state.instructions.u16bitAt(state.pos + 1)
+        val obj = state.stack.pop()
+        val fld = findNClassByFullName(state.const.getFieldrefClassName(i)).cname + "_" + state.const.getFieldrefName(i)
+        state.stack.add(NBoundReference(obj, fld))
     }
-    val PUTFIELD = Rule(Opcode.PUTFIELD) { instructions, pos, const, _, stack ->
-        val i = instructions.u16bitAt(pos + 1)
-        val newV = stack.pop()
-        val obj = stack.pop()
-        val fld = findNClassByFullName(const.getFieldrefClassName(i)).cname + "_" + const.getFieldrefName(i)
-        stack.add(NBoundAssignment(obj, fld, newV))
+    val PUTFIELD = Rule(Opcode.PUTFIELD) { state ->
+        val i = state.instructions.u16bitAt(state.pos + 1)
+        val newV = state.stack.pop()
+        val obj = state.stack.pop()
+        val fld = findNClassByFullName(state.const.getFieldrefClassName(i)).cname + "_" + state.const.getFieldrefName(i)
+        state.stack.add(NBoundAssignment(obj, fld, newV))
     }
 }

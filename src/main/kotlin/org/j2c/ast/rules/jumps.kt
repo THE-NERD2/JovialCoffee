@@ -35,46 +35,46 @@ object GOTO { // GOTO is a little weird, needs its own group
         } catch(_: EmptyStackException) {}
     }
 
-    val GOTO = Rule(Opcode.GOTO) { instructions, pos, _, _, _ ->
-        val i = instructions.s16bitAt(pos + 1)
-        follow(instructions, pos, i)
+    val GOTO = Rule(Opcode.GOTO) { state ->
+        val i = state.instructions.s16bitAt(state.pos + 1)
+        follow(state.instructions, state.pos, i)
     }
 }
 
 @RuleContainer
 object JUMPS {
-    val RETURN = Rule(Opcode.RETURN) { instructions, _, _, _, stack ->
-        stack.add(NReturn())
-        GOTO.endFollow(instructions, stack)
+    val RETURN = Rule(Opcode.RETURN) { state ->
+        state.stack.add(NReturn())
+        GOTO.endFollow(state.instructions, state.stack)
     }
-    val ARETURN = Rule(Opcode.ARETURN) { instructions, _, _, _, stack ->
-        val v = stack.pop()
-        stack.add(NValueReturn("a", v))
-        GOTO.endFollow(instructions, stack)
+    val ARETURN = Rule(Opcode.ARETURN) { state ->
+        val v = state.stack.pop()
+        state.stack.add(NValueReturn("a", v))
+        GOTO.endFollow(state.instructions, state.stack)
     }
-    val IRETURN = Rule(Opcode.IRETURN) { instructions, _, _, _, stack ->
-        val v = stack.pop()
-        stack.add(NValueReturn("i", v))
-        GOTO.endFollow(instructions, stack)
+    val IRETURN = Rule(Opcode.IRETURN) { state ->
+        val v = state.stack.pop()
+        state.stack.add(NValueReturn("i", v))
+        GOTO.endFollow(state.instructions, state.stack)
     }
-    val LRETURN = Rule(Opcode.LRETURN) { instructions, _, _, _, stack ->
-        val v = stack.pop()
-        stack.add(NValueReturn("l", v))
-        GOTO.endFollow(instructions, stack)
+    val LRETURN = Rule(Opcode.LRETURN) { state ->
+        val v = state.stack.pop()
+        state.stack.add(NValueReturn("l", v))
+        GOTO.endFollow(state.instructions, state.stack)
     }
-    val FRETURN = Rule(Opcode.FRETURN) { instructions, _, _, _, stack ->
-        val v = stack.pop()
-        stack.add(NValueReturn("f", v))
-        GOTO.endFollow(instructions, stack)
+    val FRETURN = Rule(Opcode.FRETURN) { state ->
+        val v = state.stack.pop()
+        state.stack.add(NValueReturn("f", v))
+        GOTO.endFollow(state.instructions, state.stack)
     }
-    val DRETURN = Rule(Opcode.DRETURN) { instructions, _, _, _, stack ->
-        val v = stack.pop()
-        stack.add(NValueReturn("d", v))
-        GOTO.endFollow(instructions, stack)
+    val DRETURN = Rule(Opcode.DRETURN) { state ->
+        val v = state.stack.pop()
+        state.stack.add(NValueReturn("d", v))
+        GOTO.endFollow(state.instructions, state.stack)
     }
-    val ATHROW = Rule(Opcode.ATHROW) { instructions, _, _, _, stack ->
-        val exception = stack.pop()
-        stack.add(NAThrow(exception))
-        GOTO.endFollow(instructions, stack)
+    val ATHROW = Rule(Opcode.ATHROW) { state ->
+        val exception = state.stack.pop()
+        state.stack.add(NAThrow(exception))
+        GOTO.endFollow(state.instructions, state.stack)
     }
 }

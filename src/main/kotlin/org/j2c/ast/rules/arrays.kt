@@ -7,7 +7,7 @@ import org.j2c.ast.rules.api.RuleContainer
 
 @RuleContainer
 object ARRAYLENGTH {
-    val ARRAYLENGTH = Rule(Opcode.ARRAYLENGTH) { _, _, _, _, stack ->
-        stack.add(NArrayLength(stack.pop()))
+    val ARRAYLENGTH = Rule(Opcode.ARRAYLENGTH) { state ->
+        state.stack.add(NArrayLength(state.stack.pop()))
     }
 }

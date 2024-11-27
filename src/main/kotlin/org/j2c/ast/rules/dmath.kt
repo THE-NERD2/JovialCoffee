@@ -7,24 +7,24 @@ import org.j2c.ast.rules.api.RuleContainer
 
 @RuleContainer
 object DMATH {
-    val DADD = Rule(Opcode.DADD) { _, _, _, _, stack ->
-        val v2 = stack.pop()
-        val v1 = stack.pop()
-        stack.add(NBinOp("d", "+", v1, v2))
+    val DADD = Rule(Opcode.DADD) { state ->
+        val v2 = state.stack.pop()
+        val v1 = state.stack.pop()
+        state.stack.add(NBinOp("d", "+", v1, v2))
     }
-    val DSUB = Rule(Opcode.DSUB) { _, _, _, _, stack ->
-        val v2 = stack.pop()
-        val v1 = stack.pop()
-        stack.add(NBinOp("d", "-", v1, v2))
+    val DSUB = Rule(Opcode.DSUB) { state ->
+        val v2 = state.stack.pop()
+        val v1 = state.stack.pop()
+        state.stack.add(NBinOp("d", "-", v1, v2))
     }
-    val DMUL = Rule(Opcode.DMUL) { _, _, _, _, stack ->
-        val v2 = stack.pop()
-        val v1 = stack.pop()
-        stack.add(NBinOp("d", "*", v1, v2))
+    val DMUL = Rule(Opcode.DMUL) { state ->
+        val v2 = state.stack.pop()
+        val v1 = state.stack.pop()
+        state.stack.add(NBinOp("d", "*", v1, v2))
     }
-    val DDIV = Rule(Opcode.DDIV) { _, _, _, _, stack ->
-        val v2 = stack.pop()
-        val v1 = stack.pop()
-        stack.add(NBinOp("d", "/", v1, v2))
+    val DDIV = Rule(Opcode.DDIV) { state ->
+        val v2 = state.stack.pop()
+        val v1 = state.stack.pop()
+        state.stack.add(NBinOp("d", "/", v1, v2))
     }
 }

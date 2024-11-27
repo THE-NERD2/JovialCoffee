@@ -42,9 +42,11 @@ fun parse(name: String): NClass? {
                     val alreadyVisitedPositions = mutableSetOf<Int>()
 
                     val stack = Stack<Node>()
+                    state = ParsingState(instructions, const, vars, stack)
                     while (instructions.hasNext()) {
                         val pos = instructions.next()
                         val opcode = instructions.byteAt(pos)
+                        state.pos = pos
 
                         if(alreadyVisitedPositions.contains(pos)) {
                             InfiniteLoopException().printStackTrace()
@@ -52,7 +54,7 @@ fun parse(name: String): NClass? {
                         }
                         alreadyVisitedPositions.add(pos)
 
-                        rules.find { it.opcode == opcode }?.predicate?.invoke(instructions, pos, const, vars, stack)
+                        rules.find { it.opcode == opcode }?.predicate?.invoke(state)
                             ?: run {
                                 UnknownOpcodeException(Mnemonic.OPCODE[opcode]).printStackTrace()
                                 registerUnknownOpcode(Mnemonic.OPCODE[opcode])

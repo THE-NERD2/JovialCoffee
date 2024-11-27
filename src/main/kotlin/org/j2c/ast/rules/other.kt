@@ -11,41 +11,41 @@ import org.j2c.ast.rules.api.RuleContainer
 
 @RuleContainer
 object SIPUSH {
-    val SIPUSH = Rule(Opcode.SIPUSH) { instructions, pos, _, _, stack ->
-        val v = instructions.byteAt(pos + 1)
-        stack.add(NShort(v.toShort()))
+    val SIPUSH = Rule(Opcode.SIPUSH) { state ->
+        val v = state.instructions.byteAt(state.pos + 1)
+        state.stack.add(NShort(v.toShort()))
     }
 }
 
 @RuleContainer
 object BIPUSH {
-    val BIPUSH = Rule(Opcode.BIPUSH) { instructions, pos, _, _, stack ->
-        val v = instructions.byteAt(pos + 1)
-        stack.add(NByte(v.toByte()))
+    val BIPUSH = Rule(Opcode.BIPUSH) { state ->
+        val v = state.instructions.byteAt(state.pos + 1)
+        state.stack.add(NByte(v.toByte()))
     }
 }
 
 @RuleContainer
 object LDC {
-    val LDC = Rule(Opcode.LDC) { instructions, pos, const, _, stack ->
-        val i = instructions.byteAt(pos + 1)
-        val v = const.getLdcValue(i)
-        stack.push(NOther(v.toString()))
+    val LDC = Rule(Opcode.LDC) { state ->
+        val i = state.instructions.byteAt(state.pos + 1)
+        val v = state.const.getLdcValue(i)
+        state.stack.push(NOther(v.toString()))
     }
 }
 
 @RuleContainer
 object NEW {
-    val NEW = Rule(Opcode.NEW) { instructions, pos, const, _, stack ->
-        val i = instructions.u16bitAt(pos + 1)
-        val c = const.getClassInfo(i)
-        stack.add(NNew(findNClassByFullName(c).cname))
+    val NEW = Rule(Opcode.NEW) { state ->
+        val i = state.instructions.u16bitAt(state.pos + 1)
+        val c = state.const.getClassInfo(i)
+        state.stack.add(NNew(findNClassByFullName(c).cname))
     }
 }
 
 @RuleContainer
 object DUP {
-    val DUP = Rule(Opcode.DUP) { _, _, _, _, stack ->
-        stack.add(stack.peek())
+    val DUP = Rule(Opcode.DUP) { state ->
+        state.stack.add(state.stack.peek())
     }
 }
