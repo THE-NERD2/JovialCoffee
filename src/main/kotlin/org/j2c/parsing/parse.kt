@@ -41,7 +41,7 @@ fun parse(name: String): NClass? {
                     // Catch infinite loops (indicates a big problem)
                     val alreadyVisitedPositions = mutableSetOf<Int>()
 
-                    val stack = Stack<Node>()
+                    val stack = RetargetableCodeStack()
                     state = ParsingState(instructions, const, vars, stack)
                     while (instructions.hasNext()) {
                         val pos = instructions.next()
