@@ -1,11 +1,13 @@
-package org.j2c.assembly.rules
+package org.j2c.ast.rules
 
 import javassist.bytecode.Opcode
-import org.j2c.assembly.NByte
-import org.j2c.assembly.NNew
-import org.j2c.assembly.NOther
-import org.j2c.assembly.NShort
-import org.j2c.assembly.findNClassByFullName
+import org.j2c.ast.NByte
+import org.j2c.ast.NNew
+import org.j2c.ast.NOther
+import org.j2c.ast.NShort
+import org.j2c.ast.findNClassByFullName
+import org.j2c.ast.rules.api.Rule
+import org.j2c.ast.rules.api.RuleContainer
 
 @RuleContainer
 object SIPUSH {

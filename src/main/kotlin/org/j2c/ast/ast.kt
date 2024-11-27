@@ -1,4 +1,4 @@
-package org.j2c.assembly
+package org.j2c.ast
 
 import org.j2c.indentBlock
 import org.j2c.isAlreadyParsed

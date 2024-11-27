@@ -59,7 +59,7 @@ fn parse_nclass<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Opt
                 if fields.len() == size.try_into().unwrap() {
                     object.scan_stage += 1;
                 } else {
-                    let next_field = env.call_method(object.object.deref(), "getField", "(I)Lorg/j2c/assembly/NFieldDeclaration;", &[JValueGen::Int(fields.len().try_into().unwrap())]).unwrap().l().unwrap();
+                    let next_field = env.call_method(object.object.deref(), "getField", "(I)Lorg/j2c/ast/NFieldDeclaration;", &[JValueGen::Int(fields.len().try_into().unwrap())]).unwrap().l().unwrap();
                     let mut field = JavaASTObject::new(next_field);
 
                     let mut last_result = None;
@@ -85,7 +85,7 @@ fn parse_nclass<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Opt
                 if methods.len() == size.try_into().unwrap() {
                     object.scan_stage += 1;
                 } else {
-                    let next_method = env.call_method(object.object.deref(), "getMethod", "(I)Lorg/j2c/assembly/NMethodDeclaration;", &[JValueGen::Int(methods.len().try_into().unwrap())]).unwrap().l().unwrap();
+                    let next_method = env.call_method(object.object.deref(), "getMethod", "(I)Lorg/j2c/ast/NMethodDeclaration;", &[JValueGen::Int(methods.len().try_into().unwrap())]).unwrap().l().unwrap();
                     let mut method = JavaASTObject::new(next_method);
 
                     let mut last_result = None;
@@ -166,7 +166,7 @@ fn parse_nmethoddeclaration<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject
                 if body.len() == size.try_into().unwrap() {
                     object.scan_stage += 1;
                 } else {
-                    let next_node = env.call_method(object.object.deref(), "getBodyElement", "(I)Lorg/j2c/assembly/Node;", &[JValueGen::Int(body.len().try_into().unwrap())]).unwrap().l().unwrap();
+                    let next_node = env.call_method(object.object.deref(), "getBodyElement", "(I)Lorg/j2c/ast/Node;", &[JValueGen::Int(body.len().try_into().unwrap())]).unwrap().l().unwrap();
                     let mut node = JavaASTObject::new(next_node);
 
                     let last_result = parse_node(env, &mut node);
@@ -321,7 +321,7 @@ fn parse_nassignment<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -
         };
         object.scan_stage += 1;
     } else if object.scan_stage == 1 {
-        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
         let mut node = JavaASTObject::new(node_jvalue);
 
         let last_result = parse_node(env, &mut node);
@@ -362,7 +362,7 @@ fn parse_nstaticassignment<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<
         };
         object.scan_stage += 1;
     } else if object.scan_stage == 1 {
-        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
         let mut node = JavaASTObject::new(node_jvalue);
 
         let last_result = parse_node(env, &mut node);
@@ -390,7 +390,7 @@ fn parse_nboundreference<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a
         };
         object.scan_stage += 1;
     } else if object.scan_stage == 1 {
-        let node_jvalue = env.get_field(object.object.deref(), "obj", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let node_jvalue = env.get_field(object.object.deref(), "obj", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
         let mut node = JavaASTObject::new(node_jvalue);
 
         let last_result = parse_node(env, &mut node);
@@ -419,7 +419,7 @@ fn parse_nboundassignment<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'
         };
         object.scan_stage += 1;
     } else if object.scan_stage == 1 {
-        let node_jvalue = env.get_field(object.object.deref(), "obj", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let node_jvalue = env.get_field(object.object.deref(), "obj", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
         let mut node = JavaASTObject::new(node_jvalue);
 
         let last_result = parse_node(env, &mut node);
@@ -433,7 +433,7 @@ fn parse_nboundassignment<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'
         object.data = temp_data;
         object.scan_stage += 1;
     } else if object.scan_stage == 2 {
-        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
         let mut node = JavaASTObject::new(node_jvalue);
 
         let last_result = parse_node(env, &mut node);
@@ -468,7 +468,7 @@ fn parse_nstaticcall<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -
                 if args.len() == size.try_into().unwrap() {
                     object.scan_stage += 1;
                 } else {
-                    let next_arg_jvalue = env.call_method(object.object.deref(), "getArg", "(I)Lorg/j2c/assembly/Node;", &[JValueGen::Int(args.len().try_into().unwrap())]).unwrap().l().unwrap();
+                    let next_arg_jvalue = env.call_method(object.object.deref(), "getArg", "(I)Lorg/j2c/ast/Node;", &[JValueGen::Int(args.len().try_into().unwrap())]).unwrap().l().unwrap();
                     let mut next_arg = JavaASTObject::new(next_arg_jvalue);
 
                     let last_result = parse_node(env, &mut next_arg);
@@ -500,7 +500,7 @@ fn parse_ncall<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Opti
         };
         object.scan_stage += 1;
     } else if object.scan_stage == 1 {
-        let node_jvalue = env.get_field(object.object.deref(), "obj", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let node_jvalue = env.get_field(object.object.deref(), "obj", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
         let mut node = JavaASTObject::new(node_jvalue);
 
         let last_result = parse_node(env, &mut node);
@@ -521,7 +521,7 @@ fn parse_ncall<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Opti
                 if args.len() == size.try_into().unwrap() {
                     object.scan_stage += 1;
                 } else {
-                    let next_arg_jvalue = env.call_method(object.object.deref(), "getArg", "(I)Lorg/j2c/assembly/Node;", &[JValueGen::Int(args.len().try_into().unwrap())]).unwrap().l().unwrap();
+                    let next_arg_jvalue = env.call_method(object.object.deref(), "getArg", "(I)Lorg/j2c/ast/Node;", &[JValueGen::Int(args.len().try_into().unwrap())]).unwrap().l().unwrap();
                     let mut next_arg = JavaASTObject::new(next_arg_jvalue);
 
                     let last_result = parse_node(env, &mut next_arg);
@@ -571,11 +571,11 @@ fn parse_nbinop<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Opt
         let op_field = env.get_field(object.object.deref(), "op", "Ljava/lang/String;").unwrap().l().unwrap();
         let op_value: String = env.get_string(&JString::from(op_field)).unwrap().into();
 
-        let left_field = env.get_field(object.object.deref(), "left", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let left_field = env.get_field(object.object.deref(), "left", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
         let mut left = JavaASTObject::new(left_field);
         let left_value = parse_node(env, &mut left);
 
-        let right_field = env.get_field(object.object.deref(), "right", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let right_field = env.get_field(object.object.deref(), "right", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
         let mut right = JavaASTObject::new(right_field);
         let right_value = parse_node(env, &mut right);
 
@@ -603,7 +603,7 @@ fn parse_narraylength<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) 
         };
         object.scan_stage += 1;
     } else if object.scan_stage == 1 {
-        let node_jvalue = env.get_field(object.object.deref(), "array", "Lorg/j2c/assembly/NArrayLength;").unwrap().l().unwrap();
+        let node_jvalue = env.get_field(object.object.deref(), "array", "Lorg/j2c/ast/NArrayLength;").unwrap().l().unwrap();
         let mut node = JavaASTObject::new(node_jvalue);
 
         let last_result = parse_node(env, &mut node);
@@ -634,7 +634,7 @@ fn parse_nvaluereturn<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) 
         };
         object.scan_stage += 1;
     } else if object.scan_stage == 1 {
-        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
         let mut node = JavaASTObject::new(node_jvalue);
 
         let last_value = parse_node(env, &mut node);
@@ -659,7 +659,7 @@ fn parse_nathrow<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Op
         };
         object.scan_stage += 1;
     } else if object.scan_stage == 1 {
-        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/assembly/Node;").unwrap().l().unwrap();
+        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
         let mut node = JavaASTObject::new(node_jvalue);
 
         let last_value = parse_node(env, &mut node);

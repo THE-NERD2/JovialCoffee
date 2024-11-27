@@ -1,15 +1,20 @@
-package org.j2c.assembly.rules
+package org.j2c.ast.rules
 
 import javassist.bytecode.CodeIterator
 import javassist.bytecode.Opcode
-import org.j2c.assembly.*
+import org.j2c.ast.*
+import org.j2c.ast.rules.api.NoRule
+import org.j2c.ast.rules.api.Rule
+import org.j2c.ast.rules.api.RuleContainer
 import java.util.EmptyStackException
 import java.util.Stack
 
 @RuleContainer
 object GOTO { // GOTO is a little weird, needs its own group
-    @NoRule val posStack = Stack<Int>()
-    @NoRule val followingIfStack = Stack<Boolean>()
+    @NoRule
+    val posStack = Stack<Int>()
+    @NoRule
+    val followingIfStack = Stack<Boolean>()
     fun follow(instructions: CodeIterator, pos: Int, offset: Int, isIf: Boolean = false) {
         posStack.add(pos)
         followingIfStack.add(isIf)

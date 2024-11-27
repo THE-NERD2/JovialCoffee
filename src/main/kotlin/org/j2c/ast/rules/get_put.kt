@@ -1,11 +1,13 @@
-package org.j2c.assembly.rules
+package org.j2c.ast.rules
 
 import javassist.bytecode.Opcode
-import org.j2c.assembly.NBoundAssignment
-import org.j2c.assembly.NBoundReference
-import org.j2c.assembly.NStaticAssignment
-import org.j2c.assembly.NStaticReference
-import org.j2c.assembly.findNClassByFullName
+import org.j2c.ast.NBoundAssignment
+import org.j2c.ast.NBoundReference
+import org.j2c.ast.NStaticAssignment
+import org.j2c.ast.NStaticReference
+import org.j2c.ast.findNClassByFullName
+import org.j2c.ast.rules.api.Rule
+import org.j2c.ast.rules.api.RuleContainer
 
 @RuleContainer
 object STATIC {

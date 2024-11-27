@@ -1,4 +1,4 @@
-package org.j2c.assembly;
+package org.j2c.ast;
 
 import org.jetbrains.annotations.NotNull;
 

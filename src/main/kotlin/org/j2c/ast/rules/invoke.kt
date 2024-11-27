@@ -1,10 +1,12 @@
-package org.j2c.assembly.rules
+package org.j2c.ast.rules
 
 import javassist.bytecode.Opcode
-import org.j2c.assembly.NCall
-import org.j2c.assembly.NStaticCall
-import org.j2c.assembly.Node
-import org.j2c.assembly.findNClassByFullName
+import org.j2c.ast.NCall
+import org.j2c.ast.NStaticCall
+import org.j2c.ast.Node
+import org.j2c.ast.findNClassByFullName
+import org.j2c.ast.rules.api.Rule
+import org.j2c.ast.rules.api.RuleContainer
 import org.j2c.getargc
 
 @RuleContainer
@@ -16,11 +18,11 @@ object INVOKE_normal {
 
         val argc = getargc(desc)
         val args = arrayOfNulls<Node>(argc)
-        for (i in argc - 1 downTo 0) {
-            args[i] = stack.pop()
+        for (j in argc - 1 downTo 0) {
+            args[j] = stack.pop()
         }
 
-        stack.add(NStaticCall(method, ArrayList<Node>(args.map { it!! })))
+        stack.add(NStaticCall(method, ArrayList(args.map { it!! })))
     }
     val INVOKEINTERFACE = Rule(Opcode.INVOKEINTERFACE) { instructions, pos, const, _, stack ->
         val i = instructions.u16bitAt(pos + 1)
@@ -29,12 +31,12 @@ object INVOKE_normal {
 
         val argc = getargc(desc)
         val args = arrayOfNulls<Node>(argc)
-        for (i in argc - 1 downTo 0) {
-            args[i] = stack.pop()
+        for (j in argc - 1 downTo 0) {
+            args[j] = stack.pop()
         }
         val obj = stack.pop()
 
-        stack.add(NCall(obj, method, ArrayList<Node>(args.map { it!! })))
+        stack.add(NCall(obj, method, ArrayList(args.map { it!! })))
     }
     val INVOKEVIRTUAL = Rule(Opcode.INVOKEVIRTUAL) { instructions, pos, const, _, stack ->
         val i = instructions.u16bitAt(pos + 1)
@@ -43,12 +45,12 @@ object INVOKE_normal {
 
         val argc = getargc(desc)
         val args = arrayOfNulls<Node>(argc)
-        for (i in argc - 1 downTo 0) {
-            args[i] = stack.pop()
+        for (j in argc - 1 downTo 0) {
+            args[j] = stack.pop()
         }
         val obj = stack.pop()
 
-        stack.add(NCall(obj, method, ArrayList<Node>(args.map { it!! })))
+        stack.add(NCall(obj, method, ArrayList(args.map { it!! })))
     }
 }
 
@@ -61,12 +63,12 @@ object INVOKE_strange {
 
         val argc = getargc(desc)
         val args = arrayOfNulls<Node>(argc)
-        for (i in argc - 1 downTo 0) {
-            args[i] = stack.pop()
+        for (j in argc - 1 downTo 0) {
+            args[j] = stack.pop()
         }
         val obj = stack.pop()
 
-        stack.add(NCall(obj, method, ArrayList<Node>(args.map { it!! })))
+        stack.add(NCall(obj, method, ArrayList(args.map { it!! })))
     }
     //val INVOKEDYNAMIC = Rule(Opcode.INVOKEDYNAMIC) {... TODO
 }

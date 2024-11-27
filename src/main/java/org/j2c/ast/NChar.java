@@ -1,11 +1,11 @@
-package org.j2c.assembly;
+package org.j2c.ast;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NBoolean extends Node {
-    private final boolean value;
-    public NBoolean(boolean value) {
-        super("NBoolean");
+public class NChar extends Node {
+    private final char value;
+    public NChar(char value) {
+        super("NChar");
         this.value = value;
     }
     @Override

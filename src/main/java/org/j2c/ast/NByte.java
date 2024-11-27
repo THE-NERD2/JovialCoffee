@@ -1,11 +1,11 @@
-package org.j2c.assembly;
+package org.j2c.ast;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NChar extends Node {
-    private final char value;
-    public NChar(char value) {
-        super("NChar");
+public class NByte extends Node {
+    private final byte value;
+    public NByte(byte value) {
+        super("NByte");
         this.value = value;
     }
     @Override

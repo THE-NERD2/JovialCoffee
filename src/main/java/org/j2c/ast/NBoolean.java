@@ -1,11 +1,11 @@
-package org.j2c.assembly;
+package org.j2c.ast;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NShort extends Node {
-    private final short value;
-    public NShort(short value) {
-        super("NShort");
+public class NBoolean extends Node {
+    private final boolean value;
+    public NBoolean(boolean value) {
+        super("NBoolean");
         this.value = value;
     }
     @Override

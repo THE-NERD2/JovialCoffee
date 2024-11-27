@@ -1,11 +1,11 @@
-package org.j2c.assembly;
+package org.j2c.ast;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NLong extends Node {
-    private final long value;
-    public NLong(long value) {
-        super("NLong");
+public class NDouble extends Node {
+    private final double value;
+    public NDouble(double value) {
+        super("NDouble");
         this.value = value;
     }
     @Override

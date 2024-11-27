@@ -1,9 +1,11 @@
-package org.j2c.assembly.rules
+package org.j2c.ast.rules
 
 import javassist.bytecode.Opcode
-import org.j2c.assembly.NAssignment
-import org.j2c.assembly.NFloat
-import org.j2c.assembly.NReference
+import org.j2c.ast.NAssignment
+import org.j2c.ast.NFloat
+import org.j2c.ast.NReference
+import org.j2c.ast.rules.api.Rule
+import org.j2c.ast.rules.api.RuleContainer
 
 @RuleContainer
 object FLOAD {

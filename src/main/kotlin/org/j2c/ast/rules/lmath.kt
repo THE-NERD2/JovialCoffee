@@ -1,7 +1,9 @@
-package org.j2c.assembly.rules
+package org.j2c.ast.rules
 
 import javassist.bytecode.Opcode
-import org.j2c.assembly.NBinOp
+import org.j2c.ast.NBinOp
+import org.j2c.ast.rules.api.Rule
+import org.j2c.ast.rules.api.RuleContainer
 
 @RuleContainer
 object LMATH {

@@ -1,11 +1,11 @@
-package org.j2c.assembly;
+package org.j2c.ast;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NDouble extends Node {
-    private final double value;
-    public NDouble(double value) {
-        super("NDouble");
+public class NFloat extends Node {
+    private final float value;
+    public NFloat(float value) {
+        super("NFloat");
         this.value = value;
     }
     @Override

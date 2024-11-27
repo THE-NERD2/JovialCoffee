@@ -1,8 +1,8 @@
-package org.j2c.assembly.rules
+package org.j2c.ast.rules.api
 
 import javassist.bytecode.CodeIterator
 import javassist.bytecode.ConstPool
-import org.j2c.assembly.Node
+import org.j2c.ast.Node
 import java.util.Stack
 
 @Target(AnnotationTarget.CLASS)

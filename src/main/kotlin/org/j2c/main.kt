@@ -4,15 +4,15 @@ import javassist.ClassPool
 import javassist.CtClass
 import javassist.NotFoundException
 import javassist.bytecode.Mnemonic
-import org.j2c.assembly.NClass
-import org.j2c.assembly.NFieldDeclaration
-import org.j2c.assembly.NMethodDeclaration
-import org.j2c.assembly.Node
-import org.j2c.assembly.clearNClasses
-import org.j2c.assembly.popNClass
-import org.j2c.assembly.rules.NoRule
-import org.j2c.assembly.rules.Rule
-import org.j2c.assembly.rules.RuleContainer
+import org.j2c.ast.NClass
+import org.j2c.ast.NFieldDeclaration
+import org.j2c.ast.NMethodDeclaration
+import org.j2c.ast.Node
+import org.j2c.ast.clearNClasses
+import org.j2c.ast.popNClass
+import org.j2c.ast.rules.api.NoRule
+import org.j2c.ast.rules.api.Rule
+import org.j2c.ast.rules.api.RuleContainer
 import org.j2c.development.registerUnknownOpcode
 import org.j2c.exceptions.InfiniteLoopException
 import org.j2c.exceptions.UnknownOpcodeException
@@ -110,8 +110,8 @@ fun parse(name: String): NClass? {
 fun init(path: String) {
     val reflections = Reflections(
         ConfigurationBuilder()
-            .forPackages("org.j2c.assembly.rules")
-            .filterInputsBy(FilterBuilder().includePackage("org.j2c.assembly.rules"))
+            .forPackages("org.j2c.ast.rules")
+            .filterInputsBy(FilterBuilder().includePackage("org.j2c.ast.rules"))
             .setScanners(SubTypesScanner(false))
     )
     val classes = reflections.getSubTypesOf(Any::class.java)
