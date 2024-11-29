@@ -2,7 +2,7 @@ package org.j2c.ast
 
 import org.j2c.indentBlock
 
-class NIf(val condition: Node): Node("NIf") {
+class NIf(val condition: Node): ControlFlowNode("NIf") {
     val ifBranch = arrayListOf<Node>()
     val elseBranch = arrayListOf<Node>() // Will remain empty if irrelevant
     override fun toString(): String {

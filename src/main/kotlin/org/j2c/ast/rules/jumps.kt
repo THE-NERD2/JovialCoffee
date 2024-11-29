@@ -5,9 +5,9 @@ import org.j2c.ast.*
 import org.j2c.ast.rules.api.NoRule
 import org.j2c.ast.rules.api.Rule
 import org.j2c.ast.rules.api.RuleContainer
+import org.j2c.exceptions.InfiniteLoopException
 import org.j2c.parsing.ParsingState
-import java.util.EmptyStackException
-import java.util.Stack
+import java.util.*
 
 @RuleContainer
 object GOTO { // GOTO is a little weird, needs its own group
@@ -20,6 +20,9 @@ object GOTO { // GOTO is a little weird, needs its own group
     @NoRule
     val followTypeStack = Stack<FollowType>()
     fun follow(state: ParsingState, offset: Int, ifCondition: Node? = null) {
+        if(offset < 0) { // Loop construct
+            throw InfiniteLoopException() // Parser can't handle this yet
+        }
         posStack.add(state.pos)
         state.instructions.move(state.pos + offset)
         if(ifCondition != null) {
@@ -32,27 +35,27 @@ object GOTO { // GOTO is a little weird, needs its own group
         }
     }
     fun endFollow(state: ParsingState) {
-        try {
-            // Do not go back to GOTO, but go back to else branch
-            var type = FollowType.GOTO
-            while(type == FollowType.GOTO && followTypeStack.size > 0) {
-                type = followTypeStack.pop()
-                when(type) {
-                    FollowType.IF -> {
-                        // Don't re-follow the jump! (3 because jump takes up more than 1)
-                        state.instructions.move(posStack.pop() + 3)
-                        state.stack.leaveBlock()
-                        state.stack.enterBlock(state.stack.getCurrentIfNode().elseBranch)
-                    }
-                    FollowType.ELSE -> { // Will never happen right now
-                        // TODO: this should handle when if statements are finished, which currently does not happen.
-                    }
-                    FollowType.GOTO -> {
-                        posStack.pop()
-                    }
+        // Do not go back to GOTO, but go back to else branch
+        var type = FollowType.GOTO
+        while(type != FollowType.IF && followTypeStack.size > 0) {
+            type = followTypeStack.pop()
+            when(type) {
+                FollowType.IF -> {
+                    // Don't re-follow the jump! (3 because jump takes up more than 1)
+                    state.instructions.move(posStack.pop() + 3)
+                    state.stack.leaveBlock()
+                    state.stack.enterBlock(state.stack.getIfNodeInLastBlock().elseBranch)
+                    followTypeStack.add(FollowType.ELSE)
+                    break // Don't immediately remove the else block
+                }
+                FollowType.ELSE -> {
+                    state.stack.leaveBlock()
+                }
+                FollowType.GOTO -> {
+                    posStack.pop()
                 }
             }
-        } catch(_: EmptyStackException) {}
+        }
     }
 
     val GOTO = Rule(Opcode.GOTO) { state ->
