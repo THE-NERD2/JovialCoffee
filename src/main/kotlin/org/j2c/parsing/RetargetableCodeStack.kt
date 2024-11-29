@@ -1,22 +1,45 @@
 package org.j2c.parsing
 
+import org.j2c.ast.ControlFlowNode
 import org.j2c.ast.Node
 import org.j2c.ast.NIf
 import java.util.*
 
-class RetargetableCodeStack: Stack<Node>() {
-    private val blocks = Stack<ArrayList<Node>>()
+class RetargetableCodeStack {
+    private val blocks = arrayListOf(arrayListOf<Node>())
     fun enterBlock(block: ArrayList<Node>) = blocks.add(block)
-    fun leaveBlock() = blocks.pop()
-    fun getCurrentIfNode(): NIf {
-        try {
-            val blocksArray = blocks.toList()
-            return blocksArray[blocksArray.size - 2].last() as NIf
-        } catch(_: IndexOutOfBoundsException) {
-            return super.peek() as NIf
+    fun leaveBlock() = blocks.removeLast()
+    fun getIfNodeInLastBlock() = blocks.last().last() as NIf
+    fun getTopBlock() = blocks[0]
+    fun add(element: Node) = blocks.last().add(element)
+    fun pop(): Node { // This will try to get the last non-control-flow node in each block until it finds one
+        val tempBlocks = blocks.map { it.clone() as ArrayList<Node> } as ArrayList<ArrayList<Node>>
+
+        var blockIndex = blocks.size
+        var nodeIndex: Int? = null
+        var ret: Node? = null
+        while(ret == null) {
+            val block = tempBlocks.removeLast()
+            nodeIndex = block.size
+            do {
+                ret = block.removeLastOrNull()
+                nodeIndex--
+            } while(ret is ControlFlowNode)
+            blockIndex--
         }
+        blocks[blockIndex].removeAt(nodeIndex!!)
+        return ret
     }
-    override fun add(element: Node) = blocks.lastOrNull()?.add(element) ?: super.add(element)
-    override fun pop() = blocks.lastOrNull()?.removeLast() ?: super.pop()
-    override fun peek() = blocks.lastOrNull()?.last() ?: super.peek()
+    fun peek(): Node { // Does the same as pop()
+        val tempBlocks = blocks.map { it.clone() as ArrayList<Node> } as ArrayList<ArrayList<Node>>
+
+        var ret: Node? = null
+        while(ret == null) {
+            val block = tempBlocks.removeLast()
+            do {
+                ret = block.removeLastOrNull()
+            } while(ret is ControlFlowNode)
+        }
+        return ret
+    }
 }
