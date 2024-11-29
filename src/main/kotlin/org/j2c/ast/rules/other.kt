@@ -48,4 +48,28 @@ object DUP {
     val DUP = Rule(Opcode.DUP) { state ->
         state.stack.add(state.stack.peek())
     }
+    val DUP2 = Rule(Opcode.DUP2) { state ->
+        val v = state.stack.peek()
+        state.stack.add(v)
+        state.stack.add(v)
+    }
+    val DUP_X1 = Rule(Opcode.DUP_X1) { state ->
+        val v2 = state.stack.pop()
+        val v1 = state.stack.pop()
+        state.stack.add(v2)
+        state.stack.add(v1)
+        state.stack.add(v2)
+    }
+}
+
+@RuleContainer
+object POP {
+    val POP = Rule(Opcode.POP) { state ->
+        state.stack.pop()
+    }
+}
+
+@RuleContainer
+object NOP {
+    val NOP = Rule(Opcode.NOP) { state -> }
 }

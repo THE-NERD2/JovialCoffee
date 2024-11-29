@@ -32,4 +32,34 @@ object LMATH {
         val v1 = state.stack.pop()
         state.stack.add(NBinOp("l", "vs", v1, v2))
     }
+    val LUSHR = Rule(Opcode.LUSHR) { state ->
+        val v2 = state.stack.pop()
+        val v1 = state.stack.pop()
+        state.stack.add(NBinOp("l", "ushr", v1, v2))
+    }
+    val LSHR = Rule(Opcode.LSHR) { state ->
+        val v2 = state.stack.pop()
+        val v1 = state.stack.pop()
+        state.stack.add(NBinOp("l", "shr", v1, v2))
+    }
+    val LSHL = Rule(Opcode.LSHL) { state ->
+        val v2 = state.stack.pop()
+        val v1 = state.stack.pop()
+        state.stack.add(NBinOp("l", "shl", v1, v2))
+    }
+    val LOR = Rule(Opcode.LOR) { state ->
+        val v2 = state.stack.pop()
+        val v1 = state.stack.pop()
+        state.stack.add(NBinOp("l", "|", v1, v2))
+    }
+    val LAND = Rule(Opcode.LAND) { state ->
+        val v2 = state.stack.pop()
+        val v1 = state.stack.pop()
+        state.stack.add(NBinOp("l", "&", v1, v2))
+    }
+    val LXOR = Rule(Opcode.LXOR) { state ->
+        val v2 = state.stack.pop()
+        val v1 = state.stack.pop()
+        state.stack.add(NBinOp("l", "xor", v1, v2))
+    }
 }

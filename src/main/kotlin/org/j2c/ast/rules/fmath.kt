@@ -27,4 +27,9 @@ object FMATH {
         val v1 = state.stack.pop()
         state.stack.add(NBinOp("f", "/", v1, v2))
     }
+    val FCMPG = Rule(Opcode.FCMPG) { state ->
+        val v2 = state.stack.pop()
+        val v1 = state.stack.pop()
+        state.stack.add(NBinOp("f", "cmpg", v1, v2))
+    }
 }

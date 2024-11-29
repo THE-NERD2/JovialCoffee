@@ -27,4 +27,9 @@ object DMATH {
         val v1 = state.stack.pop()
         state.stack.add(NBinOp("d", "/", v1, v2))
     }
+    val DCMPL = Rule(Opcode.DCMPL) { state ->
+        val v2 = state.stack.pop()
+        val v1 = state.stack.pop()
+        state.stack.add(NBinOp("d", "cmpl", v1, v2))
+    }
 }
