@@ -69,8 +69,7 @@ fun parse(name: String): NClass? {
         }
     } catch(_: KotlinReflectionInternalError) {
         popNClass()
-    } catch(e: Exception) {
-        e.printStackTrace()
+    } catch(_: Exception) {
         popNClass()
     } finally {
         finishedProgress(name)
