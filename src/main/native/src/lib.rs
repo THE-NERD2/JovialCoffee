@@ -247,6 +247,15 @@ fn parse_node<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Optio
             "NBinOp" => {
                 last_result = parse_nbinop(env, object);
             },
+            "NNewArray" => {
+                last_result = parse_nnewarray(env, object);
+            },
+            "NArrayReference" => {
+                last_result = parse_narrayreference(env, object);
+            },
+            "NArrayAssignment" => {
+                last_result = parse_narrayassignment(env, object);
+            },
             "NArrayLength" => {
                 last_result = parse_narraylength(env, object);
             },
@@ -590,6 +599,70 @@ fn parse_nbinop<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Opt
             _ => panic!("NDDiv data isn't an NDDiv!")
         }
         object.data = temp_data;
+        object.scan_stage += 1;
+    } else {
+        return Some(object.data.clone());
+    }
+    None
+}
+fn parse_nnewarray<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    if object.scan_stage == 0 {
+        let type_jvalue = env.get_field(object.object.deref(), "type", "Ljava/lang/String;").unwrap().l().unwrap();
+        let array_type: String = env.get_string(&JString::from(type_jvalue)).unwrap().into();
+        
+        let length_jvalue = env.get_field(object.object.deref(), "length", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
+        let mut length = JavaASTObject::new(length_jvalue);
+        let last_result = parse_node(env, &mut length);
+
+        object.data = Node::NNewArray {
+            array_type,
+            length: Box::new(last_result.unwrap().clone())
+        };
+        object.scan_stage += 1;
+    } else {
+        return Some(object.data.clone());
+    }
+    None
+}
+fn parse_narrayreference<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    if object.scan_stage == 0 {
+        let array_jvalue = env.get_field(object.object.deref(), "array", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
+        let mut array = JavaASTObject::new(array_jvalue);
+        let array_last_result = parse_node(env, &mut array);
+
+        let index_jvalue = env.get_field(object.object.deref(), "index", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
+        let mut index = JavaASTObject::new(index_jvalue);
+        let index_last_result = parse_node(env, &mut index);
+
+        object.data = Node::NArrayReference {
+            array: Box::new(array_last_result.unwrap().clone()),
+            index: Box::new(index_last_result.unwrap().clone())
+        };
+        object.scan_stage += 1;
+    } else {
+        return Some(object.data.clone());
+    }
+    None
+}
+fn parse_narrayassignment<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    if object.scan_stage == 0 {
+        let array_jvalue = env.get_field(object.object.deref(), "array", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
+        let mut array = JavaASTObject::new(array_jvalue);
+        let array_last_result = parse_node(env, &mut array);
+
+        let index_jvalue = env.get_field(object.object.deref(), "index", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
+        let mut index = JavaASTObject::new(index_jvalue);
+        let index_last_result = parse_node(env, &mut index);
+
+        let v_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
+        let mut v = JavaASTObject::new(v_jvalue);
+        let v_last_result = parse_node(env, &mut v);
+
+        object.data = Node::NArrayAssignment {
+            array: Box::new(array_last_result.unwrap().clone()),
+            index: Box::new(index_last_result.unwrap().clone()),
+            v: Box::new(v_last_result.unwrap().clone())
+        };
         object.scan_stage += 1;
     } else {
         return Some(object.data.clone());
