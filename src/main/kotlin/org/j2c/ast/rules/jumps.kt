@@ -14,46 +14,43 @@ object GOTO { // GOTO is a little weird, needs its own group
     enum class FollowType {
         GOTO, IF, ELSE
     }
+    data class Follow(val type: FollowType, val pos: Int?)
 
     @NoRule
-    val posStack = Stack<Int>()
-    @NoRule
-    val followTypeStack = Stack<FollowType>()
+    val followStack = Stack<Follow>()
     fun follow(state: ParsingState, offset: Int, ifCondition: Node? = null) {
         if(offset < 0) { // Loop construct
             throw InfiniteLoopException() // Parser can't handle this yet
         }
-        posStack.add(state.pos)
         state.instructions.move(state.pos + offset)
         if(ifCondition != null) {
-            followTypeStack.add(FollowType.IF)
+            followStack.add(Follow(FollowType.IF, state.pos))
             val node = NIf(ifCondition)
             state.stack.add(node)
             state.stack.enterBlock(node.ifBranch)
         } else {
-            followTypeStack.add(FollowType.GOTO)
+            followStack.add(Follow(FollowType.GOTO, state.pos))
         }
     }
     fun endFollow(state: ParsingState) {
         // Do not go back to GOTO, but go back to else branch
         var type = FollowType.GOTO
-        while(type != FollowType.IF && followTypeStack.size > 0) {
-            type = followTypeStack.pop()
+        while(type != FollowType.IF && followStack.size > 0) {
+            val follow = followStack.pop()
+            type = follow.type
             when(type) {
                 FollowType.IF -> {
                     // Don't re-follow the jump! (3 because jump takes up more than 1)
-                    state.instructions.move(posStack.pop() + 3)
+                    state.instructions.move(follow.pos!! + 3)
                     state.stack.leaveBlock()
                     state.stack.enterBlock(state.stack.getIfNodeInLastBlock().elseBranch)
-                    followTypeStack.add(FollowType.ELSE)
+                    followStack.add(Follow(FollowType.ELSE, null))
                     break // Don't immediately remove the else block
                 }
                 FollowType.ELSE -> {
                     state.stack.leaveBlock()
                 }
-                FollowType.GOTO -> {
-                    posStack.pop()
-                }
+                FollowType.GOTO -> {}
             }
         }
     }
