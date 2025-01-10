@@ -5,8 +5,8 @@ import org.j2c.ast.*
 import org.j2c.ast.rules.api.NoRule
 import org.j2c.ast.rules.api.Rule
 import org.j2c.ast.rules.api.RuleContainer
-import org.j2c.exceptions.InfiniteLoopException
 import org.j2c.parsing.ParsingState
+import org.j2c.parsing.stopParsingFunction
 import java.util.*
 
 @RuleContainer
@@ -20,16 +20,24 @@ object GOTO { // GOTO is a little weird, needs its own group
     val followStack = Stack<Follow>()
     fun follow(state: ParsingState, offset: Int, ifCondition: Node? = null) {
         if(offset < 0) { // Loop construct
-            throw InfiniteLoopException() // Parser can't handle this yet
-        }
-        state.instructions.move(state.pos + offset)
-        if(ifCondition != null) {
-            followStack.add(Follow(FollowType.IF, state.pos))
-            val node = NIf(ifCondition)
-            state.stack.add(node)
-            state.stack.enterBlock(node.ifBranch)
+            // This means that a GOTO was reached at the end of a loop. That loop was actually an if statement that
+            // recursively calls itself. All we need to do is convert that if statement into a loop node
+            state.stack.leaveBlock()
+            val ifNode = state.stack.getIfNodeInLastBlockAndDelete()
+            val loopNode = NLoop(ifNode.condition, ifNode.elseBranch)
+            state.stack.add(loopNode)
+            ifNode.ifBranch.forEach(state.stack::add)
+            stopParsingFunction() // The if body would have been parsed to completion already
         } else {
-            followStack.add(Follow(FollowType.GOTO, state.pos))
+            state.instructions.move(state.pos + offset)
+            if (ifCondition != null) {
+                followStack.add(Follow(FollowType.IF, state.pos))
+                val node = NIf(ifCondition)
+                state.stack.add(node)
+                state.stack.enterBlock(node.ifBranch)
+            } else {
+                followStack.add(Follow(FollowType.GOTO, state.pos))
+            }
         }
     }
     fun endFollow(state: ParsingState) {

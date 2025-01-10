@@ -10,6 +10,11 @@ class RetargetableCodeStack {
     fun enterBlock(block: ArrayList<Node>) = blocks.add(block)
     fun leaveBlock() = blocks.removeLast()
     fun getIfNodeInLastBlock() = blocks.last().last() as NIf
+    fun getIfNodeInLastBlockAndDelete(): NIf {
+        val node = getIfNodeInLastBlock()
+        blocks.last().remove(node)
+        return node
+    }
     fun getTopBlock() = blocks[0]
     fun add(element: Node) = blocks.last().add(element)
     fun pop(): Node { // This will try to get the last non-control-flow node in each block until it finds one

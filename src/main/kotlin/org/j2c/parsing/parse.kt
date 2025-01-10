@@ -13,6 +13,7 @@ import kotlin.reflect.*
 import kotlin.reflect.jvm.internal.KotlinReflectionInternalError
 import kotlin.reflect.jvm.javaField
 
+private var keepParsingFunction = true
 @OptIn(ExperimentalStdlibApi::class)
 fun parse(name: String): NClass? {
     beginProgress(name)
@@ -40,7 +41,8 @@ fun parse(name: String): NClass? {
 
                     val stack = RetargetableCodeStack()
                     state = ParsingState(instructions, const, vars, stack)
-                    while (instructions.hasNext()) {
+                    keepParsingFunction = true
+                    while (instructions.hasNext() && keepParsingFunction) {
                         val pos = instructions.next()
                         val opcode = instructions.byteAt(pos)
                         state.pos = pos
@@ -75,4 +77,7 @@ fun parse(name: String): NClass? {
         finishedProgress(name)
     }
     return nclass
+}
+fun stopParsingFunction() {
+    keepParsingFunction = false
 }
