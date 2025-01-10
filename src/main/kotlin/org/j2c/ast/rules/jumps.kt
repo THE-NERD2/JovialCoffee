@@ -24,7 +24,7 @@ object GOTO { // GOTO is a little weird, needs its own group
             // recursively calls itself. All we need to do is convert that if statement into a loop node
             state.stack.leaveBlock()
             val ifNode = state.stack.getIfNodeInLastBlockAndDelete()
-            val loopNode = NLoop(ifNode.condition, ifNode.elseBranch)
+            val loopNode = NLoop(NNot(ifNode.condition), ifNode.elseBranch)
             state.stack.add(loopNode)
             ifNode.ifBranch.forEach(state.stack::add)
             stopParsingFunction() // The if body would have been parsed to completion already
