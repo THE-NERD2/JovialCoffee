@@ -8,6 +8,7 @@ import java.util.*
 class RetargetableCodeStack {
     private val blocks = arrayListOf(arrayListOf<Node>())
     fun getElements() = blocks.flatten() as ArrayList<Node>
+    fun numBlocks() = blocks.size
     fun enterBlock(block: ArrayList<Node>) = blocks.add(block)
     fun leaveBlock() = blocks.removeLast()
     fun getIfNodeInLastBlock() = blocks.last().last() as NIf
@@ -44,9 +45,17 @@ class RetargetableCodeStack {
         return ret
     }
     fun deleteElement(element: Node) {
-        var i = 0
-        while(!blocks[i].remove(element)) {
-            i++
+        try {
+            var i = 0
+            while (!blocks[i].remove(element)) {
+                i++
+            }
+        } catch(_: IndexOutOfBoundsException) {
+            // The element in question must be inside another if statement.
+            // I believe that it has to be in the else block of an if statement. If not, fix this later.
+            getElements().forEach {
+                if (it is NIf && it.elseBranch.remove(element)) return
+            }
         }
     }
 }

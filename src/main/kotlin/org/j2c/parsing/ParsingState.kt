@@ -21,7 +21,17 @@ class ParsingState(
             val opcode = instructions.byteAt(currentPos)
             val mnemonic = Mnemonic.OPCODE[opcode]
             if(mnemonic.startsWith("if")) {
-                ret = stack.getElements().find { it is NIf && it.pos == currentPos } as NIf
+                try {
+                    ret = stack.getElements().find { it is NIf && it.pos == currentPos } as NIf
+                } catch(_: NullPointerException) {
+                    // The element in question must be inside another if statement.
+                    // I believe that it has to be in the else block of an if statement. If not, fix this later.
+                    stack.getElements().forEach {
+                        if(it is NIf) {
+                            ret = it.elseBranch.find { it is NIf && it.pos == currentPos } as NIf
+                        }
+                    }
+                }
             }
         }
 

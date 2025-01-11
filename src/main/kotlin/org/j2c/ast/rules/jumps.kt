@@ -6,7 +6,6 @@ import org.j2c.ast.rules.api.NoRule
 import org.j2c.ast.rules.api.Rule
 import org.j2c.ast.rules.api.RuleContainer
 import org.j2c.parsing.ParsingState
-import org.j2c.parsing.stopParsingFunction
 import java.util.*
 
 @RuleContainer
@@ -22,19 +21,18 @@ object GOTO { // GOTO is a little weird, needs its own group
         if(offset < 0) { // Loop construct
             // This means that a GOTO was reached at the end of a loop. That loop was actually an if statement that
             // recursively calls itself. All we need to do is convert that if statement into a loop node
-            if(endFollow(state)) { // No if statement can cross a loop boundary
-                val ifNode = state.getNextIfStatementFrom(state.pos + offset)
+            val ifNode = state.getNextIfStatementFrom(state.pos + offset)
+            if(endFollow(state, ifNode.blockLevel)) { // No if statement can cross a loop boundary
                 state.stack.deleteElement(ifNode)
                 val loopNode = NLoop(NNot(ifNode.condition), ifNode.elseBranch)
                 state.stack.add(loopNode)
-                ifNode.ifBranch.forEach(state.stack::add)
-                stopParsingFunction() // The if body would have been parsed to completion already
+                state.instructions.move(ifNode.pos + ifNode.offset)
             }
         } else {
             state.instructions.move(state.pos + offset)
             if (ifCondition != null) {
                 followStack.add(Follow(FollowType.IF, state.pos))
-                val node = NIf(ifCondition, state.pos)
+                val node = NIf(ifCondition, state.pos, offset, state.stack.numBlocks() - 1)
                 state.stack.add(node)
                 state.stack.enterBlock(node.ifBranch)
             } else {
@@ -42,7 +40,7 @@ object GOTO { // GOTO is a little weird, needs its own group
             }
         }
     }
-    fun endFollow(state: ParsingState): Boolean {
+    fun endFollow(state: ParsingState, lastBlockToRemove: Int = 0): Boolean {
         // Do not go back to GOTO, but go back to else branch
         var type = FollowType.GOTO
         while(type != FollowType.IF && followStack.size > 0) {
@@ -58,7 +56,12 @@ object GOTO { // GOTO is a little weird, needs its own group
                     return false // Don't immediately remove the else block
                 }
                 FollowType.ELSE -> {
-                    state.stack.leaveBlock()
+                    if(state.stack.numBlocks() > lastBlockToRemove + 1) {
+                        state.stack.leaveBlock()
+                    } else {
+                        followStack.add(Follow(FollowType.ELSE, follow.pos))
+                        break // We for some reason don't want to keep going
+                    }
                 }
                 FollowType.GOTO -> {}
             }
