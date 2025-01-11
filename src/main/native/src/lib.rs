@@ -259,8 +259,14 @@ fn parse_node<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Optio
             "NAThrow" => {
                 last_result = parse_nathrow(env, object);
             },
+            "NNot" => {
+                last_result = parse_nnot(env, object);
+            },
             "NIf" => {
                 last_result = parse_nif(env, object);
+            },
+            "NLoop" => {
+                last_result = parse_nloop(env, object);
             },
             "NOther" => {
                 last_result = parse_nother(env, object);
@@ -680,6 +686,20 @@ fn parse_nathrow<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Op
     }
     None
 }
+fn parse_nnot<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    if object.scan_stage == 0 {
+        let condition_object = env.get_field(object.object.deref(), "condition", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
+        let mut condition = JavaASTObject::new(condition_object);
+        let last_result = parse_node(env, &mut condition);
+        object.data = Node::NNot {
+            condition: Box::new(last_result.unwrap().clone())
+        };
+        object.scan_stage += 1;
+    } else {
+        return Some(object.data.clone());
+    }
+    None
+}
 fn parse_nif<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
     if object.scan_stage == 0 {
         let condition_object = env.get_field(object.object.deref(), "condition", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
@@ -735,6 +755,44 @@ fn parse_nif<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option
                 }
             },
             _ => panic!("NIf data isn't an NIf!")
+        }
+        object.data = temp_data;
+    } else {
+        return Some(object.data.clone());
+    }
+    None
+}
+fn parse_nloop<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
+    if object.scan_stage == 0 {
+        let condition_object = env.get_field(object.object.deref(), "condition", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
+        let mut condition = JavaASTObject::new(condition_object);
+        let last_result = parse_node(env, &mut condition);
+        object.data = Node::NLoop {
+            condition: Box::new(last_result.unwrap().clone()),
+            body: Vec::new()
+        };
+        object.scan_stage += 1;
+    } else if object.scan_stage == 1 {
+        let size = env.call_method(object.object.deref(), "bodySize", "()I", &[]).unwrap().i().unwrap();
+        let mut temp_data = object.data.clone();
+        match object.data.clone() {
+            Node::NLoop { body, .. } => {
+                if body.len() == size.try_into().unwrap() {
+                    object.scan_stage += 1;
+                } else {
+                    let next_node = env.call_method(object.object.deref(), "getBodyElement", "(I)Lorg/j2c/ast/Node;", &[JValueGen::Int(body.len().try_into().unwrap())]).unwrap().l().unwrap();
+                    let mut node = JavaASTObject::new(next_node);
+
+                    let last_result = parse_node(env, &mut node);
+                    match temp_data {
+                        Node::NLoop { ref mut body, .. } => {
+                            body.push(last_result.unwrap().clone());
+                        },
+                        _ => panic!("NLoop data isn't an NLoop!")
+                    }
+                }
+            },
+            _ => panic!("NLoop data isn't an NLoop!")
         }
         object.data = temp_data;
     } else {

@@ -37,10 +37,15 @@ pub enum Node {
     NReturn,
     NValueReturn { return_type: String, v: Box<Node> },
     NAThrow { v: Box<Node> },
+    NNot { condition: Box<Node> },
     NIf {
         condition: Box<Node>,
         if_branch: Vec<Node>,
         else_branch: Vec<Node>
+    },
+    NLoop {
+        condition: Box<Node>,
+        body: Vec<Node>
     },
     
     NOther { str: String },
