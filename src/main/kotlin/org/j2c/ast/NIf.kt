@@ -2,7 +2,8 @@ package org.j2c.ast
 
 import org.j2c.indentBlock
 
-class NIf(val condition: Node): ControlFlowNode("NIf") {
+// pos is used internally
+class NIf(val condition: Node, val pos: Int): ControlFlowNode("NIf") {
     val ifBranch = arrayListOf<Node>()
     val elseBranch = arrayListOf<Node>() // Will remain empty if irrelevant
     // These four for JNI

@@ -22,17 +22,19 @@ object GOTO { // GOTO is a little weird, needs its own group
         if(offset < 0) { // Loop construct
             // This means that a GOTO was reached at the end of a loop. That loop was actually an if statement that
             // recursively calls itself. All we need to do is convert that if statement into a loop node
-            state.stack.leaveBlock()
-            val ifNode = state.stack.getIfNodeInLastBlockAndDelete()
-            val loopNode = NLoop(NNot(ifNode.condition), ifNode.elseBranch)
-            state.stack.add(loopNode)
-            ifNode.ifBranch.forEach(state.stack::add)
-            stopParsingFunction() // The if body would have been parsed to completion already
+            if(endFollow(state)) { // No if statement can cross a loop boundary
+                val ifNode = state.getNextIfStatementFrom(state.pos + offset)
+                state.stack.deleteElement(ifNode)
+                val loopNode = NLoop(NNot(ifNode.condition), ifNode.elseBranch)
+                state.stack.add(loopNode)
+                ifNode.ifBranch.forEach(state.stack::add)
+                stopParsingFunction() // The if body would have been parsed to completion already
+            }
         } else {
             state.instructions.move(state.pos + offset)
             if (ifCondition != null) {
                 followStack.add(Follow(FollowType.IF, state.pos))
-                val node = NIf(ifCondition)
+                val node = NIf(ifCondition, state.pos)
                 state.stack.add(node)
                 state.stack.enterBlock(node.ifBranch)
             } else {
@@ -40,7 +42,7 @@ object GOTO { // GOTO is a little weird, needs its own group
             }
         }
     }
-    fun endFollow(state: ParsingState) {
+    fun endFollow(state: ParsingState): Boolean {
         // Do not go back to GOTO, but go back to else branch
         var type = FollowType.GOTO
         while(type != FollowType.IF && followStack.size > 0) {
@@ -53,7 +55,7 @@ object GOTO { // GOTO is a little weird, needs its own group
                     state.stack.leaveBlock()
                     state.stack.enterBlock(state.stack.getIfNodeInLastBlock().elseBranch)
                     followStack.add(Follow(FollowType.ELSE, null))
-                    break // Don't immediately remove the else block
+                    return false // Don't immediately remove the else block
                 }
                 FollowType.ELSE -> {
                     state.stack.leaveBlock()
@@ -61,6 +63,7 @@ object GOTO { // GOTO is a little weird, needs its own group
                 FollowType.GOTO -> {}
             }
         }
+        return true
     }
 
     val GOTO = Rule(Opcode.GOTO) { state ->
