@@ -13,6 +13,7 @@ import kotlin.reflect.*
 import kotlin.reflect.jvm.internal.KotlinReflectionInternalError
 import kotlin.reflect.jvm.javaField
 
+private var keepParsingFunction = true
 @OptIn(ExperimentalStdlibApi::class)
 fun parse(name: String): NClass? {
     beginProgress(name)
@@ -38,34 +39,31 @@ fun parse(name: String): NClass? {
                     val vars = mutableMapOf<Int, String>()
                     it.parameters.forEachIndexed { i: Int, v: KParameter -> vars[i] = "param$i" }
 
-                    // Catch infinite loops (indicates a big problem)
-                    val alreadyVisitedPositions = mutableSetOf<Int>()
-
-                    val stack = Stack<Node>()
+                    val stack = RetargetableCodeStack()
                     state = ParsingState(instructions, const, vars, stack)
-                    while (instructions.hasNext()) {
+                    keepParsingFunction = true
+                    while (instructions.hasNext() && keepParsingFunction) {
                         val pos = instructions.next()
                         val opcode = instructions.byteAt(pos)
                         state.pos = pos
 
-                        if(alreadyVisitedPositions.contains(pos)) {
-                            InfiniteLoopException().printStackTrace()
+                        try {
+                            rules.find { it.opcode == opcode }?.predicate?.invoke(state)
+                                ?: run {
+                                    UnknownOpcodeException(Mnemonic.OPCODE[opcode]).printStackTrace()
+                                    registerUnknownOpcode(Mnemonic.OPCODE[opcode])
+                                }
+                        } catch(e: InfiniteLoopException) {
+                            e.printStackTrace()
                             break
                         }
-                        alreadyVisitedPositions.add(pos)
-
-                        rules.find { it.opcode == opcode }?.predicate?.invoke(state)
-                            ?: run {
-                                UnknownOpcodeException(Mnemonic.OPCODE[opcode]).printStackTrace()
-                                registerUnknownOpcode(Mnemonic.OPCODE[opcode])
-                            }
                     }
                     NMethodDeclaration(
                         nclass,
                         it.name,
                         it.returnType.javaType.typeName,
                         ArrayList(it.parameters.map { it.type.javaType.typeName }),
-                        stack.toList() as ArrayList<Node>
+                        stack.getTopBlock()
                     )
                 } catch (_: NotFoundException) {
                 }
@@ -79,4 +77,7 @@ fun parse(name: String): NClass? {
         finishedProgress(name)
     }
     return nclass
+}
+fun stopParsingFunction() {
+    keepParsingFunction = false
 }

@@ -25,6 +25,16 @@ class Tests {
         }
     }
     @Test
+    fun DummyLoopClass() {
+        init("/home/payton/IdeaProjects/J2C/src/test/resources")
+        parseAndRunForEachClass("org.j2c.DummyLoopClass") { println(it.toString()) }
+        printAll()
+    }
+    @Test
+    fun DummyLoopClass_main() {
+        main(arrayOf("/home/payton/IdeaProjects/J2C/src/test/resources", "org.j2c.DummyLoopClass"))
+    }
+    @Test
     fun EncryptedStorage() { // from Notebook repository
         init("/home/payton/IdeaProjects/Notebook/build/libs/Notebook-1.0-SNAPSHOT-all.jar")
         parseAndRunForEachClass("org.notebook.EncryptedStorage") { println(it.toString()) }
