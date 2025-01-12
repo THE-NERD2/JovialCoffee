@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Fix if statements inside loops">
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NIf.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NIf.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/rules/jumps.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/rules/jumps.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/parsing/ParsingState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/parsing/ParsingState.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/parsing/RetargetableCodeStack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/parsing/RetargetableCodeStack.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/org/j2c/DummyLoopClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/org/j2c/DummyLoopClass.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/org/j2c/DummyLoopClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/org/j2c/DummyLoopClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NClass.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NClass.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +77,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.codeium.enabled": "true",
-    "git-widget-placeholder": "#24 on fix-control-flow"
+    "git-widget-placeholder": "#21 on jvm-opcodes"
   }
 }]]></component>
   <component name="RunManager" selected="Gradle.Tests.DummyLoopClass">
