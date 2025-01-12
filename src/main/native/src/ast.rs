@@ -26,18 +26,30 @@ pub enum Node {
     NReference { identifier: String },
     NAssignment { dest: String, v: Box<Node> },
     NStaticReference { field: String },
+    NStaticAssignment { field: String, v: Box<Node> },
     NBoundReference { obj: Box<Node>, field: String },
     NBoundAssignment { obj: Box<Node>, dest: String, v: Box<Node> },
     NStaticCall { method: String, args: Vec<Node> },
     NCall { obj: Box<Node>, method: String, args: Vec<Node> },
     NNew { class: String },
-    NIAdd { left: Box<Node>, right: Box<Node> },
-    NIMul { left: Box<Node>, right: Box<Node> },
-    NLCmp { left: Box<Node>, right: Box<Node> },
+    NBinOp { operand_type: String, op: String, left: Box<Node>, right: Box<Node> },
+    NNewArray { array_type: String, length: Box<Node> },
+    NArrayReference { array: Box<Node>, index: Box<Node> },
+    NArrayAssignment { array: Box<Node>, index: Box<Node>, v: Box<Node> },
+    NArrayLength { array: Box<Node> },
     NReturn,
-    NAReturn { obj: Box<Node> },
-    NIReturn { obj: Box<Node> },
+    NValueReturn { return_type: String, v: Box<Node> },
     NAThrow { v: Box<Node> },
+    NNot { condition: Box<Node> },
+    NIf {
+        condition: Box<Node>,
+        if_branch: Vec<Node>,
+        else_branch: Vec<Node>
+    },
+    NLoop {
+        condition: Box<Node>,
+        body: Vec<Node>
+    },
     
     NOther { str: String },
 

@@ -1,6 +1,7 @@
 package org.j2c
 
 import org.j2c.development.printAll
+import org.j2c.parsing.parseAndRunForEachClass
 import kotlin.test.Test
 
 class Tests {
@@ -13,6 +14,12 @@ class Tests {
             init("/home/payton/IdeaProjects/J2C/src/test/resources")
             parseAndRunForEachClass("org.j2c.DummyClass") { println(it.toString()) }
         }
+        printAll()
+    }
+    @Test
+    fun DummyLoopClass() {
+        init("/home/payton/IdeaProjects/J2C/src/test/resources")
+        parseAndRunForEachClass("org.j2c.DummyLoopClass") { println(it.toString()) }
         printAll()
     }
     @Test

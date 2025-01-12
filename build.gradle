@@ -25,7 +25,7 @@ test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 tasks.register('compileNative', Exec) {
     workingDir "src/main/native"
