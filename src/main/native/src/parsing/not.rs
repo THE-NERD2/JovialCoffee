@@ -7,17 +7,13 @@ use crate::Node;
 
 use super::parse_node;
 
-pub fn parse_nnot<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
-    if object.scan_stage == 0 {
-        let condition_object = env.get_field(object.object.deref(), "condition", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
-        let mut condition = JavaASTObject::new(condition_object);
-        let last_result = parse_node(env, &mut condition);
-        object.data = Node::NNot {
-            condition: Box::new(last_result.unwrap().clone())
-        };
-        object.scan_stage += 1;
-    } else {
-        return Some(object.data.clone());
-    }
-    None
+pub fn parse_nnot<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Node {
+    let condition_object = env.get_field(object.object.deref(), "condition", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
+    let mut condition = JavaASTObject::new(condition_object);
+    parse_node(env, &mut condition);
+
+    object.data = Node::NNot {
+        condition: Box::new(condition.data)
+    };
+    object.data.clone()
 }

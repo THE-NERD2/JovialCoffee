@@ -12,7 +12,7 @@ pub fn parse_node<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> O
     let ast_name_field = env.get_field(object.object.deref(), "astName", "Ljava/lang/String;").unwrap().l().unwrap();
     let ast_name: String = env.get_string(&JString::from(ast_name_field)).unwrap().into();
 
-    let mut last_result = None;
+    let mut last_result: Node;
     while last_result == None {
         match ast_name.as_str() {
             "NBoolean" => {

@@ -8,74 +8,38 @@ use crate::Node;
 
 use super::parse_node;
 
-pub fn parse_nboundreference<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
-    if object.scan_stage == 0 {
-        let field_field = env.get_field(object.object.deref(), "field", "Ljava/lang/String;").unwrap().l().unwrap();
-        let field: String = env.get_string(&JString::from(field_field)).unwrap().into();
-        object.data = Node::NBoundReference {
-            obj: Box::new(Node::Placeholder),
-            field
-        };
-        object.scan_stage += 1;
-    } else if object.scan_stage == 1 {
-        let node_jvalue = env.get_field(object.object.deref(), "obj", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
-        let mut node = JavaASTObject::new(node_jvalue);
+pub fn parse_nboundreference<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Node {
+    let field_field = env.get_field(object.object.deref(), "field", "Ljava/lang/String;").unwrap().l().unwrap();
+    let field: String = env.get_string(&JString::from(field_field)).unwrap().into();
 
-        let last_result = parse_node(env, &mut node);
-        let mut temp_data = object.data.clone();
-        match temp_data {
-            Node::NBoundReference { ref mut obj, .. } => {
-                *obj = Box::new(last_result.unwrap().clone());
-            },
-            _ => panic!("NBoundReference data isn't an NBoundReference!")
-        };
-        object.data = temp_data;
-        object.scan_stage += 1;
-    } else {
-        return Some(object.data.clone());
-    }
-    None
+    let node_jvalue = env.get_field(object.object.deref(), "obj", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
+    let mut node = JavaASTObject::new(node_jvalue);
+    parse_node(env, &mut node);
+
+    object.data = Node::NBoundReference {
+        obj: Box::new(node.data),
+        field
+    };
+
+    object.data.clone()
 }
-pub fn parse_nboundassignment<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Option<Node> {
-    if object.scan_stage == 0 {
-        let field_field = env.get_field(object.object.deref(), "field", "Ljava/lang/String;").unwrap().l().unwrap();
-        let field: String = env.get_string(&JString::from(field_field)).unwrap().into();
-        object.data = Node::NBoundAssignment {
-            obj: Box::new(Node::Placeholder),
-            dest: field,
-            v: Box::new(Node::Placeholder)
-        };
-        object.scan_stage += 1;
-    } else if object.scan_stage == 1 {
-        let node_jvalue = env.get_field(object.object.deref(), "obj", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
-        let mut node = JavaASTObject::new(node_jvalue);
+pub fn parse_nboundassignment<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Node {
+    let field_field = env.get_field(object.object.deref(), "field", "Ljava/lang/String;").unwrap().l().unwrap();
+    let field: String = env.get_string(&JString::from(field_field)).unwrap().into();
 
-        let last_result = parse_node(env, &mut node);
-        let mut temp_data = object.data.clone();
-        match temp_data {
-            Node::NBoundAssignment { ref mut obj, .. } => {
-                *obj = Box::new(last_result.unwrap().clone());
-            },
-            _ => panic!("NBoundAssignment data isn't an NBoundAssignment!")
-        };
-        object.data = temp_data;
-        object.scan_stage += 1;
-    } else if object.scan_stage == 2 {
-        let node_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
-        let mut node = JavaASTObject::new(node_jvalue);
+    let obj_jvalue = env.get_field(object.object.deref(), "obj", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
+    let mut obj = JavaASTObject::new(obj_jvalue);
+    parse_node(env, &mut obj);
 
-        let last_result = parse_node(env, &mut node);
-        let mut temp_data = object.data.clone();
-        match temp_data {
-            Node::NBoundAssignment { ref mut v, .. } => {
-                *v = Box::new(last_result.unwrap().clone());
-            },
-            _ => panic!("NBoundAssignment data isn't an NBoundAssignment!")
-        };
-        object.data = temp_data;
-        object.scan_stage += 1;
-    } else {
-        return Some(object.data.clone());
-    }
-    None
+    let v_jvalue = env.get_field(object.object.deref(), "v", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
+    let mut v = JavaASTObject::new(v_jvalue);
+    parse_node(env, &mut v);
+
+    object.data = Node::NBoundAssignment {
+        obj: Box::new(obj.data),
+        dest: field,
+        v: Box::new(v.data)
+    };
+
+    object.data.clone()
 }

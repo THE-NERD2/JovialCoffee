@@ -4,9 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Fix if statements inside loops">
+    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Split lib.rs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/native/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/arrays.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/arrays.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/binop.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/binop.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/bound_vars.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/bound_vars.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/calls.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/calls.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/class.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/class.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/control_flow.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/control_flow.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/jumps.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/jumps.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/local_vars.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/local_vars.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/members.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/members.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/new.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/new.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/node.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/node.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/not.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/not.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/other.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/other.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/primitives.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/primitives.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/static_vars.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/static_vars.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -310,7 +325,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736626215459</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Split lib.rs">
+      <option name="closed" value="true" />
+      <created>1736702466910</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1736702466910</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -333,6 +356,7 @@
     <MESSAGE value="Added clarifying parentheses in NNot.toString" />
     <MESSAGE value="Added native side for loops" />
     <MESSAGE value="Fix if statements inside loops" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix if statements inside loops" />
+    <MESSAGE value="Split lib.rs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Split lib.rs" />
   </component>
 </project>
