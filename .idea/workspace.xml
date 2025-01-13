@@ -4,8 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Fix if statements inside loops">
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NClass.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NClass.kt" afterDir="false" />
+    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Simplify code">
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/arrays.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/arrays.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/binop.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/binop.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/bound_vars.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/bound_vars.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/calls.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/calls.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/class.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/class.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/control_flow.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/control_flow.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/jumps.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/jumps.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/local_vars.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/local_vars.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/members.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/members.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/new.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/new.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/node.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/node.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/not.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/not.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/other.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/other.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/primitives.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/primitives.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/static_vars.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/static_vars.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,16 +51,14 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="jvm-opcodes" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;THE-NERD2&quot;
-  }
+  &quot;lastFilter&quot;: {}
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
@@ -67,20 +79,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build J2C.executor": "Run",
-    "Gradle.Tests.DummyLoopClass.executor": "Run",
-    "Gradle.Tests.DummyLoopClass_alone.executor": "Run",
-    "Gradle.Tests.EncryptedStorage.executor": "Run",
-    "Kotlin.DummyLoopClass.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.codeium.enabled": "true",
-    "git-widget-placeholder": "#21 on jvm-opcodes"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build J2C.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests.DummyLoopClass.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests.DummyLoopClass_alone.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests.EncryptedStorage.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.DummyLoopClass.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;rust-code-cleanup&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Gradle.Tests.DummyLoopClass">
+}</component>
+  <component name="RunManager" selected="Kotlin.DummyLoopClass">
     <configuration name="LanguageTests.getRules" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -230,11 +242,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Tests.DummyLoopClass" />
-        <item itemvalue="Gradle.Tests.EncryptedStorage" />
         <item itemvalue="Gradle.Tests.WorkingFile" />
         <item itemvalue="Gradle.Tests.EncryptedStorage" />
+        <item itemvalue="Gradle.Tests.DummyLoopClass" />
         <item itemvalue="Gradle.Tests.DummyClass" />
+        <item itemvalue="Gradle.LanguageTests.getRules" />
       </list>
     </recent_temporary>
   </component>
@@ -311,8 +323,35 @@
       <option name="project" value="LOCAL" />
       <updated>1736626215459</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Split lib.rs">
+      <option name="closed" value="true" />
+      <created>1736702466910</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1736702466910</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Simplify code">
+      <option name="closed" value="true" />
+      <created>1736807370785</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1736807370785</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Reduced GOTO object in jumps.kt down to one stack instead of two (ensures synchronicity)" />
@@ -323,6 +362,8 @@
     <MESSAGE value="Added clarifying parentheses in NNot.toString" />
     <MESSAGE value="Added native side for loops" />
     <MESSAGE value="Fix if statements inside loops" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix if statements inside loops" />
+    <MESSAGE value="Split lib.rs" />
+    <MESSAGE value="Simplify code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Simplify code" />
   </component>
 </project>
