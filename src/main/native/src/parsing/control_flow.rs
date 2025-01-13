@@ -8,7 +8,7 @@ use crate::Node;
 
 use super::parse_node;
 
-pub fn parse_nif<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Node {
+pub fn parse_nif<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) {
     let condition_object = env.get_field(object.object.deref(), "condition", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
     let mut condition = JavaASTObject::new(condition_object);
     parse_node(env, &mut condition);
@@ -38,9 +38,8 @@ pub fn parse_nif<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> No
         if_branch,
         else_branch
     };
-    object.data.clone()
 }
-pub fn parse_nloop<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Node {
+pub fn parse_nloop<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) {
     let condition_object = env.get_field(object.object.deref(), "condition", "Lorg/j2c/ast/Node;").unwrap().l().unwrap();
     let mut condition = JavaASTObject::new(condition_object);
     parse_node(env, &mut condition);
@@ -59,5 +58,4 @@ pub fn parse_nloop<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> 
         condition: Box::new(condition.data),
         body
     };
-    object.data.clone()
 }

@@ -8,7 +8,7 @@ use crate::Node;
 
 use super::parse_node;
 
-pub fn parse_nstaticcall<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Node {
+pub fn parse_nstaticcall<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) {
     let method_field = env.get_field(object.object.deref(), "method", "Ljava/lang/String;").unwrap().l().unwrap();
     let method: String = env.get_string(&JString::from(method_field)).unwrap().into();
 
@@ -23,10 +23,8 @@ pub fn parse_nstaticcall<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a
     }
     
     object.data = Node::NStaticCall { method, args };
-
-    object.data.clone()
 }
-pub fn parse_ncall<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Node {
+pub fn parse_ncall<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) {
     let method_field = env.get_field(object.object.deref(), "method", "Ljava/lang/String;").unwrap().l().unwrap();
     let method: String = env.get_string(&JString::from(method_field)).unwrap().into();
 
@@ -49,6 +47,4 @@ pub fn parse_ncall<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> 
         method,
         args
     };
-
-    object.data.clone()
 }

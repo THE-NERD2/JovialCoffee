@@ -8,7 +8,7 @@ use crate::Node;
 
 use super::parse_node;
 
-pub fn parse_nbinop<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Node {
+pub fn parse_nbinop<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) {
     let type_field = env.get_field(object.object.deref(), "type", "Ljava/lang/String;").unwrap().l().unwrap();
     let op_type: String = env.get_string(&JString::from(type_field)).unwrap().into();
 
@@ -29,6 +29,4 @@ pub fn parse_nbinop<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) ->
         left: Box::new(left.data),
         right: Box::new(right.data)
     };
-    
-    object.data.clone()
 }

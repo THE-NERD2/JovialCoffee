@@ -8,7 +8,7 @@ use crate::Node;
 
 use super::parse_node;
 
-pub fn parse_nfielddeclaration<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Node {
+pub fn parse_nfielddeclaration<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) {
     let name_field = env.get_field(object.object.deref(), "name", "Ljava/lang/String;").unwrap().l().unwrap();
     let name: String = env.get_string(&JString::from(name_field)).unwrap().into();
     let type_field = env.get_field(object.object.deref(), "type", "Ljava/lang/String;").unwrap().l().unwrap();
@@ -18,9 +18,8 @@ pub fn parse_nfielddeclaration<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObj
         name,
         value_type
     };
-    object.data.clone()
 }
-pub fn parse_nmethoddeclaration<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Node {
+pub fn parse_nmethoddeclaration<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) {
     let name_field = env.get_field(object.object.deref(), "name", "Ljava/lang/String;").unwrap().l().unwrap();
     let name: String = env.get_string(&JString::from(name_field)).unwrap().into();
     let ret_field = env.get_field(object.object.deref(), "ret", "Ljava/lang/String;").unwrap().l().unwrap();
@@ -46,5 +45,4 @@ pub fn parse_nmethoddeclaration<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTOb
     }
 
     object.data = Node::NMethodDeclaration { name, ret, args, body };
-    object.data.clone()
 }

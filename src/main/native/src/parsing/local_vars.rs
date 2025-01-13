@@ -8,16 +8,15 @@ use crate::Node;
 
 use super::parse_node;
 
-pub fn parse_nreference<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Node {
+pub fn parse_nreference<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) {
     let identifier_field = env.get_field(object.object.deref(), "identifier", "Ljava/lang/String;").unwrap().l().unwrap();
     let identifier: String = env.get_string(&JString::from(identifier_field)).unwrap().into();
 
     object.data = Node::NReference {
         identifier
     };
-    object.data.clone()
 }
-pub fn parse_nassignment<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) -> Node {
+pub fn parse_nassignment<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a>) {
     let dest_field = env.get_field(object.object.deref(), "dest", "Ljava/lang/String;").unwrap().l().unwrap();
     let dest: String = env.get_string(&JString::from(dest_field)).unwrap().into();
 
@@ -29,5 +28,4 @@ pub fn parse_nassignment<'a>(env: &mut JNIEnv<'a>, object: &mut JavaASTObject<'a
         dest,
         v: Box::new(node.data)
     };
-    object.data.clone()
 }
