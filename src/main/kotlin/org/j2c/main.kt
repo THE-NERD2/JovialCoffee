@@ -41,8 +41,6 @@ fun init(path: String) {
 
 fun main(args: Array<String>) {
     init(args[0])
-    parseAndRunForEachClass(args[1]) {
-        LLVM.createAST(it)
-        LLVM.compileCurrentAST()
-    }
+    parseAndRunForEachClass(args[1], LLVM::addClassAST)
+    LLVM.compile()
 }

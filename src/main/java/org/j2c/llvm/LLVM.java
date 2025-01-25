@@ -7,6 +7,6 @@ public class LLVM {
         System.loadLibrary("j2c");
     }
 
-    public static native void createAST(NClass root);
-    public static native void compileCurrentAST();
+    public static native void addClassAST(NClass root);
+    public static native void compile();
 }

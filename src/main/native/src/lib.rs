@@ -23,7 +23,7 @@ impl<'a> JavaASTObject<'a> {
 static mut CLASSES: Vec<Node> = Vec::new();
 
 #[no_mangle]
-pub unsafe extern "system" fn Java_org_j2c_llvm_LLVM_createAST<'a: 'static>(mut env: JNIEnv<'a>, _: JClass<'a>, root: JObject<'a>) {
+pub unsafe extern "system" fn Java_org_j2c_llvm_LLVM_addClassAST<'a: 'static>(mut env: JNIEnv<'a>, _: JClass<'a>, root: JObject<'a>) {
     let mut root = JavaASTObject::new(root);
     
     parse_nclass(&mut env, &mut root);
@@ -31,7 +31,6 @@ pub unsafe extern "system" fn Java_org_j2c_llvm_LLVM_createAST<'a: 'static>(mut 
     CLASSES.push(root.data);
 }
 #[no_mangle]
-pub unsafe extern "system" fn Java_org_j2c_llvm_LLVM_compileCurrentAST() {
+pub unsafe extern "system" fn Java_org_j2c_llvm_LLVM_compile() {
     println!("Finishing code generation");
-    CLASSES.clear();
 }
