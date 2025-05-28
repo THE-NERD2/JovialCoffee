@@ -7,6 +7,6 @@ tasks.register("prepareCMake", Exec) {
 }
 tasks.register("buildNative", Exec) {
     workingDir "$projectDir/build"
-    commandLine "make"
+    commandLine "cmake", "--build", "."
 }
 buildNative.dependsOn(prepareCMake)

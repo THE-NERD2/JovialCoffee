@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Test master branch protection">
-      <change afterPath="$PROJECT_DIR$/native/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Changed build significantly. Rust code still exists, but it is not used. The existing C++ code proves the build setup works, but is nonfunctional.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/native/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/native/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/src/lib.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/lib.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +59,9 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 6
@@ -70,19 +71,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build J2C.executor": "Run",
-    "Gradle.Tests.DummyLoopClass.executor": "Run",
-    "Gradle.Tests.DummyLoopClass_alone.executor": "Run",
-    "Gradle.Tests.EncryptedStorage.executor": "Run",
-    "Kotlin.DummyLoopClass.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.codeium.enabled": "true",
-    "git-widget-placeholder": "master"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build J2C.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests.DummyLoopClass.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests.DummyLoopClass_alone.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests.EncryptedStorage.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.DummyLoopClass.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Kotlin.DummyLoopClass">
     <configuration name="LanguageTests.getRules" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -321,7 +322,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736807370785</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Changed build significantly. Rust code still exists, but it is not used. The existing C++ code proves the build setup works, but is nonfunctional.">
+      <option name="closed" value="true" />
+      <created>1748462264985</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1748462264986</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -346,6 +355,7 @@
     <MESSAGE value="Fix if statements inside loops" />
     <MESSAGE value="Split lib.rs" />
     <MESSAGE value="Simplify code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Simplify code" />
+    <MESSAGE value="Changed build significantly. Rust code still exists, but it is not used. The existing C++ code proves the build setup works, but is nonfunctional." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed build significantly. Rust code still exists, but it is not used. The existing C++ code proves the build setup works, but is nonfunctional." />
   </component>
 </project>
