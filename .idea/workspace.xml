@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Test master branch protection">
+      <change afterPath="$PROJECT_DIR$/native/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,19 +70,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build J2C.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests.DummyLoopClass.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests.DummyLoopClass_alone.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests.EncryptedStorage.executor&quot;: &quot;Run&quot;,
-    &quot;Kotlin.DummyLoopClass.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;llvm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build J2C.executor": "Run",
+    "Gradle.Tests.DummyLoopClass.executor": "Run",
+    "Gradle.Tests.DummyLoopClass_alone.executor": "Run",
+    "Gradle.Tests.EncryptedStorage.executor": "Run",
+    "Kotlin.DummyLoopClass.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "master"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Kotlin.DummyLoopClass">
     <configuration name="LanguageTests.getRules" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -207,19 +209,10 @@
       <module name="J2C.main" />
       <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/src/test/resources org.j2c.DummyLoopClass" />
       <shortenClasspath name="NONE" />
-      <option name="VM_PARAMETERS" value="-Djava.library.path=$PROJECT_DIR$/src/main/native/target/debug" />
+      <option name="VM_PARAMETERS" value="-Djava.library.path=$PROJECT_DIR$/native/build" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
-    </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <option name="filePath" />
-      <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Gradle.LanguageTests.getRules" />
@@ -231,9 +224,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.Tests.DummyLoopClass" />
         <item itemvalue="Gradle.Tests.WorkingFile" />
         <item itemvalue="Gradle.Tests.EncryptedStorage" />
-        <item itemvalue="Gradle.Tests.DummyLoopClass" />
         <item itemvalue="Gradle.Tests.DummyClass" />
         <item itemvalue="Gradle.LanguageTests.getRules" />
       </list>

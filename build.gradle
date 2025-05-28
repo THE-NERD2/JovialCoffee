@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.j2c'
-version = '0.0.1-alpha'
+version = '0.1.0-alpha'
 
 repositories {
     mavenCentral()
@@ -16,29 +16,15 @@ dependencies {
     implementation "org.javassist:javassist:3.30.2-GA"
     implementation "org.reflections:reflections:0.10.2"
     implementation "org.jetbrains.kotlin:kotlin-reflect:2.0.0"
-    implementation('ch.qos.logback:logback-classic:1.4.12')
-    implementation(files("src/main/native/target/debug/libj2c.so"))
+    implementation('ch.qos.logback:logback-classic:1.5.13')
+    implementation(files("native/build/libj2c.so"))
 }
 
 test {
-    systemProperty("java.library.path", file("src/main/native/target/debug").absolutePath)
+    systemProperty("java.library.path", file("native/build").absolutePath)
     useJUnitPlatform()
 }
 kotlin {
     jvmToolchain(21)
 }
-tasks.register('compileNative', Exec) {
-    workingDir "src/main/native"
-    commandLine "cargo", "build"
-}
-tasks.register("moveNativeLibrary", Exec) {
-    workingDir "src/main/native/target/debug"
-    commandLine "mv", "libnative.so", "libj2c.so"
-}
-tasks.register("removeOldLibrary", Exec) {
-    workingDir "src/main/native/target/debug"
-    commandLine "rm", "libj2c.so"
-}
-compileKotlin.dependsOn(moveNativeLibrary)
-moveNativeLibrary.dependsOn(compileNative)
-moveNativeLibrary.dependsOn(removeOldLibrary)
+compileKotlin.dependsOn(":native:buildNative")
