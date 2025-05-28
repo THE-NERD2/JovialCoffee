@@ -4,22 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Simplify code">
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/arrays.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/arrays.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/binop.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/binop.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/bound_vars.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/bound_vars.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/calls.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/calls.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/class.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/class.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/control_flow.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/control_flow.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/jumps.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/jumps.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/local_vars.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/local_vars.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/members.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/members.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/new.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/new.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/node.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/node.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/not.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/not.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/other.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/other.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/primitives.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/primitives.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/static_vars.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/parsing/static_vars.rs" afterDir="false" />
+    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Test master branch protection">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/native/src/lib.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +40,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="jvm-opcodes" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -89,7 +78,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;rust-code-cleanup&quot;
+    &quot;git-widget-placeholder&quot;: &quot;llvm&quot;
   }
 }</component>
   <component name="RunManager" selected="Kotlin.DummyLoopClass">
