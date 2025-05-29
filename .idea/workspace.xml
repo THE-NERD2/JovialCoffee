@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Changed build significantly. Rust code still exists, but it is not used. The existing C++ code proves the build setup works, but is nonfunctional.">
+    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Fixed more build craziness">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/native/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/native/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/native/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/src/ast.cpp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/native/src/lib.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/lib.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -330,7 +330,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748462264986</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Fixed more build craziness">
+      <option name="closed" value="true" />
+      <created>1748467543955</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1748467543956</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -356,6 +364,7 @@
     <MESSAGE value="Split lib.rs" />
     <MESSAGE value="Simplify code" />
     <MESSAGE value="Changed build significantly. Rust code still exists, but it is not used. The existing C++ code proves the build setup works, but is nonfunctional." />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed build significantly. Rust code still exists, but it is not used. The existing C++ code proves the build setup works, but is nonfunctional." />
+    <MESSAGE value="Fixed more build craziness" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed more build craziness" />
   </component>
 </project>

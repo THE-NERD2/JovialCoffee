@@ -9,13 +9,10 @@ find_package(LLVM REQUIRED CONFIG)
 find_package(JNI REQUIRED)
 
 
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(GLOBAL PROPERTY USE_FOLDERS ON)
-
 include_directories(${LLVM_INCLUDE_DIRS})
 add_definitions(${LLVM_DEFINITIONS})
 
-add_library(j2c SHARED src/lib.cpp src/ast.cpp)
+add_library(j2c SHARED src/lib.cpp src/codegen.cpp src/ast.hpp)
 
 llvm_map_components_to_libnames(llvm_libs support core)
 

@@ -1,19 +1,22 @@
 #include <jni.h>
 #include <vector>
-#include <iostream>
+#include <iostream> // TODO: remove; unnecessary
+#include "ast.hpp"
+
+extern void initializeCodegen();
 
 using namespace std;
 
-static vector<jobject> objects;
+static vector<NClass> asts;
 
 extern "C" {
     JNIEXPORT void JNICALL Java_org_j2c_llvm_LLVM_addClassAST(JNIEnv* env, jclass clazz, jobject obj) {
-        cout << "1\n";
-        objects.push_back(obj);
-        return;
+        // TODO: parse and add to asts
     }
-    JNIEXPORT void JNICALL Java_org_j2c_llvm_LLVM_compile() {
-        cout << "2\n";
-        return;
+    JNIEXPORT void JNICALL Java_org_j2c_llvm_LLVM_compile(JNIEnv* env, jclass clazz) {
+        initializeCodegen();
+        for(NClass ast : asts) {
+            // TODO
+        }
     }
 }
