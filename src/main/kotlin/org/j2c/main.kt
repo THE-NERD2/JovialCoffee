@@ -7,7 +7,7 @@ import org.j2c.ast.rules.api.RuleContainer
 import org.j2c.llvm.LLVM
 import org.j2c.parsing.parseAndRunForEachClass
 import org.reflections.Reflections
-import org.reflections.scanners.SubTypesScanner
+import org.reflections.scanners.Scanners
 import org.reflections.util.ConfigurationBuilder
 import org.reflections.util.FilterBuilder
 import java.io.File
@@ -25,12 +25,13 @@ fun init(path: String) {
         ConfigurationBuilder()
             .forPackages("org.j2c.ast.rules")
             .filterInputsBy(FilterBuilder().includePackage("org.j2c.ast.rules"))
-            .setScanners(SubTypesScanner(false))
+            .setScanners(Scanners.SubTypes.filterResultsBy { true }) // Include object classes
     )
     val classes = reflections.getSubTypesOf(Any::class.java)
     classes.map { it.kotlin }.filter { it.hasAnnotation<RuleContainer>() }.forEach { clazz ->
         val properties = clazz.declaredMemberProperties
         properties.filter { !it.hasAnnotation<NoRule>() }.forEach { prop ->
+            @Suppress("UNCHECKED_CAST")
             rules.add((prop as KProperty1<Any?, Rule>).get(clazz.objectInstance))
         }
     }
@@ -41,6 +42,9 @@ fun init(path: String) {
 
 fun main(args: Array<String>) {
     init(args[0])
-    parseAndRunForEachClass(args[1], LLVM::addClassAST)
-    LLVM.compile()
+    LLVM.initCodegen()
+    parseAndRunForEachClass(args[1]) {
+        // TODO: LLVM stuff
+    }
+    LLVM.emit()
 }
