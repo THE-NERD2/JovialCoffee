@@ -5,10 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Fixed more build craziness">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/native/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/src/ast.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/src/lib.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/lib.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/Cargo.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/Cargo.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/ast.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/arrays.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/binop.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/bound_vars.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/calls.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/class.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/control_flow.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/jumps.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/local_vars.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/members.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/mod.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/new.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/node.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/not.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/other.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/primitives.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/static_vars.rs" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,19 +88,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build J2C.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests.DummyLoopClass.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests.DummyLoopClass_alone.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests.EncryptedStorage.executor&quot;: &quot;Run&quot;,
-    &quot;Kotlin.DummyLoopClass.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build J2C.executor": "Run",
+    "Gradle.Tests.DummyLoopClass.executor": "Run",
+    "Gradle.Tests.DummyLoopClass_alone.executor": "Run",
+    "Gradle.Tests.EncryptedStorage.executor": "Run",
+    "Kotlin.DummyLoopClass.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "33-convert-from-rust-to-c"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Kotlin.DummyLoopClass">
     <configuration name="LanguageTests.getRules" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
