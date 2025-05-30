@@ -4,28 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Fixed more build craziness">
-      <change beforePath="$PROJECT_DIR$/src/main/native/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/Cargo.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/Cargo.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/ast.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/lib.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/arrays.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/binop.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/bound_vars.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/calls.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/class.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/control_flow.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/jumps.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/local_vars.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/members.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/mod.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/new.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/node.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/not.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/other.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/primitives.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/native/src/parsing/static_vars.rs" beforeDir="false" />
+    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Changed C++ to prepare for the new way of doing LLVM in this project">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/native/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/src/ast.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/src/codegen.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/src/lib.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/lib.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +87,7 @@
     "git-widget-placeholder": "33-convert-from-rust-to-c"
   }
 }]]></component>
-  <component name="RunManager" selected="Kotlin.DummyLoopClass">
+  <component name="RunManager" selected="Gradle.Tests.DummyLoopClass">
     <configuration name="LanguageTests.getRules" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -355,7 +341,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748467543956</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Deleted all the Rust">
+      <option name="closed" value="true" />
+      <created>1748621110424</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1748621110424</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -382,6 +376,8 @@
     <MESSAGE value="Simplify code" />
     <MESSAGE value="Changed build significantly. Rust code still exists, but it is not used. The existing C++ code proves the build setup works, but is nonfunctional." />
     <MESSAGE value="Fixed more build craziness" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed more build craziness" />
+    <MESSAGE value="Deleted all the Rust" />
+    <MESSAGE value="Changed C++ to prepare for the new way of doing LLVM in this project" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed C++ to prepare for the new way of doing LLVM in this project" />
   </component>
 </project>
