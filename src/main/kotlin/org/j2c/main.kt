@@ -44,7 +44,7 @@ fun main(args: Array<String>) {
     init(args[0])
     LLVM.initCodegen()
     parseAndRunForEachClass(args[1]) {
-        // TODO: LLVM stuff
+        LLVM.createClass(it)
     }
     LLVM.emit()
 }

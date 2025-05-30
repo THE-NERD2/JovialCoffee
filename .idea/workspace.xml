@@ -5,12 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Changed C++ to prepare for the new way of doing LLVM in this project">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/native/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/src/ast.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/src/codegen.cpp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/native/src/lib.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/lib.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NClass.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NClass.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,6 +45,7 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {}
@@ -84,7 +82,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.codeium.enabled": "true",
-    "git-widget-placeholder": "33-convert-from-rust-to-c"
+    "git-widget-placeholder": "llvm"
   }
 }]]></component>
   <component name="RunManager" selected="Gradle.Tests.DummyLoopClass">
