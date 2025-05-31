@@ -13,21 +13,18 @@ using namespace llvm;
 class ClassNode {
 private:
     vector<string> types;
-    bool isComplete;
-    map<string, bool> missingTypes;
 public:
     string name;
     map<string, int> fieldOrder;
     StructType* type;
     ClassNode(string name, vector<string> types, map<string, int> fieldOrder): name(name), types(types), fieldOrder(fieldOrder) {
-        this->type = NULL;
-        this->isComplete = false;
+        this->initializeType();
     }
     ~ClassNode() {
         delete this->type;
     }
-    void tryComplete();
-    void tryComplete(string name);
+    void initializeType();
+    void createTypeBody();
 };
 
 static unique_ptr<LLVMContext> ctx;
@@ -36,50 +33,32 @@ static unique_ptr<IRBuilder<>> builder;
 static map<string, Value*> vars;
 static map<string, ClassNode*> classes;
 
-void ClassNode::tryComplete() {
-    if(this->isComplete) return;
-    ArrayRef<Type*> types;
+void ClassNode::initializeType() {
+    this->type = StructType::create(*ctx, this->name);
+}
+void ClassNode::createTypeBody() {
+    vector<Type*> types;
     for(string type : this->types) {
         if(type == "boolean") {
-            types.vec().push_back(Type::getInt1Ty(*ctx));
+            types.push_back(Type::getInt1Ty(*ctx));
         } else if(type == "byte" || type == "char") {
-            types.vec().push_back(Type::getInt8Ty(*ctx));
+            types.push_back(Type::getInt8Ty(*ctx));
         } else if(type == "short") {
-            types.vec().push_back(Type::getInt16Ty(*ctx));
+            types.push_back(Type::getInt16Ty(*ctx));
         } else if(type == "int") {
-            types.vec().push_back(Type::getInt32Ty(*ctx));
+            types.push_back(Type::getInt32Ty(*ctx));
         } else if(type == "long") {
-            types.vec().push_back(Type::getInt64Ty(*ctx));
+            types.push_back(Type::getInt64Ty(*ctx));
         } else if(type == "float") {
-            types.vec().push_back(Type::getFloatTy(*ctx));
+            types.push_back(Type::getFloatTy(*ctx));
         } else if(type == "double") {
-            types.vec().push_back(Type::getDoubleTy(*ctx));
+            types.push_back(Type::getDoubleTy(*ctx));
         } else {
-            if(classes.find(type) != classes.end()) {
-                if(classes[type]->isComplete) {
-                    types.vec().push_back(classes[type]->type);
-                } else {
-                    goto typeIsMissing;
-                }
-            } else {
-typeIsMissing:
-                this->missingTypes[type] = true;
-                return;
-            }
+            // By this point, all StructType's are available, even if they don't have a body yet
+            types.push_back(PointerType::getUnqual(classes[type]->type));
         }
     }
-    this->type = StructType::create(*ctx, types);
-    this->isComplete = true;
-    for(pair<string, ClassNode*> clazz : classes) {
-        clazz.second->tryComplete(this->name);
-    }
-}
-void ClassNode::tryComplete(string name) {
-    if(this->isComplete) return;
-    if(this->missingTypes[name]) {
-        this->missingTypes[name] = false;
-        this->tryComplete();
-    }
+    this->type->setBody(types);
 }
 
 extern "C" {
@@ -88,14 +67,14 @@ extern "C" {
         mod = make_unique<Module>("main", *ctx);
         builder = make_unique<IRBuilder<>>(*ctx);
     }
-    JNIEXPORT void JNICALL Java_org_j2c_llvm_LLVM_createClass(JNIEnv* env, jclass thiz, jobject clazz) {
-        jclass nClass = env->GetObjectClass(clazz);
-        jfieldID cname = env->GetFieldID(nClass, "cname", "Ljava/lang/String;");
-        jmethodID numFields = env->GetMethodID(nClass, "numFields", "()I");
-        jmethodID getField = env->GetMethodID(nClass, "getField", "(I)Lorg/j2c/ast/NFieldDeclaration;");
+    JNIEXPORT void JNICALL Java_org_j2c_llvm_LLVM_addClass(JNIEnv* env, jclass thiz, jobject clazz) {
+        jclass classData = env->GetObjectClass(clazz);
+        jfieldID classDataName = env->GetFieldID(classData, "name", "Ljava/lang/String;");
+        jmethodID numFields = env->GetMethodID(classData, "numFields", "()I");
+        jmethodID getField = env->GetMethodID(classData, "getField", "(I)Lorg/j2c/ast/NFieldDeclaration;");
 
         jclass nFieldDeclaration = env->FindClass("org/j2c/ast/NFieldDeclaration");
-        jfieldID name = env->GetFieldID(nFieldDeclaration, "name", "Ljava/lang/String;");
+        jfieldID nFieldDeclarationName = env->GetFieldID(nFieldDeclaration, "name", "Ljava/lang/String;");
         jfieldID type = env->GetFieldID(nFieldDeclaration, "type", "Ljava/lang/String;");
 
         map<string, int> fieldOrder;
@@ -104,7 +83,7 @@ extern "C" {
         for(int i = 0; i < fieldLength; i++) {
             jobject field = env->CallObjectMethod(clazz, getField, i);
 
-            jstring fieldName = (jstring) env->GetObjectField(field, name);
+            jstring fieldName = (jstring) env->GetObjectField(field, nFieldDeclarationName);
             const char* nameText = env->GetStringUTFChars(fieldName, 0);
             string nameStr(nameText);
             env->ReleaseStringUTFChars(fieldName, nameText);
@@ -118,11 +97,16 @@ extern "C" {
             types.push_back(typeStr);
         }
 
-        jstring className = (jstring) env->GetObjectField(clazz, cname);
+        jstring className = (jstring) env->GetObjectField(clazz, classDataName);
         const char* nameText = env->GetStringUTFChars(className, 0);
         string nameStr(nameText);
         env->ReleaseStringUTFChars(className, nameText);
         classes[nameStr] = new ClassNode(nameStr, types, fieldOrder);
+    }
+    JNIEXPORT void JNICALL Java_org_j2c_llvm_LLVM_createClasses() {
+        for(pair<string, ClassNode*> clazz : classes) {
+            clazz.second->createTypeBody();
+        }
     }
     JNIEXPORT void JNICALL Java_org_j2c_llvm_LLVM_emit() {
         // TODO

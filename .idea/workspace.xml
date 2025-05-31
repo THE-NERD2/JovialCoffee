@@ -4,11 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Changed C++ to prepare for the new way of doing LLVM in this project">
+    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Significantly improve adding classes to LLVM">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/llvm/ClassData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/org/j2c/DummyDependentClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/org/j2c/DummyDependentClass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/org/j2c/OtherClass.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/native/src/lib.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/lib.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NClass.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NClass.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NLoop.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NLoop.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/parsing/organization.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/parsing/organization.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +84,8 @@
     "Gradle.Tests.DummyLoopClass.executor": "Run",
     "Gradle.Tests.DummyLoopClass_alone.executor": "Run",
     "Gradle.Tests.EncryptedStorage.executor": "Run",
+    "Kotlin.DummyClass.executor": "Run",
+    "Kotlin.DummyDependentClass.executor": "Run",
     "Kotlin.DummyLoopClass.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -85,7 +93,7 @@
     "git-widget-placeholder": "llvm"
   }
 }]]></component>
-  <component name="RunManager" selected="Gradle.Tests.DummyLoopClass">
+  <component name="RunManager" selected="Kotlin.DummyDependentClass">
     <configuration name="LanguageTests.getRules" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -206,6 +214,26 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="DummyClass" type="JetRunConfigurationType">
+      <option name="MAIN_CLASS_NAME" value="org.j2c.MainKt" />
+      <module name="J2C.main" />
+      <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/src/test/resources org.j2c.DummyClass" />
+      <shortenClasspath name="NONE" />
+      <option name="VM_PARAMETERS" value="-Djava.library.path=$PROJECT_DIR$/native/build" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DummyDependentClass" type="JetRunConfigurationType">
+      <option name="MAIN_CLASS_NAME" value="org.j2c.MainKt" />
+      <module name="J2C.main" />
+      <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/src/test/resources org.j2c.DummyDependentClass" />
+      <shortenClasspath name="NONE" />
+      <option name="VM_PARAMETERS" value="-Djava.library.path=$PROJECT_DIR$/native/build" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="DummyLoopClass" type="JetRunConfigurationType">
       <option name="MAIN_CLASS_NAME" value="org.j2c.MainKt" />
       <module name="J2C.main" />
@@ -223,6 +251,8 @@
       <item itemvalue="Gradle.Tests.EncryptedStorage" />
       <item itemvalue="Gradle.Tests.WorkingFile" />
       <item itemvalue="Kotlin.DummyLoopClass" />
+      <item itemvalue="Kotlin.DummyClass" />
+      <item itemvalue="Kotlin.DummyDependentClass" />
     </list>
     <recent_temporary>
       <list>
@@ -347,7 +377,23 @@
       <option name="project" value="LOCAL" />
       <updated>1748621110424</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Classes can be created and stored in the C++ program as boxed LLVM StructType's">
+      <option name="closed" value="true" />
+      <created>1748635188304</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1748635188304</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Expand recursive class search to include dependencies that are the types of fields, but not found in methods">
+      <option name="closed" value="true" />
+      <created>1748726100788</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1748726100788</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -376,6 +422,9 @@
     <MESSAGE value="Fixed more build craziness" />
     <MESSAGE value="Deleted all the Rust" />
     <MESSAGE value="Changed C++ to prepare for the new way of doing LLVM in this project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed C++ to prepare for the new way of doing LLVM in this project" />
+    <MESSAGE value="Classes can be created and stored in the C++ program as boxed LLVM StructType's" />
+    <MESSAGE value="Expand recursive class search to include dependencies that are the types of fields, but not found in methods" />
+    <MESSAGE value="Significantly improve adding classes to LLVM" />
+    <option name="LAST_COMMIT_MESSAGE" value="Significantly improve adding classes to LLVM" />
   </component>
 </project>
