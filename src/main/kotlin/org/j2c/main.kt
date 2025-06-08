@@ -7,6 +7,7 @@ import org.j2c.ast.rules.api.Rule
 import org.j2c.ast.rules.api.RuleContainer
 import org.j2c.llvm.ClassData
 import org.j2c.llvm.LLVM
+import org.j2c.llvm.MethodData
 import org.j2c.parsing.parseAllRecursively
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
@@ -50,8 +51,11 @@ fun main(args: Array<String>) {
         LLVM.addClass(ClassData(it))
     }
     LLVM.createClasses()
-    classes.forEach {
-        // TODO: handle methods
+    classes.forEach { clazz ->
+        clazz.methods.forEach {
+            LLVM.createMethod(MethodData(it))
+            // TODO: add body to method
+        }
     }
     LLVM.emit()
 }

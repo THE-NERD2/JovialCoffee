@@ -10,11 +10,6 @@ class NClass(val qualName: String, name: String, addToClasses: Boolean = true): 
     val id: Int
     val fields = arrayListOf<NFieldDeclaration>()
     val methods = arrayListOf<NMethodDeclaration>()
-    // These two are to be called from JNI
-    @Suppress("unused")
-    fun numFields() = fields.size
-    @Suppress("unused")
-    fun getField(index: Int) = fields[index]
     init {
         id = idDictionary[qualName] ?: lastId++
         if(addToClasses) classes.add(this)

@@ -8,5 +8,6 @@ public class LLVM {
     public static native void initCodegen();
     public static native void addClass(ClassData clazz);
     public static native void createClasses();
+    public static native void createMethod(MethodData method);
     public static native void emit();
 }
