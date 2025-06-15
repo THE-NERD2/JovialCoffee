@@ -1,15 +1,19 @@
 package org.j2c.parsing
 
-import javassist.CtClass
 import javassist.NotFoundException
 import javassist.bytecode.Mnemonic
-import org.j2c.*
-import org.j2c.ast.*
+import org.j2c.ast.NClass
+import org.j2c.ast.NFieldDeclaration
+import org.j2c.ast.NMethodDeclaration
+import org.j2c.ast.popNClass
+import org.j2c.classLoader
 import org.j2c.development.registerUnknownOpcode
-import org.j2c.exceptions.InfiniteLoopException
-import org.j2c.exceptions.UnknownOpcodeException
-import java.util.*
-import kotlin.reflect.*
+import org.j2c.pool
+import org.j2c.rules
+import kotlin.reflect.KFunction
+import kotlin.reflect.KParameter
+import kotlin.reflect.KProperty
+import kotlin.reflect.javaType
 import kotlin.reflect.jvm.internal.KotlinReflectionInternalError
 import kotlin.reflect.jvm.javaField
 
@@ -20,12 +24,9 @@ fun parse(name: String): NClass? {
 
     var nclass: NClass? = null
     try {
-        val kclass: KClass<*>
-        val ctclass: CtClass
-
-        kclass = classLoader.loadClass(name).kotlin
+        val kclass = classLoader.loadClass(name).kotlin
+        val ctclass = pool.get(name)
         nclass = NClass(kclass.qualifiedName!!, kclass.simpleName!!)
-        ctclass = pool.get(name)
 
         kclass.members.forEach {
             if (it is KProperty) {
@@ -77,7 +78,4 @@ fun parse(name: String): NClass? {
         finishedProgress(name)
     }
     return nclass
-}
-fun stopParsingFunction() {
-    keepParsingFunction = false
 }

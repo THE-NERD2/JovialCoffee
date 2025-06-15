@@ -4,16 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Can now add methods to LLVM, though they don't have bodies yet">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/codegen/Codegen.kt" afterDir="false" />
+    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Fail on reaching unsupported node in codegen">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/codegen/UnsupportedNodeException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/parsing/InfiniteLoopException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/parsing/UnknownOpcodeException.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/src/lib.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/lib.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NBoundAssignment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NBoundAssignment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NBoundReference.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NBoundReference.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NFieldDeclaration.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NFieldDeclaration.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/rules/get_put.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/rules/get_put.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/codegen/Codegen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/codegen/Codegen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/exceptions/exceptions.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/parsing/parse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/parsing/parse.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,8 +96,13 @@
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.j2c.llvm" />
     </key>
+    <key name="K2MoveDeclarationsDialog.RECENT_PACKAGE_KEY">
+      <recent name="org.j2c.parsing" />
+      <recent name="org.j2c.exceptions" />
+      <recent name="org.j2c.codegen" />
+    </key>
   </component>
-  <component name="RunManager" selected="Kotlin.DummyClass">
+  <component name="RunManager" selected="Kotlin.DummyLoopClass">
     <configuration name="LanguageTests.getRules" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -415,7 +418,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749398636944</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Methods have bodies (not many nodes supported yet), and IR is now emitted to the console">
+      <option name="closed" value="true" />
+      <created>1750023448545</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1750023448545</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -448,6 +459,8 @@
     <MESSAGE value="Expand recursive class search to include dependencies that are the types of fields, but not found in methods" />
     <MESSAGE value="Significantly improve adding classes to LLVM" />
     <MESSAGE value="Can now add methods to LLVM, though they don't have bodies yet" />
-    <option name="LAST_COMMIT_MESSAGE" value="Can now add methods to LLVM, though they don't have bodies yet" />
+    <MESSAGE value="Methods have bodies (not many nodes supported yet), and IR is now emitted to the console" />
+    <MESSAGE value="Fail on reaching unsupported node in codegen" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fail on reaching unsupported node in codegen" />
   </component>
 </project>

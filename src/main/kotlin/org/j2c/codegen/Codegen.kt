@@ -38,6 +38,7 @@ class Codegen private constructor(): AutoCloseable {
                 LLVM.createVoidReturn()
                 addId = false
             }
+            else -> throw UnsupportedNodeException(node.astName)
         }
         if(addId) ids.add(id)
         return id
