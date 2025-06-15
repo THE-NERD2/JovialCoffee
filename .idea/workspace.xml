@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Changed C++ to prepare for the new way of doing LLVM in this project">
+    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Fail on reaching unsupported node in codegen">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/native/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/src/ast.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/src/codegen.cpp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/native/src/lib.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/lib.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +32,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Class" />
         <option value="Kotlin Class" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -48,6 +46,7 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {}
@@ -74,20 +73,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build J2C.executor": "Run",
-    "Gradle.Tests.DummyLoopClass.executor": "Run",
-    "Gradle.Tests.DummyLoopClass_alone.executor": "Run",
-    "Gradle.Tests.EncryptedStorage.executor": "Run",
-    "Kotlin.DummyLoopClass.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.codeium.enabled": "true",
-    "git-widget-placeholder": "33-convert-from-rust-to-c"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build J2C.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests.DummyLoopClass.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests.DummyLoopClass_alone.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Tests.EncryptedStorage.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.DummyClass.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.DummyDependentClass.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.DummyLoopClass.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;llvm&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Gradle.Tests.DummyLoopClass">
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="org.j2c.llvm" />
+    </key>
+    <key name="K2MoveDeclarationsDialog.RECENT_PACKAGE_KEY">
+      <recent name="org.j2c.parsing" />
+      <recent name="org.j2c.exceptions" />
+      <recent name="org.j2c.codegen" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Kotlin.DummyClass">
     <configuration name="LanguageTests.getRules" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -208,6 +219,26 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="DummyClass" type="JetRunConfigurationType">
+      <option name="MAIN_CLASS_NAME" value="org.j2c.MainKt" />
+      <module name="J2C.main" />
+      <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/src/test/resources org.j2c.DummyClass" />
+      <shortenClasspath name="NONE" />
+      <option name="VM_PARAMETERS" value="-Djava.library.path=$PROJECT_DIR$/native/build" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DummyDependentClass" type="JetRunConfigurationType">
+      <option name="MAIN_CLASS_NAME" value="org.j2c.MainKt" />
+      <module name="J2C.main" />
+      <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$/src/test/resources org.j2c.DummyDependentClass" />
+      <shortenClasspath name="NONE" />
+      <option name="VM_PARAMETERS" value="-Djava.library.path=$PROJECT_DIR$/native/build" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="DummyLoopClass" type="JetRunConfigurationType">
       <option name="MAIN_CLASS_NAME" value="org.j2c.MainKt" />
       <module name="J2C.main" />
@@ -224,6 +255,8 @@
       <item itemvalue="Gradle.Tests.DummyLoopClass" />
       <item itemvalue="Gradle.Tests.EncryptedStorage" />
       <item itemvalue="Gradle.Tests.WorkingFile" />
+      <item itemvalue="Kotlin.DummyClass" />
+      <item itemvalue="Kotlin.DummyDependentClass" />
       <item itemvalue="Kotlin.DummyLoopClass" />
     </list>
     <recent_temporary>
@@ -349,7 +382,55 @@
       <option name="project" value="LOCAL" />
       <updated>1748621110424</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Classes can be created and stored in the C++ program as boxed LLVM StructType's">
+      <option name="closed" value="true" />
+      <created>1748635188304</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1748635188304</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Expand recursive class search to include dependencies that are the types of fields, but not found in methods">
+      <option name="closed" value="true" />
+      <created>1748726100788</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1748726100788</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Significantly improve adding classes to LLVM">
+      <option name="closed" value="true" />
+      <created>1748726449274</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1748726449274</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Can now add methods to LLVM, though they don't have bodies yet">
+      <option name="closed" value="true" />
+      <created>1749398636943</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1749398636944</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Methods have bodies (not many nodes supported yet), and IR is now emitted to the console">
+      <option name="closed" value="true" />
+      <created>1750023448545</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1750023448545</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Fail on reaching unsupported node in codegen">
+      <option name="closed" value="true" />
+      <created>1750024684888</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1750024684888</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -378,6 +459,12 @@
     <MESSAGE value="Fixed more build craziness" />
     <MESSAGE value="Deleted all the Rust" />
     <MESSAGE value="Changed C++ to prepare for the new way of doing LLVM in this project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed C++ to prepare for the new way of doing LLVM in this project" />
+    <MESSAGE value="Classes can be created and stored in the C++ program as boxed LLVM StructType's" />
+    <MESSAGE value="Expand recursive class search to include dependencies that are the types of fields, but not found in methods" />
+    <MESSAGE value="Significantly improve adding classes to LLVM" />
+    <MESSAGE value="Can now add methods to LLVM, though they don't have bodies yet" />
+    <MESSAGE value="Methods have bodies (not many nodes supported yet), and IR is now emitted to the console" />
+    <MESSAGE value="Fail on reaching unsupported node in codegen" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fail on reaching unsupported node in codegen" />
   </component>
 </project>

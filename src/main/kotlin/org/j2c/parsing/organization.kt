@@ -16,7 +16,7 @@ fun finishedProgress(name: String) = alreadyParsed.add(name)
 internal lateinit var state: ParsingState
 
 
-fun parseAndRunForEachClass(firstClassName: String, predicate: (NClass) -> Unit) {
+fun parseAndRunForEachClass(firstClassName: String, doClear: Boolean = true, predicate: (NClass) -> Unit) {
     schedule(firstClassName)
     while(scheduled.size > 0) {
         val currentScheduled = scheduled.toMutableSet()
@@ -25,6 +25,7 @@ fun parseAndRunForEachClass(firstClassName: String, predicate: (NClass) -> Unit)
             val v = parse(it)
             if(v != null) predicate.invoke(v)
         }
-        clearNClasses()
+        if(doClear) clearNClasses()
     }
 }
+fun parseAllRecursively(firstClassName: String) = parseAndRunForEachClass(firstClassName, false) {}

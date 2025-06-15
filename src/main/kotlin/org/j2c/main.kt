@@ -1,18 +1,22 @@
 package org.j2c
 
 import javassist.ClassPool
+import org.j2c.ast.classes
 import org.j2c.ast.rules.api.NoRule
 import org.j2c.ast.rules.api.Rule
 import org.j2c.ast.rules.api.RuleContainer
+import org.j2c.codegen.Codegen
+import org.j2c.llvm.ClassData
 import org.j2c.llvm.LLVM
-import org.j2c.parsing.parseAndRunForEachClass
+import org.j2c.llvm.MethodData
+import org.j2c.parsing.parseAllRecursively
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
 import org.reflections.util.ConfigurationBuilder
 import org.reflections.util.FilterBuilder
 import java.io.File
 import java.net.URLClassLoader
-import kotlin.reflect.*
+import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.hasAnnotation
 
@@ -42,9 +46,19 @@ fun init(path: String) {
 
 fun main(args: Array<String>) {
     init(args[0])
+    parseAllRecursively(args[1])
     LLVM.initCodegen()
-    parseAndRunForEachClass(args[1]) {
-        // TODO: LLVM stuff
+    classes.forEach {
+        LLVM.addClass(ClassData(it))
+    }
+    LLVM.createClasses()
+    classes.forEach { clazz ->
+        clazz.methods.forEach { method ->
+            Codegen.useNew {
+                LLVM.createMethod(MethodData(method))
+                method.body.forEach(::codegen)
+            }
+        }
     }
     LLVM.emit()
 }
