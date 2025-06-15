@@ -4,15 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Significantly improve adding classes to LLVM">
-      <change afterPath="$PROJECT_DIR$/.idea/scala_compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/codegen/codegen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/llvm/MethodData.kt" afterDir="false" />
+    <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Can now add methods to LLVM, though they don't have bodies yet">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/codegen/Codegen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/native/src/lib.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/lib.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/j2c/llvm/LLVM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NClass.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NClass.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NMethodDeclaration.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NMethodDeclaration.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NBoundAssignment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NBoundAssignment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NBoundReference.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NBoundReference.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NFieldDeclaration.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/NFieldDeclaration.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/rules/get_put.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/ast/rules/get_put.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/j2c/main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,21 +79,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build J2C.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests.DummyLoopClass.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests.DummyLoopClass_alone.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests.EncryptedStorage.executor&quot;: &quot;Run&quot;,
-    &quot;Kotlin.DummyClass.executor&quot;: &quot;Run&quot;,
-    &quot;Kotlin.DummyDependentClass.executor&quot;: &quot;Run&quot;,
-    &quot;Kotlin.DummyLoopClass.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;llvm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build J2C.executor": "Run",
+    "Gradle.Tests.DummyLoopClass.executor": "Run",
+    "Gradle.Tests.DummyLoopClass_alone.executor": "Run",
+    "Gradle.Tests.EncryptedStorage.executor": "Run",
+    "Kotlin.DummyClass.executor": "Run",
+    "Kotlin.DummyDependentClass.executor": "Run",
+    "Kotlin.DummyLoopClass.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "llvm"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.j2c.llvm" />
@@ -256,9 +256,9 @@
       <item itemvalue="Gradle.Tests.DummyLoopClass" />
       <item itemvalue="Gradle.Tests.EncryptedStorage" />
       <item itemvalue="Gradle.Tests.WorkingFile" />
-      <item itemvalue="Kotlin.DummyLoopClass" />
       <item itemvalue="Kotlin.DummyClass" />
       <item itemvalue="Kotlin.DummyDependentClass" />
+      <item itemvalue="Kotlin.DummyLoopClass" />
     </list>
     <recent_temporary>
       <list>
@@ -407,7 +407,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748726449274</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Can now add methods to LLVM, though they don't have bodies yet">
+      <option name="closed" value="true" />
+      <created>1749398636943</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1749398636944</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -439,6 +447,7 @@
     <MESSAGE value="Classes can be created and stored in the C++ program as boxed LLVM StructType's" />
     <MESSAGE value="Expand recursive class search to include dependencies that are the types of fields, but not found in methods" />
     <MESSAGE value="Significantly improve adding classes to LLVM" />
-    <option name="LAST_COMMIT_MESSAGE" value="Significantly improve adding classes to LLVM" />
+    <MESSAGE value="Can now add methods to LLVM, though they don't have bodies yet" />
+    <option name="LAST_COMMIT_MESSAGE" value="Can now add methods to LLVM, though they don't have bodies yet" />
   </component>
 </project>

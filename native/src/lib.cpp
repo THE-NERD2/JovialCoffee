@@ -30,6 +30,7 @@ static unique_ptr<IRBuilder<>> builder;
 static Function* currentMethod;
 static map<string, Value*> vars;
 static map<string, unique_ptr<ClassNode>> classes;
+static map<int, Value*> tempValues;
 
 Type* nameToType(string type) {
     if(type == "void") {
@@ -78,7 +79,7 @@ extern "C" {
         jmethodID getField = env->GetMethodID(classData, "getField", "(I)Lorg/j2c/ast/NFieldDeclaration;");
 
         jclass nFieldDeclaration = env->FindClass("org/j2c/ast/NFieldDeclaration");
-        jfieldID nFieldDeclarationName = env->GetFieldID(nFieldDeclaration, "name", "Ljava/lang/String;");
+        jfieldID nFieldDeclarationName = env->GetFieldID(nFieldDeclaration, "cname", "Ljava/lang/String;");
         jfieldID type = env->GetFieldID(nFieldDeclaration, "type", "Ljava/lang/String;");
 
         map<string, int> fieldOrder;
@@ -129,6 +130,7 @@ extern "C" {
         string nameStr(nameText);
         env->ReleaseStringUTFChars(methodName, nameText);
 
+        vector<string> typeNames;
         vector<Type*> types;
         int argc = (int) env->CallIntMethod(method, numArgs);
         for(int i = 0; i < argc; i++) {
@@ -136,13 +138,80 @@ extern "C" {
             const char* argText = env->GetStringUTFChars(arg, 0);
             string argStr(argText);
             env->ReleaseStringUTFChars(arg, argText);
+            typeNames.push_back(argStr);
             types.push_back(nameToType(argStr));
         }
 
         FunctionType* functionType = FunctionType::get(nameToType(retStr), types, false);
         currentMethod = Function::Create(functionType, Function::ExternalLinkage, nameStr, mod.get());
+        int i = 0;
+        for(Argument& arg : currentMethod->args()) {
+            string varName = "param";
+            varName += to_string(i); // e.x. param0
+            arg.setName(varName);
+            vars[varName] = &arg;
+            i++;
+        }
+
+        BasicBlock* block = BasicBlock::Create(*ctx, "entry", currentMethod);
+        builder->SetInsertPoint(block);
+    }
+    JNIEXPORT void JNICALL Java_org_j2c_llvm_LLVM_createReference(JNIEnv* env, jclass thiz, jint id, jobject var) {
+        jstring varName = (jstring) var;
+        const char* nameText = env->GetStringUTFChars(varName, 0);
+        string nameStr(nameText);
+        env->ReleaseStringUTFChars(varName, nameText);
+        tempValues[(int) id] = vars[nameStr];
+    }
+    JNIEXPORT void JNICALL Java_org_j2c_llvm_LLVM_createBoundReference(JNIEnv* env, jclass thiz, jint id, jint objId, jobject className, jobject field) {
+        jstring name = (jstring) className;
+        const char* nameText = env->GetStringUTFChars(name, 0);
+        string nameStr(nameText);
+        env->ReleaseStringUTFChars(name, nameText);
+
+        jstring fieldName = (jstring) field;
+        const char* fieldText = env->GetStringUTFChars(fieldName, 0);
+        string fieldStr(fieldText);
+        env->ReleaseStringUTFChars(fieldName, fieldText);
+
+        Value* fieldAddr = builder->CreateStructGEP(
+            classes[nameStr]->type,
+            tempValues[(int) objId],
+            classes[nameStr]->fieldOrder[fieldStr],
+            string("ptr_id") + to_string((int) objId) + string("_") + fieldStr // e.x. ptr_id98_someField
+        );
+        tempValues[(int) id] = builder->CreateLoad(
+            fieldAddr->getType()->getPointerElementType(),
+            fieldAddr,
+            string("val_id") + to_string((int) objId) + string("_") + fieldStr // e.x. val_id98_someField
+        );
+    }
+    JNIEXPORT void JNICALL Java_org_j2c_llvm_LLVM_createBoundAssignment(JNIEnv* env, jclass thiz, jint objId, jobject className, jobject field, jint valueId) {
+        jstring name = (jstring) className;
+        const char* nameText = env->GetStringUTFChars(name, 0);
+        string nameStr(nameText);
+        env->ReleaseStringUTFChars(name, nameText);
+
+        jstring fieldName = (jstring) field;
+        const char* fieldText = env->GetStringUTFChars(fieldName, 0);
+        string fieldStr(fieldText);
+        env->ReleaseStringUTFChars(fieldName, fieldText);
+
+        Value* fieldAddr = builder->CreateStructGEP(
+            classes[nameStr]->type,
+            tempValues[(int) objId],
+            classes[nameStr]->fieldOrder[fieldStr],
+            string("ptr_id") + to_string((int) objId) + string("_") + fieldStr // e.x. ptr_id98_someField
+        );
+        builder->CreateStore(tempValues[(int) valueId], fieldAddr);
+    }
+    JNIEXPORT void JNICALL Java_org_j2c_llvm_LLVM_createVoidReturn() {
+        builder->CreateRetVoid();
+    }
+    JNIEXPORT void JNICALL Java_org_j2c_llvm_LLVM_free(JNIEnv* env, jclass thiz, jint id) {
+        tempValues.erase((int) id);
     }
     JNIEXPORT void JNICALL Java_org_j2c_llvm_LLVM_emit() {
-        // TODO
+        mod->print(outs(), nullptr);
     }
 }

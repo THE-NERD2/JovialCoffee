@@ -5,6 +5,7 @@ import org.j2c.ast.classes
 import org.j2c.ast.rules.api.NoRule
 import org.j2c.ast.rules.api.Rule
 import org.j2c.ast.rules.api.RuleContainer
+import org.j2c.codegen.Codegen
 import org.j2c.llvm.ClassData
 import org.j2c.llvm.LLVM
 import org.j2c.llvm.MethodData
@@ -52,9 +53,11 @@ fun main(args: Array<String>) {
     }
     LLVM.createClasses()
     classes.forEach { clazz ->
-        clazz.methods.forEach {
-            LLVM.createMethod(MethodData(it))
-            // TODO: add body to method
+        clazz.methods.forEach { method ->
+            Codegen.useNew {
+                LLVM.createMethod(MethodData(method))
+                method.body.forEach(::codegen)
+            }
         }
     }
     LLVM.emit()
