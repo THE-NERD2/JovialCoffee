@@ -1,5 +1,6 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/IRBuilder.h>
+#include <llvm/Support/FileSystem.h>
 #include <jni.h>
 #include <iostream> // TODO: remove; unnecessary
 #include <vector>
@@ -212,6 +213,14 @@ extern "C" {
         tempValues.erase((int) id);
     }
     JNIEXPORT void JNICALL Java_org_j2c_llvm_LLVM_emit() {
-        mod->print(outs(), nullptr);
+        mod->print(outs(), nullptr); // TODO: remove when codegen is consistently accurate
+        // Print to file
+        error_code EC;
+        raw_fd_ostream out("output.ll", EC, sys::fs::OF_None);
+        if (EC) {
+            cerr << "Error opening file: " << EC.message() << endl;
+            return;
+        }
+        mod->print(out, nullptr);
     }
 }
