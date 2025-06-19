@@ -9,7 +9,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/native" />
+            <option value="$PROJECT_DIR$/j2c" />
+            <option value="$PROJECT_DIR$/j2c/native" />
           </set>
         </option>
       </GradleProjectSettings>
