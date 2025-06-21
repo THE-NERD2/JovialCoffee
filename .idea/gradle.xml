@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/j2c" />
             <option value="$PROJECT_DIR$/j2c/native" />
+            <option value="$PROJECT_DIR$/jastgen" />
           </set>
         </option>
       </GradleProjectSettings>

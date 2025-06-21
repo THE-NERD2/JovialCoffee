@@ -1,8 +1,8 @@
 package dev.the_nerd2.jovialcoffee.j2c.llvm
 
-import dev.the_nerd2.jovialcoffee.j2c.ast.NClass
-import dev.the_nerd2.jovialcoffee.j2c.ast.NFieldDeclaration
-import dev.the_nerd2.jovialcoffee.j2c.ast.findNClassByFullName
+import dev.the_nerd2.jovialcoffee.jastgen.ast.NClass
+import dev.the_nerd2.jovialcoffee.jastgen.ast.NFieldDeclaration
+import dev.the_nerd2.jovialcoffee.jastgen.ast.findNClassByFullName
 
 // This class stores information about a class for use in native code
 @Suppress("unused")

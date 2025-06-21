@@ -1,7 +1,7 @@
 package dev.the_nerd2.jovialcoffee.j2c.llvm
 
-import dev.the_nerd2.jovialcoffee.j2c.ast.NMethodDeclaration
-import dev.the_nerd2.jovialcoffee.j2c.ast.findNClassByFullName
+import dev.the_nerd2.jovialcoffee.jastgen.ast.NMethodDeclaration
+import dev.the_nerd2.jovialcoffee.jastgen.ast.findNClassByFullName
 
 // This class stores information about a method for use in native code
 @Suppress("unused")

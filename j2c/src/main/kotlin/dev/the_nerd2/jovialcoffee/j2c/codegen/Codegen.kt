@@ -1,10 +1,10 @@
 package dev.the_nerd2.jovialcoffee.j2c.codegen
 
-import dev.the_nerd2.jovialcoffee.j2c.ast.NBoundAssignment
-import dev.the_nerd2.jovialcoffee.j2c.ast.NBoundReference
-import dev.the_nerd2.jovialcoffee.j2c.ast.NReference
-import dev.the_nerd2.jovialcoffee.j2c.ast.NReturn
-import dev.the_nerd2.jovialcoffee.j2c.ast.Node
+import dev.the_nerd2.jovialcoffee.jastgen.ast.NBoundAssignment
+import dev.the_nerd2.jovialcoffee.jastgen.ast.NBoundReference
+import dev.the_nerd2.jovialcoffee.jastgen.ast.NReference
+import dev.the_nerd2.jovialcoffee.jastgen.ast.NReturn
+import dev.the_nerd2.jovialcoffee.jastgen.ast.Node
 import dev.the_nerd2.jovialcoffee.j2c.llvm.LLVM
 
 class Codegen private constructor(): AutoCloseable {

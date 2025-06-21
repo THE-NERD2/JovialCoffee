@@ -77,9 +77,9 @@ extern "C" {
         jclass classData = env->GetObjectClass(clazz);
         jfieldID classDataName = env->GetFieldID(classData, "name", "Ljava/lang/String;");
         jmethodID numFields = env->GetMethodID(classData, "numFields", "()I");
-        jmethodID getField = env->GetMethodID(classData, "getField", "(I)Ldev/the_nerd2/jovialcoffee/j2c/ast/NFieldDeclaration;");
+        jmethodID getField = env->GetMethodID(classData, "getField", "(I)Ldev/the_nerd2/jovialcoffee/jastgen/ast/NFieldDeclaration;");
 
-        jclass nFieldDeclaration = env->FindClass("dev/the_nerd2/jovialcoffee/j2c/ast/NFieldDeclaration");
+        jclass nFieldDeclaration = env->FindClass("dev/the_nerd2/jovialcoffee/jastgen/ast/NFieldDeclaration");
         jfieldID nFieldDeclarationName = env->GetFieldID(nFieldDeclaration, "cname", "Ljava/lang/String;");
         jfieldID type = env->GetFieldID(nFieldDeclaration, "type", "Ljava/lang/String;");
 

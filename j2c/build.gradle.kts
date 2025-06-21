@@ -12,10 +12,11 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("org.javassist:javassist:3.30.2-GA")
+    /*implementation("org.javassist:javassist:3.30.2-GA")
     implementation("org.reflections:reflections:0.10.2")
     implementation(kotlin("reflect"))
-    implementation("ch.qos.logback:logback-classic:1.5.13")
+    implementation("ch.qos.logback:logback-classic:1.5.13")*/
+    implementation(project(":jastgen"))
     implementation(files("j2c/native/build/libj2c.so"))
 }
 

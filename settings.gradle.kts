@@ -5,3 +5,5 @@ plugins {
 rootProject.name = "jovialcoffee"
 include(":j2c:native")
 include("j2c")
+
+include("jastgen")
