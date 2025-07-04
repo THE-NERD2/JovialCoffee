@@ -5,90 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03e39861-8ffc-4f6d-a561-4a2bee6a94d2" name="Changes" comment="Extract code parsing stuff and make it part of new module jastgen">
-      <change afterPath="$PROJECT_DIR$/jastgen/build.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/ControlFlowNode.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jastgen/src/test/resources/dev/the_nerd2/jovialcoffee/jastgen/DummyClass.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jastgen/src/test/resources/dev/the_nerd2/jovialcoffee/jastgen/DummyDependentClass.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jastgen/src/test/resources/dev/the_nerd2/jovialcoffee/jastgen/DummyDependentClass.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jastgen/src/test/resources/dev/the_nerd2/jovialcoffee/jastgen/DummyLoopClass.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jastgen/src/test/resources/dev/the_nerd2/jovialcoffee/jastgen/OtherClass.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kna/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kna/native/CMakeLists.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kna/native/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kna/src/main/java/dev/the_nerd2/jovialcoffee/kna/Native.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kna/src/main/kotlin/dev/the_nerd2/jovialcoffee/kna/initialization.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kna/src/test/kotlin/dev/the_nerd2/jovialcoffee/kna/test.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/j2c/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/j2c/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/native/src/lib.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/j2c/native/src/lib.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/java/dev/the_nerd2/jovialcoffee/j2c/ast/NBoolean.java" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/java/dev/the_nerd2/jovialcoffee/jastgen/ast/NBoolean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/java/dev/the_nerd2/jovialcoffee/j2c/ast/NByte.java" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/java/dev/the_nerd2/jovialcoffee/jastgen/ast/NByte.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/java/dev/the_nerd2/jovialcoffee/j2c/ast/NChar.java" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/java/dev/the_nerd2/jovialcoffee/jastgen/ast/NChar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/java/dev/the_nerd2/jovialcoffee/j2c/ast/NDouble.java" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/java/dev/the_nerd2/jovialcoffee/jastgen/ast/NDouble.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/java/dev/the_nerd2/jovialcoffee/j2c/ast/NFloat.java" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/java/dev/the_nerd2/jovialcoffee/jastgen/ast/NFloat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/java/dev/the_nerd2/jovialcoffee/j2c/ast/NInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/java/dev/the_nerd2/jovialcoffee/jastgen/ast/NInt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/java/dev/the_nerd2/jovialcoffee/j2c/ast/NLong.java" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/java/dev/the_nerd2/jovialcoffee/jastgen/ast/NLong.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/java/dev/the_nerd2/jovialcoffee/j2c/ast/NShort.java" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/java/dev/the_nerd2/jovialcoffee/jastgen/ast/NShort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/ControlFlowNode.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NAThrow.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NAThrow.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NArrayAssignment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NArrayAssignment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NArrayLength.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NArrayLength.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NArrayReference.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NArrayReference.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NAssignment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NAssignment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NBinOp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NBinOp.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NBoundAssignment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NBoundAssignment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NBoundReference.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NBoundReference.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NCall.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NCall.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NClass.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NClass.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NFieldDeclaration.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NFieldDeclaration.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NIf.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NIf.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NLoop.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NLoop.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NMethodDeclaration.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NMethodDeclaration.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NNew.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NNew.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NNewArray.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NNewArray.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NNot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NNot.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NNull.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NNull.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NOther.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NOther.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NReference.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NReference.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NReturn.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NReturn.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NStaticAssignment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NStaticAssignment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NStaticCall.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NStaticCall.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NStaticReference.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NStaticReference.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/NValueReturn.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/NValueReturn.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/Node.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/Node.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/class_control.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/class_control.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/aload_astore_aconst.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/aload_astore_aconst.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/api/api.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/api/api.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/arrays.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/arrays.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/dload_dstore_dconst.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/dload_dstore_dconst.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/dmath.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/dmath.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/fload_fstore_fconst.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/fload_fstore_fconst.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/fmath.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/fmath.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/get_put.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/get_put.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/if.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/if.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/iload_istore_iconst.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/iload_istore_iconst.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/imath.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/imath.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/invoke.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/invoke.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/jumps.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/jumps.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/lload_lstore_lconst.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/lload_lstore_lconst.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/lmath.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/lmath.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/other.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/other.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/ast/rules/types.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ast/rules/types.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/codegen/Codegen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/codegen/Codegen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/development/development.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/development/development.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/llvm/ClassData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/llvm/ClassData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/llvm/MethodData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/llvm/MethodData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/parsing/InfiniteLoopException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/InfiniteLoopException.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/parsing/ParsingState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/ParsingState.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/parsing/RetargetableCodeStack.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/RetargetableCodeStack.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/parsing/UnknownOpcodeException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/UnknownOpcodeException.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/parsing/organization.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/organization.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/parsing/parse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/parse.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/main/kotlin/dev/the_nerd2/jovialcoffee/j2c/utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/main/kotlin/dev/the_nerd2/jovialcoffee/jastgen/utils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/test/kotlin/dev/the_nerd2/jovialcoffee/j2c/test.kt" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/test/kotlin/dev/the_nerd2/jovialcoffee/jastgen/test.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/test/resources/dev/the_nerd2/jovialcoffee/j2c/DummyClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/test/resources/dev/the_nerd2/jovialcoffee/jastgen/DummyClass.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/test/resources/dev/the_nerd2/jovialcoffee/j2c/DummyClass.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/test/resources/dev/the_nerd2/jovialcoffee/j2c/DummyDependentClass.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/test/resources/dev/the_nerd2/jovialcoffee/j2c/DummyDependentClass.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/test/resources/dev/the_nerd2/jovialcoffee/j2c/DummyLoopClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/jastgen/src/test/resources/dev/the_nerd2/jovialcoffee/jastgen/DummyLoopClass.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/test/resources/dev/the_nerd2/jovialcoffee/j2c/DummyLoopClass.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/j2c/src/test/resources/dev/the_nerd2/jovialcoffee/j2c/OtherClass.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -124,8 +49,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Kotlin Class" />
+        <option value="Class" />
         <option value="Kotlin File" />
       </list>
     </option>
@@ -138,7 +63,6 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
-    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {}
@@ -165,23 +89,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build J2C.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build JovialCoffee.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests.DummyLoopClass.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests.DummyLoopClass_alone.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests.EncryptedStorage.executor&quot;: &quot;Run&quot;,
-    &quot;Kotlin.DummyClass.executor&quot;: &quot;Run&quot;,
-    &quot;Kotlin.DummyDependentClass.executor&quot;: &quot;Run&quot;,
-    &quot;Kotlin.DummyLoopClass.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pathVariables&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build J2C.executor": "Run",
+    "Gradle.Build JovialCoffee.executor": "Run",
+    "Gradle.Tests.DummyLoopClass.executor": "Run",
+    "Gradle.Tests.DummyLoopClass_alone.executor": "Run",
+    "Gradle.Tests.EncryptedStorage.executor": "Run",
+    "Gradle.Tests.test.executor": "Run",
+    "Kotlin.DummyClass.executor": "Run",
+    "Kotlin.DummyDependentClass.executor": "Run",
+    "Kotlin.DummyLoopClass.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "kna-main",
+    "settings.editor.selected.configurable": "preferences.pathVariables"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.j2c.llvm" />
@@ -202,7 +127,7 @@
       <recent name="org.j2c.exceptions" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Tests.DummyLoopClass">
+  <component name="RunManager" selected="Gradle.Tests.test">
     <configuration name="Tests.DummyLoopClass" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -217,6 +142,30 @@
             <option value=":jastgen:test" />
             <option value="--tests" />
             <option value="&quot;dev.the_nerd2.jovialcoffee.jastgen.Tests.DummyLoopClass&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="Tests.test" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":kna:test" />
+            <option value="--tests" />
+            <option value="&quot;dev.the_nerd2.jovialcoffee.kna.Tests.test&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -338,6 +287,7 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Gradle.Tests.test" />
       <item itemvalue="Gradle.Tests.DummyLoopClass" />
       <item itemvalue="Kotlin.DummyClass" />
       <item itemvalue="Kotlin.DummyDependentClass" />
@@ -345,6 +295,7 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.Tests.test" />
         <item itemvalue="Gradle.Tests.DummyLoopClass" />
       </list>
     </recent_temporary>
@@ -518,7 +469,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750376118848</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Extract code parsing stuff and make it part of new module jastgen">
+      <option name="closed" value="true" />
+      <created>1750537131721</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1750537131721</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

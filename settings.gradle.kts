@@ -7,3 +7,5 @@ include(":j2c:native")
 include("j2c")
 
 include("jastgen")
+include("kna")
+include("kna:native")
