@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation(kotlin("reflect"))
     implementation(project(":jastgen"))
     implementation(files("native/build/libj2c.so"))
 }
