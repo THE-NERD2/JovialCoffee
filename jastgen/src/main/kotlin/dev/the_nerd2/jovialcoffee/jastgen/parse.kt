@@ -8,13 +8,10 @@ import dev.the_nerd2.jovialcoffee.jastgen.ast.popNClass
 import dev.the_nerd2.jovialcoffee.jastgen.ast.rules.api.NoRule
 import dev.the_nerd2.jovialcoffee.jastgen.ast.rules.api.Rule
 import dev.the_nerd2.jovialcoffee.jastgen.ast.rules.api.RuleContainer
+import io.github.classgraph.ClassGraph
 import javassist.ClassPool
 import javassist.NotFoundException
 import javassist.bytecode.Mnemonic
-import org.reflections.Reflections
-import org.reflections.scanners.Scanners
-import org.reflections.util.ConfigurationBuilder
-import org.reflections.util.FilterBuilder
 import java.io.File
 import java.net.URLClassLoader
 import kotlin.reflect.*
@@ -28,21 +25,24 @@ lateinit var classLoader: URLClassLoader
 val pool = ClassPool(ClassPool.getDefault())
 
 fun init(path: String) {
-    val reflections = Reflections(
-        ConfigurationBuilder()
-            .forPackages("dev.the_nerd2.jovialcoffee.jastgen.ast.rules")
-            .filterInputsBy(FilterBuilder().includePackage("dev.the_nerd2.jovialcoffee.jastgen.ast.rules"))
-            .setScanners(Scanners.SubTypes.filterResultsBy { true }) // Include object classes
-    )
-    val classes = reflections.getSubTypesOf(Any::class.java)
-    classes.map { it.kotlin }.filter { it.hasAnnotation<RuleContainer>() }.forEach { clazz ->
-        val properties = clazz.declaredMemberProperties
-        properties.filter { !it.hasAnnotation<NoRule>() }.forEach { prop ->
-            @Suppress("UNCHECKED_CAST")
-            rules.add((prop as KProperty1<Any?, Rule>).get(clazz.objectInstance))
+    // Gets all rules for opcode parsing and stores them
+    ClassGraph()
+        .enableClassInfo()
+        .acceptPackages("dev.the_nerd2.jovialcoffee.jastgen.ast.rules")
+        .scan()
+        .use {
+            it.allClasses
+                .map { Class.forName(it.name).kotlin }
+                .filter { it.hasAnnotation<RuleContainer>() }
         }
-    }
-
+        .forEach { clazz ->
+            val properties = clazz.declaredMemberProperties
+            properties.filter { !it.hasAnnotation<NoRule>() }.forEach { prop ->
+                @Suppress("UNCHECKED_CAST")
+                rules.add((prop as KProperty1<Any?, Rule>).get(clazz.objectInstance))
+            }
+        }
+    // Prepares class loader and class pool
     classLoader = URLClassLoader(arrayOf(File(path).toURI().toURL()), ClassLoader.getSystemClassLoader())
     pool.appendClassPath(path)
 }
@@ -68,7 +68,7 @@ fun parse(name: String): NClass? {
                     val instructions = methodInfo.codeAttribute.iterator()
                     val const = methodInfo.constPool
                     val vars = mutableMapOf<Int, String>()
-                    it.parameters.forEachIndexed { i: Int, v: KParameter -> vars[i] = "param$i" }
+                    it.parameters.forEachIndexed { i, _ -> vars[i] = "param$i" }
 
                     val stack = RetargetableCodeStack()
                     state = ParsingState(instructions, const, vars, stack)

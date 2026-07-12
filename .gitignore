@@ -5,7 +5,8 @@ build/
 !**/src/test/**/build/
 
 # Ghidra used for verification of JovialCoffee results. Ignore these files
-/analysis/
+**/analysis.gpr
+**/analysis.rep/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

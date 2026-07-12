@@ -21,9 +21,6 @@ tasks.test {
     systemProperty("java.library.path", file("native/build").absolutePath)
     useJUnitPlatform()
 }
-kotlin {
-    jvmToolchain(21)
-}
 
 tasks.compileKotlin {
     dependsOn(":j2c:native:buildNative")
