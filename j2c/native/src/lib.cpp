@@ -1,5 +1,6 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/Module.h>
 #include <llvm/Support/FileSystem.h>
 #include <jni.h>
 #include <iostream> // TODO: remove; unnecessary
@@ -26,7 +27,7 @@ public:
 };
 
 static unique_ptr<LLVMContext> ctx;
-static unique_ptr<Module> mod;
+static unique_ptr<Module> module;
 static unique_ptr<IRBuilder<>> builder;
 static Function* currentMethod;
 static map<string, Value*> vars;
@@ -70,7 +71,7 @@ void ClassNode::createTypeBody() {
 extern "C" {
     JNIEXPORT void JNICALL Java_dev_the_1nerd2_jovialcoffee_j2c_llvm_LLVM_initCodegen() {
         ctx = make_unique<LLVMContext>();
-        mod = make_unique<Module>("main", *ctx);
+        module = make_unique<Module>("main", *ctx);
         builder = make_unique<IRBuilder<>>(*ctx);
     }
     JNIEXPORT void JNICALL Java_dev_the_1nerd2_jovialcoffee_j2c_llvm_LLVM_addClass(JNIEnv* env, jclass thiz, jobject clazz) {
@@ -144,7 +145,7 @@ extern "C" {
         }
 
         FunctionType* functionType = FunctionType::get(nameToType(retStr), types, false);
-        currentMethod = Function::Create(functionType, Function::ExternalLinkage, nameStr, mod.get());
+        currentMethod = Function::Create(functionType, Function::ExternalLinkage, nameStr, module.get());
         int i = 0;
         for(Argument& arg : currentMethod->args()) {
             string varName = "param";
@@ -175,14 +176,18 @@ extern "C" {
         string fieldStr(fieldText);
         env->ReleaseStringUTFChars(fieldName, fieldText);
 
+        int fieldIndex = classes[nameStr]->fieldOrder[fieldStr];
+        Type* classType = classes[nameStr]->type;
+        Type* fieldType = classType->getStructElementType(fieldIndex);
+
         Value* fieldAddr = builder->CreateStructGEP(
-            classes[nameStr]->type,
+            classType,
             tempValues[(int) objId],
-            classes[nameStr]->fieldOrder[fieldStr],
+            fieldIndex,
             string("ptr_id") + to_string((int) objId) + string("_") + fieldStr // e.x. ptr_id98_someField
         );
         tempValues[(int) id] = builder->CreateLoad(
-            fieldAddr->getType()->getPointerElementType(),
+            fieldType,
             fieldAddr,
             string("val_id") + to_string((int) objId) + string("_") + fieldStr // e.x. val_id98_someField
         );
@@ -213,7 +218,7 @@ extern "C" {
         tempValues.erase((int) id);
     }
     JNIEXPORT void JNICALL Java_dev_the_1nerd2_jovialcoffee_j2c_llvm_LLVM_emit() {
-        mod->print(outs(), nullptr); // TODO: remove when codegen is consistently accurate
+        module->print(outs(), nullptr); // TODO: remove when codegen is consistently accurate
         // Print to file
         error_code EC;
         raw_fd_ostream out("output.ll", EC, sys::fs::OF_None);
@@ -221,6 +226,6 @@ extern "C" {
             cerr << "Error opening file: " << EC.message() << endl;
             return;
         }
-        mod->print(out, nullptr);
+        module->print(out, nullptr);
     }
 }

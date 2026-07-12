@@ -13,13 +13,9 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))
     implementation("org.javassist:javassist:3.30.2-GA")
-    implementation("org.reflections:reflections:0.10.2")
-    implementation("ch.qos.logback:logback-classic:1.5.13")
+    implementation("io.github.classgraph:classgraph:4.8.184")
 }
 
 tasks.test {
     useJUnitPlatform()
-}
-kotlin {
-    jvmToolchain(21)
 }
